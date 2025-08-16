@@ -11,7 +11,7 @@
       font-family: sans-serif;
     }
 
-    /* Vertical scrolling wall */
+    /* Wall container */
     .wall {
       height: 300px;
       overflow: hidden;
@@ -30,8 +30,8 @@
     }
 
     .scroll-content img {
-      width: 70px;
-      height: 70px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       margin: 10px auto;
       border: 2px solid white;
@@ -51,22 +51,10 @@
   <h1 class="text-4xl font-bold mb-2">Plasma Hall of Fame</h1>
   <p class="text-lg mb-8">Celebrate the early builders of PlasmaChain</p>
 
-  <!-- Up/Down Wall -->
+  <!-- Wall -->
   <div class="wall">
     <div id="scrollContent" class="scroll-content">
-      <img src="https://unavatar.io/twitter/jack" alt="@jack">
-      <img src="https://unavatar.io/twitter/elonmusk" alt="@elon">
-      <img src="https://unavatar.io/twitter/vitalikbuterin" alt="@vitalik">
-      <img src="https://unavatar.io/twitter/aabisanaytullah" alt="@aabisanaytullah">
-      <img src="https://unavatar.io/twitter/plasma" alt="@plasma">
-      <img src="https://unavatar.io/twitter/builder" alt="@builder">
-      <!-- repeat again for smooth loop -->
-      <img src="https://unavatar.io/twitter/jack" alt="@jack">
-      <img src="https://unavatar.io/twitter/elonmusk" alt="@elon">
-      <img src="https://unavatar.io/twitter/vitalikbuterin" alt="@vitalik">
-      <img src="https://unavatar.io/twitter/aabisanaytullah" alt="@aabisanaytullah">
-      <img src="https://unavatar.io/twitter/plasma" alt="@plasma">
-      <img src="https://unavatar.io/twitter/builder" alt="@builder">
+      <!-- profiles will be added here dynamically -->
     </div>
   </div>
 
@@ -76,54 +64,3 @@
     <input type="text" id="username" class="text-black p-2 rounded mb-2" placeholder="jack">
     <button type="submit" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded">Join the Wall</button>
   </form>
-
-  <!-- Music -->
-  <div class="mt-8">
-    <audio id="bgMusic" loop>
-      <source src="https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav" type="audio/mp3">
-      Your browser does not support the audio element.
-    </audio>
-    <button onclick="toggleMusic()" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded mt-3">
-      ▶ Play Interstellar
-    </button>
-  </div>
-
-  <script>
-    // Music toggle
-    function toggleMusic() {
-      const music = document.getElementById("bgMusic");
-      if (music.paused) {
-        music.play();
-      } else {
-        music.pause();
-      }
-    }
-
-    // Add new user to wall
-    function addUser(event) {
-      event.preventDefault();
-      const input = document.getElementById("username");
-      let username = input.value.trim();
-      if (!username) return;
-
-      if (username.startsWith("@")) {
-        username = username.substring(1);
-      }
-
-      const scrollContent = document.getElementById("scrollContent");
-      const img = document.createElement("img");
-      img.src = `https://unavatar.io/twitter/${username}`;
-      img.alt = "@" + username;
-
-      scrollContent.appendChild(img);
-
-      // Duplicate for smooth loop
-      const clone = img.cloneNode(true);
-      scrollContent.appendChild(clone);
-
-      input.value = "";
-    }
-  </script>
-</body>
-</html>
-
