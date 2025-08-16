@@ -11,36 +11,35 @@
       font-family: sans-serif;
     }
 
-    /* Spinning circle */
-    .circle {
-      position: relative;
-      width: 300px;
+    /* Vertical scrolling wall */
+    .wall {
       height: 300px;
-      border-radius: 50%;
-      margin: 50px auto;
-      animation: spin 20s linear infinite;
-      transform-origin: center center;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      border: 2px solid #9333ea;
+      border-radius: 12px;
     }
 
-    .circle div {
-      position: absolute;
+    .scroll-content {
+      display: flex;
+      flex-direction: column;
+      animation: scrollUp 20s linear infinite;
+    }
+
+    .scroll-content img {
       width: 70px;
       height: 70px;
       border-radius: 50%;
-      background: #9333ea;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 12px;
-      font-weight: bold;
-      text-align: center;
-      padding: 5px;
+      margin: 10px auto;
+      border: 2px solid white;
     }
 
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+    @keyframes scrollUp {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
     }
   </style>
 </head>
@@ -52,14 +51,23 @@
   <h1 class="text-4xl font-bold mb-2">Plasma Hall of Fame</h1>
   <p class="text-lg mb-8">Celebrate the early builders of PlasmaChain</p>
 
-  <!-- Spinning Circle -->
-  <div id="circle" class="circle">
-    <div>@jack</div>
-    <div>@elon</div>
-    <div>@vitalik</div>
-    <div>@aabisanaytullah</div>
-    <div>@plasma</div>
-    <div>@builder</div>
+  <!-- Up/Down Wall -->
+  <div class="wall">
+    <div id="scrollContent" class="scroll-content">
+      <img src="https://unavatar.io/twitter/jack" alt="@jack">
+      <img src="https://unavatar.io/twitter/elonmusk" alt="@elon">
+      <img src="https://unavatar.io/twitter/vitalikbuterin" alt="@vitalik">
+      <img src="https://unavatar.io/twitter/aabisanaytullah" alt="@aabisanaytullah">
+      <img src="https://unavatar.io/twitter/plasma" alt="@plasma">
+      <img src="https://unavatar.io/twitter/builder" alt="@builder">
+      <!-- repeat again for smooth loop -->
+      <img src="https://unavatar.io/twitter/jack" alt="@jack">
+      <img src="https://unavatar.io/twitter/elonmusk" alt="@elon">
+      <img src="https://unavatar.io/twitter/vitalikbuterin" alt="@vitalik">
+      <img src="https://unavatar.io/twitter/aabisanaytullah" alt="@aabisanaytullah">
+      <img src="https://unavatar.io/twitter/plasma" alt="@plasma">
+      <img src="https://unavatar.io/twitter/builder" alt="@builder">
+    </div>
   </div>
 
   <!-- Join Wall Form -->
@@ -91,47 +99,31 @@
       }
     }
 
-    // Add new username to circle
+    // Add new user to wall
     function addUser(event) {
       event.preventDefault();
       const input = document.getElementById("username");
       let username = input.value.trim();
       if (!username) return;
 
-      // Add @ if missing
-      if (!username.startsWith("@")) {
-        username = "@" + username;
+      if (username.startsWith("@")) {
+        username = username.substring(1);
       }
 
-      const circle = document.getElementById("circle");
-      const newDiv = document.createElement("div");
-      newDiv.textContent = username;
-      circle.appendChild(newDiv);
+      const scrollContent = document.getElementById("scrollContent");
+      const img = document.createElement("img");
+      img.src = `https://unavatar.io/twitter/${username}`;
+      img.alt = "@" + username;
 
-      // Rearrange positions for circular layout
-      arrangeCircle();
+      scrollContent.appendChild(img);
+
+      // Duplicate for smooth loop
+      const clone = img.cloneNode(true);
+      scrollContent.appendChild(clone);
 
       input.value = "";
     }
-
-    // Arrange items in a circle
-    function arrangeCircle() {
-      const circle = document.getElementById("circle");
-      const items = circle.querySelectorAll("div");
-      const total = items.length;
-      const radius = 120;
-
-      items.forEach((item, i) => {
-        const angle = (i / total) * (2 * Math.PI);
-        const x = radius * Math.cos(angle) + 120;
-        const y = radius * Math.sin(angle) + 120;
-        item.style.left = x + "px";
-        item.style.top = y + "px";
-      });
-    }
-
-    // Initial arrangement
-    arrangeCircle();
   </script>
 </body>
 </html>
+
