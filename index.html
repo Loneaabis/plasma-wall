@@ -1,210 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Plasma Hall of Fame</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Plasma Hall of Fame</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-purple-900 via-black to-gray-900 text-white flex flex-col items-center py-10">
+<body class="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white overflow-hidden">
+    <!-- Background Animation -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="plasma-bg"></div>
+    </div>
 
-  <!-- Header -->
-  <div class="flex flex-col items-center mb-8">
-    <!-- If plasma.png is uploaded correctly it will show. If not, we show fallback text. -->
-    <img id="logoImg" src="plasma.png" alt="Plasma Logo" class="w-24 mb-4 drop-shadow-lg" />
-    <div id="logoFallback" class="w-24 mb-4 text-center font-extrabold text-2xl text-purple-300 hidden">Plasma</div>
-
-    <h1 class="text-4xl font-extrabold tracking-wide text-purple-300">Plasma Hall of Fame</h1>
-    <p class="text-gray-400 mt-2">Celebrate the early builders of PlasmaChain</p>
-  </div>
-
-  <!-- Input Form -->
-  <div class="bg-gray-800/70 p-6 rounded-xl shadow-lg w-96 mb-8">
-    <form id="joinForm" class="space-y-3" onsubmit="return false;">
-      <input id="usernameInput" type="text" placeholder="Enter Twitter username (no @)"
-        class="w-full px-3 py-2 text-black rounded-lg focus:outline-none" autocomplete="off" />
-      <button id="joinBtn" type="button"
-        class="w-full bg-purple-600 hover:bg-purple-700 transition px-4 py-2 rounded-lg font-semibold shadow">
-        Join the Wall
-      </button>
-    </form>
-    <p id="hint" class="text-xs text-gray-400 mt-2">Tip: type the username without the leading @ (e.g. <code>jack</code>).</p>
-  </div>
-
-  <!-- Wall -->
-  <div id="wall" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 w-11/12 max-w-5xl mb-8"></div>
-
-  <!-- Music controls -->
-  <div class="mt-8 text-center">
-    <audio id="bgMusic" loop preload="none">
-      <source src="interstellar.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
+    <!-- Audio Element -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
     </audio>
 
-    <div id="musicControls" class="flex flex-col items-center">
-      <button id="musicBtn"
-        class="mt-3 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg shadow font-semibold">
-        ▶ Play Interstellar
-      </button>
-      <p id="musicStatus" class="text-sm text-gray-400 mt-2 hidden"></p>
+    <!-- Main Container -->
+    <div class="relative z-10 min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="text-center py-8 px-4">
+            <h1 class="text-6xl font-bold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4 animate-pulse">
+                ⚡ PLASMA HALL OF FAME ⚡
+            </h1>
+            <p class="text-xl text-gray-300 mb-6">Join the elite circle of digital legends</p>
+            
+            <!-- Music Toggle -->
+            <button id="musicToggle" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
+                🎵 Toggle Music
+            </button>
+        </header>
+
+        <!-- Input Section -->
+        <div class="flex-1 flex flex-col items-center justify-center px-4">
+            <div class="bg-black/30 backdrop-blur-lg rounded-3xl p-8 border border-purple-500/50 shadow-2xl transform hover:scale-105 transition-all duration-300">
+                <div class="text-center mb-6">
+                    <h2 class="text-3xl font-bold mb-4 text-transparent bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text">
+                        Enter the Hall
+                    </h2>
+                    <p class="text-gray-300">Submit your Twitter username to join the legends</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 items-center">
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">@</span>
+                        <input 
+                            type="text" 
+                            id="usernameInput" 
+                            placeholder="your_username" 
+                            class="pl-8 pr-4 py-3 bg-gray-900/80 border border-purple-500/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 w-64 transition-all duration-300"
+                        />
+                    </div>
+                    <button 
+                        id="submitBtn" 
+                        class="bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 hover:from-cyan-600 hover:via-purple-600 hover:to-pink-600 px-8 py-3 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25 text-white"
+                    >
+                        🚀 Join the Wall
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hall of Fame Grid -->
+        <div class="px-4 pb-8">
+            <div id="hallOfFame" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 max-w-7xl mx-auto">
+                <!-- User cards will be inserted here -->
+            </div>
+        </div>
     </div>
-  </div>
 
-  <script>
-    /* ---------- Helpers ---------- */
-    function sanitizeUsername(raw) {
-      if (!raw) return "";
-      // remove leading/trailing spaces and any leading @ signs
-      return raw.trim().replace(/^@+/, "");
-    }
-
-    // Build a simple SVG avatar (data URI) using first letter
-    function svgAvatarDataUrl(username) {
-      const letter = (username && username[0]) ? username[0].toUpperCase() : "P";
-      const bg = "#2d0236"; // dark purple
-      const fg = "#e9d5ff"; // light
-      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'>
-        <rect width='100%' height='100%' fill='${bg}' rx='60' />
-        <text x='50%' y='52%' font-family='Arial, Helvetica, sans-serif' font-size='180' fill='${fg}' dominant-baseline='middle' text-anchor='middle'>${letter}</text>
-      </svg>`;
-      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
-    }
-
-    /* ---------- DOM References ---------- */
-    const wall = document.getElementById('wall');
-    const input = document.getElementById('usernameInput');
-    const joinBtn = document.getElementById('joinBtn');
-    const musicBtn = document.getElementById('musicBtn');
-    const music = document.getElementById('bgMusic');
-    const musicStatus = document.getElementById('musicStatus');
-    const logoImg = document.getElementById('logoImg');
-    const logoFallback = document.getElementById('logoFallback');
-
-    /* ---------- Logo fallback ---------- */
-    logoImg.onerror = () => {
-      // hide broken image and show text fallback
-      logoImg.style.display = 'none';
-      logoFallback.style.display = 'block';
-      console.warn('plasma.png not found. Upload plasma.png to repo root.');
-    };
-    // if image loads, hide fallback
-    logoImg.onload = () => {
-      logoFallback.style.display = 'none';
-      logoImg.style.display = 'block';
-    };
-
-    /* ---------- Music ---------- */
-    function updateMusicButton() {
-      musicBtn.textContent = music.paused ? '▶ Play Interstellar' : '⏸ Pause Interstellar';
-    }
-    musicBtn.addEventListener('click', async () => {
-      try {
-        if (music.paused) {
-          await music.play();
-          updateMusicButton();
-          musicStatus.classList.add('hidden');
-        } else {
-          music.pause();
-          updateMusicButton();
+    <style>
+        .plasma-bg {
+            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5);
+            background-size: 400% 400%;
+            animation: plasmaMove 8s ease-in-out infinite;
+            opacity: 0.3;
         }
-      } catch (err) {
-        // playback prevented or file missing
-        musicStatus.textContent = 'Cannot play music. Make sure interstellar.mp3 is uploaded, and click the button to allow sound.';
-        musicStatus.classList.remove('hidden');
-        console.error(err);
-      }
-    });
-    music.onerror = () => {
-      musicStatus.textContent = 'interstellar.mp3 not found. Upload interstellar.mp3 to the repo root.';
-      musicStatus.classList.remove('hidden');
-    };
 
-    /* ---------- Wall persistence ---------- */
-    function loadSavedUsers() {
-      try {
-        const saved = JSON.parse(localStorage.getItem('plasmaWall')) || [];
-        return Array.isArray(saved) ? saved : [];
-      } catch (e) {
-        return [];
-      }
-    }
-
-    function saveUsers(arr) {
-      localStorage.setItem('plasmaWall', JSON.stringify(arr));
-    }
-
-    // Prevent duplicates
-    function isAlreadyAdded(username) {
-      return !!document.querySelector(`[data-username="${CSS.escape(username)}"]`);
-    }
-
-    /* ---------- Add card ---------- */
-    function addCard(rawUsername, save = true) {
-      const username = sanitizeUsername(rawUsername);
-      if (!username) return;
-      if (isAlreadyAdded(username)) return;
-
-      const card = document.createElement('div');
-      card.className = 'p-4 bg-gray-900/80 rounded-2xl shadow-lg hover:scale-105 transition flex flex-col items-center';
-      card.setAttribute('data-username', username);
-
-      const link = document.createElement('a');
-      link.href = `https://twitter.com/${username}`;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.className = 'block text-center';
-
-      const avatar = document.createElement('img');
-      avatar.className = 'w-20 h-20 rounded-full mx-auto mb-3 border-2 border-purple-500 shadow-md object-cover';
-      // Primary: unavatar service
-      avatar.src = `https://unavatar.io/twitter/${encodeURIComponent(username)}`;
-
-      // If avatar fails, use generated SVG data URL
-      avatar.onerror = () => {
-        avatar.src = svgAvatarDataUrl(username);
-        avatar.onerror = null; // avoid loop
-      };
-
-      const p = document.createElement('p');
-      p.className = 'font-semibold text-purple-300';
-      p.textContent = `@${username}`;
-
-      link.appendChild(avatar);
-      link.appendChild(p);
-      card.appendChild(link);
-      wall.appendChild(card);
-
-      if (save) {
-        const saved = loadSavedUsers();
-        if (!saved.includes(username)) {
-          saved.push(username);
-          saveUsers(saved);
+        @keyframes plasmaMove {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 100%; }
+            50% { background-position: 100% 0%; }
+            75% { background-position: 0% 100%; }
         }
-      }
-    }
 
-    /* ---------- Load existing on page load ---------- */
-    window.addEventListener('load', () => {
-      const savedUsers = loadSavedUsers();
-      savedUsers.forEach(u => addCard(u, false));
-      updateMusicButton();
-    });
+        .user-card {
+            transition: all 0.3s ease;
+            animation: slideUp 0.5s ease-out;
+        }
 
-    /* ---------- Hook up Join button and Enter key ---------- */
-    joinBtn.addEventListener('click', () => {
-      const u = sanitizeUsername(input.value);
-      if (!u) return;
-      addCard(u, true);
-      input.value = '';
-    });
+        .user-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.3);
+        }
 
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        joinBtn.click();
-      }
-    });
-  </script>
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
+        .pulse-ring {
+            animation: pulseRing 2s infinite;
+        }
+
+        @keyframes pulseRing {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+
+    <script>
+        // VPS Backend URL - CHANGE THIS TO YOUR VPS IP
+        const API_BASE = 'http://162.250.191.81:3000';
+        
+        const usernameInput = document.getElementById('usernameInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const hallOfFame = document.getElementById('hallOfFame');
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+
+        // Music control
+        let musicPlaying = false;
+        musicToggle.addEventListener('click', () => {
+            if (musicPlaying) {
+                bgMusic.pause();
+                musicToggle.textContent = '🎵 Play Music';
+            } else {
+                bgMusic.play().catch(e => console.log('Music play failed:', e));
+                musicToggle.textContent = '🔇 Pause Music';
+            }
+            musicPlaying = !musicPlaying;
+        });
+
+        // Load users from VPS on page load
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_BASE}/users`);
+                const users = await response.json();
+                
+                hallOfFame.innerHTML = '';
+                users.forEach(username => {
+                    addUserCard(username, false);
+                });
+            } catch (error) {
+                console.error('Error loading users:', error);
+                // Fallback to show some demo cards if VPS is down
+                showOfflineMessage();
+            }
+        }
+
+        // Save user to VPS
+        async function saveUser(username) {
+            try {
+                const response = await fetch(`${API_BASE}/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username })
+                });
+
+                if (response.ok) {
+                    loadUsers(); // Refresh the hall
+                    return true;
+                } else {
+                    throw new Error('Failed to save user');
+                }
+            } catch (error) {
+                console.error('Error saving user:', error);
+                return false;
+            }
+        }
+
+        function addUserCard(username, animate = true) {
+            const card = document.createElement('div');
+            card.className = `user-card bg-gradient-to-br from-purple-600/20 to-pink-600/20 backdrop-blur-sm rounded-2xl p-4 border border-purple-500/30 text-center ${animate ? 'pulse-ring' : ''}`;
+            
+            card.innerHTML = `
+                <div class="relative mb-3">
+                    <img 
+                        src="https://unavatar.io/twitter/${username}" 
+                        alt="@${username}" 
+                        class="w-16 h-16 rounded-full mx-auto border-2 border-purple-400 shadow-lg"
+                        onerror="this.src='data:image/svg+xml,<svg xmlns=\\"http://www.w3.org/2000/svg\\" width=\\"64\\" height=\\"64\\" viewBox=\\"0 0 24 24\\" fill=\\"none\\" stroke=\\"currentColor\\" stroke-width=\\"2\\"><circle cx=\\"12\\" cy=\\"7\\" r=\\"4\\"/><path d=\\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\\"/></svg>'"
+                    />
+                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-green-400 to-blue-500 rounded-full border-2 border-white flex items-center justify-center">
+                        <span class="text-xs">⚡</span>
+                    </div>
+                </div>
+                <h3 class="font-bold text-white truncate">@${username}</h3>
+                <div class="mt-2 flex justify-center space-x-1">
+                    <div class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                    <div class="w-2 h-2 bg-pink-400 rounded-full animate-pulse" style="animation-delay: 0.2s"></div>
+                    <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" style="animation-delay: 0.4s"></div>
+                </div>
+            `;
+            
+            hallOfFame.appendChild(card);
+        }
+
+        function showOfflineMessage() {
+            hallOfFame.innerHTML = `
+                <div class="col-span-full text-center py-8">
+                    <div class="bg-red-500/20 backdrop-blur-sm rounded-2xl p-6 border border-red-500/30">
+                        <h3 class="text-xl font-bold text-red-400 mb-2">⚠️ Connection Issue</h3>
+                        <p class="text-gray-300">Unable to connect to server. Please try again later.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Submit username
+        submitBtn.addEventListener('click', async () => {
+            const username = usernameInput.value.trim();
+            
+            if (!username) {
+                alert('Please enter a username!');
+                return;
+            }
+
+            if (username.length > 15) {
+                alert('Username too long! Twitter usernames are max 15 characters.');
+                return;
+            }
+
+            submitBtn.textContent = '🚀 Joining...';
+            submitBtn.disabled = true;
+
+            const success = await saveUser(username);
+            
+            if (success) {
+                usernameInput.value = '';
+                // Show success animation
+                submitBtn.textContent = '✅ Welcome!';
+                setTimeout(() => {
+                    submitBtn.textContent = '🚀 Join the Wall';
+                    submitBtn.disabled = false;
+                }, 2000);
+            } else {
+                submitBtn.textContent = '❌ Failed';
+                setTimeout(() => {
+                    submitBtn.textContent = '🚀 Join the Wall';
+                    submitBtn.disabled = false;
+                }, 2000);
+            }
+        });
+
+        // Enter key support
+        usernameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitBtn.click();
+            }
+        });
+
+        // Load users when page loads
+        loadUsers();
+    </script>
 </body>
 </html>
