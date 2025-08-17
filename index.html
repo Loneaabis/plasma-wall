@@ -733,4 +733,388 @@ async function saveToBackend(username) {
         // Try each method for this retry
         for (let i = 0; i < methods.length; i++) {
             try {
-                console.log(`  🔄
+                console.log(`  🔄 Trying save method ${i + 1}/${methods.length} (attempt ${retry + 1})`);
+                const result = await methods[i]();
+                if (result) return true;
+            } catch (error) {
+                console.log(`  ❌ Save method ${i + 1} failed:`, error.message);
+            }
+        }
+        
+        // Wait before retry
+        if (retry < CONFIG.MAX_RETRIES - 1) {
+            console.log(`⏳ Waiting ${CONFIG.RETRY_DELAY}ms before retry...`);
+            await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
+        }
+    }
+    
+    console.error('❌ All backend save attempts failed');
+    return false;
+}
+
+// Enhanced load from backend with better error handling
+async function loadFromBackend() {
+    console.log('📡 Loading users from backend...');
+    
+    const loadMethods = [
+        { name: 'direct', url: `${CONFIG.SERVER_URL}/users` },
+        ...CONFIG.PROXY_URLS.map(proxy => ({
+            name: `proxy-${proxy.split('/')[2]}`,
+            url: `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`
+        }))
+    ];
+    
+    for (const method of loadMethods) {
+        try {
+            console.log(`  🔄 Trying to load via ${method.name}...`);
+            
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
+            
+            const response = await fetch(method.url, {
+                signal: controller.signal,
+                headers: { 'Accept': 'application/json' }
+            });
+            
+            clearTimeout(timeoutId);
+            
+            if (response.ok) {
+                const serverUsers = await response.json();
+                console.log('✅ Loaded from backend:', serverUsers);
+                
+                // Load saved users from localStorage
+                const savedUsers = loadUsersFromStorage();
+                
+                // Combine all users (defaults + server + localStorage, no duplicates)
+                allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...savedUsers])];
+                
+                connectionStatus.innerHTML = '✅ Connected to plasma network';
+                updateLastUpdatedTime();
+                return true;
+            }
+        } catch (error) {
+            console.log(`  ❌ Load method ${method.name} failed:`, error.message);
+        }
+    }
+    
+    console.log('⚠️ Backend unavailable, using localStorage');
+    
+    // Load from localStorage only
+    loadUsersFromStorage();
+    connectionStatus.innerHTML = '⚠️ Offline mode - using saved data';
+    return false;
+}
+
+// Enhanced submit user with better validation and feedback
+async function submitUser(username) {
+    const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
+    
+    // Enhanced validation
+    if (!cleanUsername || cleanUsername.length < 2) {
+        alert('Please enter a valid username (at least 2 characters, letters/numbers/underscores only)');
+        return;
+    }
+    
+    if (cleanUsername.length > 15) {
+        alert('Username too long (maximum 15 characters)');
+        return;
+    }
+    
+    if (allUsers.includes(cleanUsername)) {
+        alert('This user is already in the Plasma Wall! 🌟');
+        // Highlight existing user briefly
+        const existingCards = document.querySelectorAll('.user-card');
+        existingCards.forEach(card => {
+            const overlay = card.querySelector('.username-overlay');
+            if (overlay && overlay.textContent === `@${cleanUsername}`) {
+                card.style.transform = 'scale(1.3) translateY(-15px)';
+                card.style.zIndex = '100';
+                setTimeout(() => {
+                    card.style.transform = '';
+                    card.style.zIndex = '';
+                }, 2000);
+            }
+        });
+        return;
+    }
+    
+    console.log('🚀 Processing submission:', cleanUsername);
+    
+    // Disable submit with loading animation
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '⚡ Adding to Plasma...';
+    connectionStatus.innerHTML = '🌟 Adding user to the cosmic wall...';
+    
+    // Add immediately to local array and save to localStorage
+    allUsers.push(cleanUsername);
+    saveUsersToStorage();
+    
+    // Update wall immediately with highlight for new user
+    displayMovingWall(cleanUsername);
+    
+    // Try to save to backend in background
+    const saved = await saveToBackend(cleanUsername);
+    
+    if (saved) {
+        connectionStatus.innerHTML = '✅ Added to Plasma Wall and synced to network! 🚀';
+    } else {
+        connectionStatus.innerHTML = '✅ Added to Plasma Wall (saved locally, will sync when network is back) 💫';
+    }
+    
+    // Clear input with success animation
+    usernameInput.value = '';
+    usernameInput.style.transform = 'scale(1.05)';
+    usernameInput.style.borderColor = '#22c55e';
+    
+    setTimeout(() => {
+        usernameInput.style.transform = '';
+        usernameInput.style.borderColor = '';
+    }, 300);
+    
+    // Reset button and status with delay
+    setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Join Plasma';
+        connectionStatus.innerHTML = saved ? 
+            '✅ Connected to plasma network' : 
+            '⚠️ Offline mode - using saved data';
+    }, 3000);
+    
+    console.log('✨ User successfully added to Plasma Wall');
+    
+    // Celebration effect
+    createCelebrationEffect();
+}
+
+// Add celebration effect for successful submissions
+function createCelebrationEffect() {
+    const colors = ['#22c55e', '#16a34a', '#15803d'];
+    const particles = 20;
+    
+    for (let i = 0; i < particles; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: ${colors[Math.floor(Math.random() * colors.length)]};
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            animation: celebrate 1.5s ease-out forwards;
+        `;
+        
+        // Random direction
+        const angle = (Math.PI * 2 * i) / particles;
+        const velocity = 50 + Math.random() * 50;
+        const x = Math.cos(angle) * velocity;
+        const y = Math.sin(angle) * velocity;
+        
+        particle.style.setProperty('--x', `${x}px`);
+        particle.style.setProperty('--y', `${y}px`);
+        
+        document.body.appendChild(particle);
+        
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+            }
+        }, 1500);
+    }
+}
+
+// Add celebration animation CSS
+const celebrationStyle = document.createElement('style');
+celebrationStyle.textContent = `
+    @keyframes celebrate {
+        0% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(celebrationStyle);
+
+// Refresh functionality
+refreshBtn.addEventListener('click', async () => {
+    refreshBtn.disabled = true;
+    refreshBtn.innerHTML = '🔄 Refreshing...';
+    connectionStatus.innerHTML = '🔄 Refreshing plasma network...';
+    
+    // Add loading animation to button
+    refreshBtn.classList.add('success-added');
+    
+    try {
+        const loaded = await loadFromBackend();
+        displayMovingWall();
+        
+        if (loaded) {
+            connectionStatus.innerHTML = '✅ Plasma Wall refreshed successfully!';
+        } else {
+            connectionStatus.innerHTML = '⚠️ Network unavailable - showing cached data';
+        }
+    } catch (error) {
+        console.error('❌ Refresh failed:', error);
+        connectionStatus.innerHTML = '❌ Refresh failed - using cached data';
+    }
+    
+    setTimeout(() => {
+        refreshBtn.disabled = false;
+        refreshBtn.innerHTML = '🔄 Refresh Wall';
+        refreshBtn.classList.remove('success-added');
+        
+        if (connectionStatus.textContent.includes('Refreshing') || 
+            connectionStatus.textContent.includes('refreshed')) {
+            connectionStatus.innerHTML = '✅ Connected to plasma network';
+        }
+    }, 2000);
+});
+
+// Event listeners with enhanced functionality
+submitBtn.addEventListener('click', () => {
+    const username = usernameInput.value.trim();
+    if (username) {
+        submitUser(username);
+    } else {
+        usernameInput.focus();
+        usernameInput.style.borderColor = '#ef4444';
+        setTimeout(() => {
+            usernameInput.style.borderColor = '';
+        }, 1000);
+    }
+});
+
+usernameInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !submitBtn.disabled) {
+        const username = usernameInput.value.trim();
+        if (username) {
+            submitUser(username);
+        }
+    }
+});
+
+// Enhanced input validation feedback
+usernameInput.addEventListener('input', (e) => {
+    const value = e.target.value;
+    const cleanValue = value.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
+    
+    if (value !== cleanValue) {
+        e.target.value = cleanValue.startsWith('@') ? cleanValue : (cleanValue ? `${cleanValue}` : '');
+    }
+    
+    // Real-time validation feedback
+    if (cleanValue.length > 0 && cleanValue.length < 2) {
+        e.target.style.borderColor = '#f59e0b';
+    } else if (cleanValue.length > 15) {
+        e.target.style.borderColor = '#ef4444';
+    } else if (allUsers.includes(cleanValue)) {
+        e.target.style.borderColor = '#f59e0b';
+    } else if (cleanValue.length >= 2) {
+        e.target.style.borderColor = '#22c55e';
+    } else {
+        e.target.style.borderColor = '';
+    }
+});
+
+// Auto-sync functionality (check for updates periodically)
+let autoSyncInterval;
+
+function startAutoSync() {
+    autoSyncInterval = setInterval(async () => {
+        console.log('🔄 Auto-sync check...');
+        try {
+            const wasConnected = connectionStatus.textContent.includes('Connected');
+            const loaded = await loadFromBackend();
+            
+            if (loaded && !wasConnected) {
+                displayMovingWall();
+                console.log('✅ Reconnected to backend');
+            }
+        } catch (error) {
+            console.log('⚠️ Auto-sync check failed:', error.message);
+        }
+    }, 30000); // Check every 30 seconds
+}
+
+function stopAutoSync() {
+    if (autoSyncInterval) {
+        clearInterval(autoSyncInterval);
+    }
+}
+
+// Enhanced initialization with better error handling and loading states
+async function init() {
+    console.log('🚀 Initializing Enhanced Plasma Wall...');
+    console.log('🎵 Looking for music files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
+    console.log('👥 Default users:', DEFAULT_USERS);
+    console.log('💾 Using enhanced localStorage with metadata');
+    console.log('🔄 Auto-sync enabled (30s intervals)');
+    
+    connectionStatus.innerHTML = '🌟 Initializing plasma network...';
+    
+    // Show loading state
+    userCount.innerHTML = '⚡ Loading cosmic community...';
+    movingWall.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #22c55e; font-size: 2rem;">🌌 Loading Plasma Wall...</div>';
+    
+    try {
+        // Load users (backend + localStorage)
+        const backendConnected = await loadFromBackend();
+        
+        // Display the moving wall
+        displayMovingWall();
+        
+        // Start auto-sync if connected
+        if (backendConnected) {
+            startAutoSync();
+        }
+        
+        console.log('✨ Enhanced Plasma Wall ready!');
+        console.log(`👥 Total users in wall: ${allUsers.length}`);
+        console.log(`🌐 Backend connected: ${backendConnected ? 'Yes' : 'No'}`);
+        
+    } catch (error) {
+        console.error('❌ Initialization error:', error);
+        connectionStatus.innerHTML = '❌ Initialization failed - using offline mode';
+        
+        // Fallback to defaults
+        allUsers = [...DEFAULT_USERS];
+        displayMovingWall();
+    }
+    
+    // Final status update
+    setTimeout(() => {
+        if (connectionStatus.textContent.includes('Initializing')) {
+            connectionStatus.innerHTML = '✅ Ready to join the plasma network';
+        }
+    }, 1000);
+}
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    stopAutoSync();
+    if (musicPlaying) {
+        bgMusic.pause();
+    }
+});
+
+// Handle visibility change (pause music when tab not visible)
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden && musicPlaying) {
+        bgMusic.pause();
+        musicToggle.innerHTML = '🎵 Play Cosmic Music';
+        musicPlaying = false;
+    }
+});
+
+// Start the enhanced application
+init();
+</script>
+
+</body>
+</html>
