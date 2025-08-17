@@ -24,9 +24,17 @@
 
 <!-- Header -->
 <header class="relative z-10 text-center py-8">
-    <h1 class="text-6xl font-bold bg-gradient-to-r from-emerald-400 via-teal-500 to-green-500 bg-clip-text text-transparent mb-4 animate-pulse">
-        ⚡ PLASMA HALL OF FAME ⚡
-    </h1>
+    <div class="flex items-center justify-center mb-4">
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzFfMjkpIj4KPHBhdGggZD0iTTQwIDgwQzYyLjA5MTQgODAgODAgNjIuMDkxNCA4MCA0MEM4MCAxNy45MDg2IDYyLjA5MTQgMCA0MCAwQzE3LjkwODYgMCAwIDE3LjkwODYgMCA0MEMwIDYyLjA5MTQgMTcuOTA4NiA4MCA0MCA4MFoiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl8xXzI5KSIvPgo8cGF0aCBkPSJNNDAgNzJDNTcuNjczMSA3MiA3MiA1Ny42NzMxIDcyIDQwQzcyIDIyLjMyNjkgNTcuNjczMSA4IDQwIDhDMjIuMzI2OSA4IDggMjIuMzI2OSA4IDQwQzggNTcuNjczMSAyMi4zMjY5IDcyIDQwIDcyWiIgZmlsbD0iIzA2NGUzYiIvPgo8cGF0aCBkPSJNNTUgNDBIMjVNNDAgMjVWNTUiIHN0cm9rZT0iIzEwYjk4MSIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNiIgZmlsbD0iIzM0ZDM5OSIvPgo8L2c+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfMV8yOSIgeDE9IjAiIHkxPSIwIiB4Mj0iODAiIHkyPSI4MCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMTBiOTgxIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzM0ZDM5OSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzFfMjkiPgo8cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+" alt="Plasma Logo" class="w-16 h-16 mr-4 animate-spin" style="animation-duration: 8s;">
+        <div>
+            <h1 class="text-6xl font-bold bg-gradient-to-r from-emerald-400 via-teal-500 to-green-500 bg-clip-text text-transparent animate-pulse">
+                ⚡ PLASMA HALL OF FAME ⚡
+            </h1>
+            <div class="text-lg text-emerald-400 font-semibold mt-2">
+                🚀 Join Trillions of Digital Legends 🚀
+            </div>
+        </div>
+    </div>
     <button id="musicToggle" class="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform">
         🎵 Play Music
     </button>
@@ -43,18 +51,9 @@
 
 <!-- Hall of Fame -->
 <div class="relative z-10 px-4 pb-8">
-    <!-- Default Users Section -->
-    <div class="mb-8">
-        <h3 class="text-2xl text-emerald-300 font-bold text-center mb-4">🌟 Plasma Legends 🌟</h3>
-        <div id="defaultUsers" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto mb-6"></div>
-    </div>
-    
-    <!-- Recent Submissions Section -->
-    <div class="bg-black/20 backdrop-blur-md rounded-3xl p-6 border border-teal-500/50 max-w-6xl mx-auto">
-        <h3 class="text-2xl text-teal-300 font-bold text-center mb-4">⚡ Recent Submissions ⚡</h3>
-        <p id="userCount" class="text-gray-400 text-center mb-4">Loading submissions...</p>
-        <div id="hallOfFame" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
-    </div>
+    <h3 class="text-2xl text-emerald-300 font-bold text-center mb-4">🌟 Hall of Fame 🌟</h3>
+    <p id="userCount" class="text-gray-400 text-center mb-4">Loading legends...</p>
+    <div id="hallOfFame" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-6xl mx-auto"></div>
 </div>
 
 <!-- Styles -->
@@ -207,17 +206,6 @@
     from { box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); } 
     to { box-shadow: 0 0 30px rgba(52, 211, 153, 0.8); }
 }
-
-.avatar-loading {
-    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-}
 </style>
 
 <!-- Script -->
@@ -230,7 +218,6 @@ const API_GET = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http
 const usernameInput = document.getElementById('usernameInput');
 const submitBtn = document.getElementById('submitBtn');
 const hallOfFame = document.getElementById('hallOfFame');
-const defaultUsersElement = document.getElementById('defaultUsers');
 const bgMusic = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
 const connectionStatus = document.getElementById('connectionStatus');
@@ -256,103 +243,30 @@ musicToggle.addEventListener('click', async () => {
     }
 });
 
-// Updated default users - including your requested additions
+// Default users to show if server is unavailable
 const defaultUsers = [
-    'proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax'
+    'elonmusk', 'sundarpichai', 'satyanadella', 'tim_cook', 
+    'jeffbezos', 'billgates', 'naval', 'lexfridman'
 ];
 
-// Generate a hash from username for consistent colors
-function getUserColor(username) {
-    let hash = 0;
-    for (let i = 0; i < username.length; i++) {
-        const char = username.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Convert to 32-bit integer
-    }
-    
-    const colors = [
-        '#059669', '#0d9488', '#0891b2', '#0284c7', '#7c3aed', 
-        '#c026d3', '#e11d48', '#ea580c', '#ca8a04', '#65a30d'
-    ];
-    
-    return colors[Math.abs(hash) % colors.length];
-}
-
-// Enhanced avatar system with multiple reliable fallbacks
-function createAvatarImage(username, isDefault = false) {
-    console.log(`🔄 Creating avatar for ${username} (${isDefault ? 'Legend' : 'Submission'})`);
-    
-    const img = document.createElement('img');
-    const borderColor = isDefault ? 'border-emerald-400' : 'border-teal-400';
-    img.className = `w-16 h-16 rounded-xl mx-auto border-2 ${borderColor} shadow-xl object-cover bg-gray-800 avatar-loading`;
-    img.alt = `@${username}`;
-    img.loading = 'lazy';
-    
-    // Enhanced fallback chain with more reliable services
-    const userColor = getUserColor(username);
-    const fallbacks = [
-        // Try multiple X/Twitter endpoints
-        `https://unavatar.io/x/${username}?fallback=false`,
-        `https://unavatar.io/twitter/${username}?fallback=false`, 
-        // GitHub (many Twitter users have same username on GitHub)
-        `https://avatars.githubusercontent.com/${username}?size=128`,
-        `https://github.com/${username}.png?size=128`,
-        // Reliable generated avatars
-        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&backgroundColor=${userColor.replace('#', '')}&radius=20`,
-        `https://api.dicebear.com/7.x/initials/svg?seed=${username}&backgroundColor=${userColor.replace('#', '')}&fontSize=40`,
-        // Final fallback - guaranteed to work
-        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=${userColor.replace('#', '')}&color=fff&size=128&font-size=0.6&bold=true&rounded=true`
-    ];
-    
-    let currentIndex = 0;
-    let loadTimeout;
-    
-    const tryNextFallback = () => {
-        if (currentIndex < fallbacks.length) {
-            const currentUrl = fallbacks[currentIndex];
-            console.log(`  📡 Trying method ${currentIndex + 1}/${fallbacks.length}: ${currentUrl.split('?')[0]}`);
-            
-            // Clear any existing timeout
-            if (loadTimeout) clearTimeout(loadTimeout);
-            
-            // Set a timeout for each attempt (3 seconds)
-            loadTimeout = setTimeout(() => {
-                console.log(`  ⏰ Timeout for ${username} method ${currentIndex + 1}`);
-                currentIndex++;
-                tryNextFallback();
-            }, 3000);
-            
-            img.src = currentUrl;
-            currentIndex++;
-        } else {
-            console.log(`  ❌ All methods failed for ${username}`);
-        }
-    };
-    
-    img.onload = () => {
-        if (loadTimeout) clearTimeout(loadTimeout);
-        img.classList.remove('avatar-loading');
-        console.log(`  ✅ Avatar loaded for ${username} using method ${currentIndex}`);
-    };
-    
-    img.onerror = (e) => {
-        if (loadTimeout) clearTimeout(loadTimeout);
-        console.log(`  ❌ Method ${currentIndex} failed for ${username}:`, e);
-        tryNextFallback();
-    };
-    
-    // Start the fallback chain
-    tryNextFallback();
-    
-    return img;
-}
+// Twitter profile pictures
+const twitterAvatars = {
+    'elonmusk': 'https://pbs.twimg.com/profile_images/1683325380441128960/yRsRRjGO_400x400.jpg',
+    'sundarpichai': 'https://pbs.twimg.com/profile_images/864282616597405701/M-FEJM-z_400x400.jpg',
+    'satyanadella': 'https://pbs.twimg.com/profile_images/1221837516816306177/_Ld4un5A_400x400.jpg',
+    'jeffbezos': 'https://pbs.twimg.com/profile_images/1591558315254890500/ETIHb4Nl_400x400.jpg',
+    'tim_cook': 'https://pbs.twimg.com/profile_images/1535420431766671360/Pwq-1eJc_400x400.jpg',
+    'billgates': 'https://pbs.twimg.com/profile_images/1414439092373254147/JdS8yLGI_400x400.jpg',
+    'naval': 'https://pbs.twimg.com/profile_images/1296275068927275008/_sG_zhPj_400x400.jpg',
+    'lexfridman': 'https://pbs.twimg.com/profile_images/1449365282775584769/Ls06kB_z_400x400.jpg'
+};
 
 // Check VPS connection
 async function checkConnection(){
     try {
-        console.log('🔗 Checking server connection...');
+        console.log('Checking connection...');
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
         
         const res = await fetch(`${API_GET}/`, {
             method: 'GET',
@@ -366,74 +280,61 @@ async function checkConnection(){
         
         if(res.ok){ 
             const data = await res.json();
-            console.log('✅ Connection successful:', data);
+            console.log('Connection successful:', data);
             connectionStatus.innerHTML='<span class="text-green-400">✅ Connected to Server</span>'; 
             return true;
         } else {
             throw new Error(`Server responded with ${res.status}`);
         }
     } catch(e){ 
-        console.error('❌ Connection failed:', e);
+        console.error('Connection failed:', e);
         connectionStatus.innerHTML=`<span class="text-red-400">❌ Server Offline - Showing Defaults</span>`; 
         return false;
     }
 }
 
-// Enhanced card creation with better structure
-function createUserCard(username, isDefault = false, animate = true) {
-    console.log(`🎯 Creating card for: ${username} (${isDefault ? 'Legend' : 'Submission'})`);
+// Add user card with avatar
+function addUserCard(username, animate=true){
+    console.log('Adding user card for:', username);
     
     const card = document.createElement('div');
-    const cardClass = isDefault ? 
-        'user-card bg-gradient-to-br from-emerald-600/40 to-green-600/40 backdrop-blur-sm rounded-2xl p-4 border-2 border-emerald-500/60 text-center glow-effect' :
-        'user-card bg-gradient-to-br from-teal-600/30 to-cyan-600/30 backdrop-blur-sm rounded-2xl p-4 border border-teal-500/40 text-center';
+    card.className = `user-card bg-gradient-to-br from-emerald-600/30 to-teal-600/30 backdrop-blur-sm rounded-2xl p-4 border border-emerald-500/40 text-center ${animate ? 'pulse-ring' : ''}`;
     
-    card.className = `${cardClass} ${animate ? 'pulse-ring' : ''}`;
+    // Try hardcoded avatar first, then fallback to generated
+    const avatarUrl = twitterAvatars[username.toLowerCase()] || `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
     
-    // Create avatar with enhanced fallback system
-    const avatarImg = createAvatarImage(username, isDefault);
+    card.innerHTML = `
+        <div class="avatar-container mb-3 relative">
+            <img src="${avatarUrl}" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" 
+                 class="w-16 h-16 rounded-full mx-auto border-2 border-emerald-400 shadow-xl">
+            <div style="display:none;" class="w-16 h-16 rounded-full mx-auto border-2 border-emerald-400 shadow-xl bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center text-2xl font-bold">
+                ${username.charAt(0).toUpperCase()}
+            </div>
+        </div>
+        <h3 class="font-bold text-white">@${username}</h3>
+        <div class="text-xs text-emerald-300 mt-1">Digital Legend</div>
+    `;
     
-    // Create text elements
-    const nameElement = document.createElement('h3');
-    nameElement.className = 'font-bold text-white text-sm mt-3';
-    nameElement.textContent = `@${username}`;
-    
-    const labelElement = document.createElement('div');
-    const labelText = isDefault ? 'Plasma Legend' : 'Digital Warrior';
-    const labelColor = isDefault ? 'text-emerald-300' : 'text-teal-300';
-    labelElement.className = `text-xs ${labelColor} mt-1`;
-    labelElement.textContent = labelText;
-    
-    // Assemble card
-    card.appendChild(avatarImg);
-    card.appendChild(nameElement);
-    card.appendChild(labelElement);
-    
-    return card;
+    hallOfFame.appendChild(card);
 }
 
-// Show default users (Legends)
+// Show default users
 function showDefaultUsers() {
-    console.log('🌟 Loading Plasma Legends...');
-    defaultUsersElement.innerHTML = '';
-    
+    console.log('Showing default users');
+    hallOfFame.innerHTML = '';
     defaultUsers.forEach((username, i) => {
-        setTimeout(() => {
-            console.log(`  📤 Adding Legend ${i + 1}/${defaultUsers.length}: ${username}`);
-            const card = createUserCard(username, true, true);
-            defaultUsersElement.appendChild(card);
-        }, i * 200); // Staggered animation
+        setTimeout(() => addUserCard(username, true), i * 100);
     });
+    userCount.textContent = `${defaultUsers.length} digital legends (defaults)`;
 }
 
 // Load users from server
 async function loadUsers(){
-    console.log('📡 Loading server submissions...');
-    userCount.textContent = 'Loading submissions...';
-    
+    console.log('Loading users from server...');
     try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
         
         const res = await fetch(`${API_GET}/users`, {
             signal: controller.signal
@@ -443,37 +344,33 @@ async function loadUsers(){
         
         if(res.ok){
             const users = await res.json();
-            console.log('✅ Server users loaded:', users);
+            console.log('Loaded users:', users);
+            
+            hallOfFame.innerHTML = '';
             
             if(users.length === 0) { 
-                userCount.textContent = 'No submissions yet - Be the first!';
+                console.log('No users found, showing defaults');
+                showDefaultUsers();
                 return; 
             }
             
-            // Clear and show server users
-            hallOfFame.innerHTML = '';
+            // Show server users
             users.forEach((username, i) => {
-                setTimeout(() => {
-                    console.log(`  📤 Adding server user ${i + 1}/${users.length}: ${username}`);
-                    const card = createUserCard(username, false, true);
-                    hallOfFame.appendChild(card);
-                }, i * 100);
+                setTimeout(() => addUserCard(username, true), i * 100);
             });
-            
-            userCount.textContent = `${users.length} digital warriors and growing!`;
+            userCount.textContent = `${users.length} digital legends`;
         } else {
             throw new Error(`Failed to load users: ${res.status}`);
         }
     } catch(e){ 
-        console.error('❌ Failed to load server users:', e);
-        userCount.textContent = 'Server offline - Submit to join when back online!';
+        console.error('Failed to load users:', e);
+        showDefaultUsers();
     }
 }
 
-// Save user to server and display immediately
+// Save user to server
 async function saveUser(username){
-    console.log('💾 Saving user to server:', username);
-    
+    console.log('Saving user:', username);
     try {
         const res = await fetch(`${VPS_DIRECT}/users`, {
             method: 'POST',
@@ -485,66 +382,42 @@ async function saveUser(username){
         
         if (res.ok) {
             const result = await res.json();
-            console.log('✅ User saved to server:', result);
+            console.log('User saved successfully:', result);
+            return result;
         } else {
-            console.log('⚠️ Server save failed, adding locally only');
+            throw new Error(`Failed to save user: ${res.status}`);
         }
     } catch(e){ 
-        console.error('❌ Error saving to server:', e);
-        console.log('💻 Adding user locally (offline mode)');
+        console.error('Error saving user:', e);
+        // Add user locally even if server save fails
+        addUserCard(username, true);
+        return null;
     }
-    
-    // Always add user to UI immediately, regardless of server success
-    console.log('🎯 Adding user to UI:', username);
-    const card = createUserCard(username, false, true);
-    hallOfFame.appendChild(card);
-    
-    // Update count
-    const currentCount = hallOfFame.children.length;
-    userCount.textContent = `${currentCount} digital warriors and growing!`;
-    
-    return true;
 }
 
-// Enhanced submit handler
+// Submit handler
 submitBtn.addEventListener('click', async () => {
-    const username = usernameInput.value.trim().replace('@','').replace(/[^a-zA-Z0-9_]/g, '');
-    
+    const username = usernameInput.value.trim().replace('@','');
     if(!username){ 
-        alert('Please enter a valid username'); 
-        return;
-    }
-    
-    // Check if user already exists
-    const existingCards = [...defaultUsersElement.children, ...hallOfFame.children];
-    const exists = existingCards.some(card => {
-        const nameEl = card.querySelector('h3');
-        return nameEl && nameEl.textContent === `@${username}`;
-    });
-    
-    if (exists) {
-        alert('This user is already on the wall!');
+        alert('Please enter a username'); 
         return;
     }
     
     submitBtn.disabled = true; 
-    submitBtn.textContent = 'Joining the Plasma...';
+    submitBtn.textContent = 'Joining...';
     
-    console.log('🚀 Processing submission:', username);
+    console.log('Submitting username:', username);
     
     try {
         await saveUser(username);
+        await loadUsers(); // Reload to show the new user
         usernameInput.value = '';
-        connectionStatus.innerHTML = '<span class="text-green-400">⚡ Welcome to the Plasma Wall!</span>';
-        
+        connectionStatus.innerHTML = '<span class="text-green-400">✅ User Added Successfully!</span>';
         setTimeout(() => {
-            connectionStatus.innerHTML = connectionStatus.innerHTML.includes('Connected') ? 
-                '<span class="text-green-400">✅ Connected to Server</span>' : 
-                '<span class="text-red-400">❌ Server Offline - Showing Defaults</span>';
-        }, 3000);
-        
+            connectionStatus.innerHTML = '<span class="text-green-400">✅ Connected to Server</span>';
+        }, 2000);
     } catch (e) {
-        console.error('❌ Submit error:', e);
+        console.error('Submit error:', e);
         connectionStatus.innerHTML = '<span class="text-red-400">❌ Failed to Add User</span>';
     }
     
@@ -559,36 +432,28 @@ usernameInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Initialize application
+// Initialize app
 async function init(){
-    console.log('🚀 Initializing Plasma Hall of Fame v2.0...');
-    console.log('👥 Default users (Legends):', defaultUsers);
+    console.log('Initializing app...');
     
-    // Show legends immediately
-    console.log('📋 Displaying Plasma Legends...');
+    // Always show default users first for immediate feedback
     showDefaultUsers();
     
     // Check server connection
     const connected = await checkConnection();
     
-    // Load server users if connected
+    // If connected, try to load server users
     if (connected) {
-        console.log('🌐 Server online - loading submissions...');
         await loadUsers();
-    } else {
-        console.log('💻 Offline mode - server submissions unavailable');
-        userCount.textContent = 'Server offline - Submit to join when back online!';
     }
     
-    // Set audio volume
+    // Set music volume
     bgMusic.volume = 0.3;
     
-    console.log('✨ Plasma Hall of Fame ready!');
-    console.log('🎯 Users can now submit their Twitter usernames');
-    console.log('🔧 Check console for avatar loading details');
+    console.log('App initialized');
 }
 
-// Start the application
+// Start the app
 init();
 </script>
 
