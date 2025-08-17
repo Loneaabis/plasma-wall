@@ -250,50 +250,21 @@ const defaultUsers = [
     'proofofnathan', 'scene999'
 ];
 
-// Function to get Twitter profile picture using working methods
-async function getTwitterAvatar(username) {
-    try {
-        // Method 1: Try multiple avatar services that might work
-        const services = [
-            `https://unavatar.io/x/${username}`, // Updated X/Twitter endpoint
-            `https://avatars.githubusercontent.com/${username}`, // GitHub fallback if same username
-            `https://www.gravatar.com/avatar/${btoa(username)}?d=identicon&s=200`, // Gravatar with identicon
-        ];
-        
-        // For better results, let's create distinctive avatars based on username
-        const colors = ['059669', '10b981', '34d399', '6ee7b7', '0d9488', '14b8a6'];
-        const colorIndex = username.length % colors.length;
-        const backgroundColor = colors[colorIndex];
-        
-        // Return a high-quality UI avatar with the user's initial
-        return `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=${backgroundColor}&color=fff&size=128&font-size=0.6&bold=true`;
-        
-    } catch (error) {
-        console.log(`Failed to get avatar for ${username}:`, error);
-        return `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=059669&color=fff&size=128`;
-    }
-}
-
-// Alternative: Try to get real Twitter avatar using a different approach
-async function tryRealTwitterAvatar(username) {
-    try {
-        // This is a more advanced approach - using a CORS proxy to try to get real Twitter data
-        const proxyUrl = 'https://api.allorigins.win/raw?url=';
-        const twitterProfileUrl = `https://nitter.net/${username}/pic`;
-        
-        const response = await fetch(proxyUrl + encodeURIComponent(twitterProfileUrl), {
-            method: 'HEAD',
-            timeout: 3000
-        });
-        
-        if (response.ok) {
-            return twitterProfileUrl;
-        }
-    } catch (e) {
-        console.log('Real Twitter avatar failed, using fallback');
-    }
+// Much simpler and more reliable avatar function
+function getTwitterAvatar(username) {
+    // Create a unique, colorful avatar for each user
+    const colors = ['059669', '10b981', '34d399', '0d9488', '14b8a6', '047857', '065f46'];
+    const colorIndex = username.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length;
+    const backgroundColor = colors[colorIndex];
     
-    return await getTwitterAvatar(username);
+    // Try multiple services in order
+    const services = [
+        `https://unavatar.io/twitter/${username}`,
+        `https://github.com/${username}.png`,
+        `https://ui-avatars.com/api/?name=${username}&background=${backgroundColor}&color=fff&size=128&font-size=0.5&bold=true`
+    ];
+    
+    return services[0]; // Start with first, fallback in HTML
 }
 
 // Check VPS connection
@@ -328,8 +299,8 @@ async function checkConnection(){
     }
 }
 
-// Add user card with avatar
-async function addUserCard(username, animate=true, isDefault=false){
+// Add user card with avatar - SIMPLIFIED
+function addUserCard(username, animate=true, isDefault=false){
     console.log('Adding user card for:', username);
     
     const card = document.createElement('div');
@@ -339,8 +310,13 @@ async function addUserCard(username, animate=true, isDefault=false){
     
     card.className = `${cardClass} ${animate ? 'pulse-ring' : ''}`;
     
-    // Get real Twitter avatar (try advanced method first)
-    const avatarUrl = await tryRealTwitterAvatar(username);
+    // Get avatar URL
+    const avatarUrl = getTwitterAvatar(username);
+    
+    // Create fallback chain for better reliability
+    const colors = ['059669', '10b981', '34d399', '0d9488', '14b8a6'];
+    const colorIndex = username.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length;
+    const fallbackColor = colors[colorIndex];
     
     const labelText = isDefault ? 'Plasma Legend' : 'Digital Warrior';
     const labelColor = isDefault ? 'text-emerald-300' : 'text-teal-300';
@@ -348,10 +324,10 @@ async function addUserCard(username, animate=true, isDefault=false){
     card.innerHTML = `
         <div class="avatar-container mb-3 relative">
             <img src="${avatarUrl}" 
-                 onerror="this.src='https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=374151&color=fff&size=128&font-size=0.6'" 
+                 onerror="this.onerror=null; this.src='https://github.com/${username}.png?size=128'"
+                 onload="console.log('Avatar loaded for ${username}')"
                  class="w-16 h-16 rounded-xl mx-auto border-2 ${isDefault ? 'border-emerald-400' : 'border-teal-400'} shadow-xl object-cover bg-gray-800"
-                 crossorigin="anonymous"
-                 loading="lazy">
+                 alt="@${username}">
         </div>
         <h3 class="font-bold text-white text-sm">@${username}</h3>
         <div class="text-xs ${labelColor} mt-1">${labelText}</div>
@@ -360,18 +336,19 @@ async function addUserCard(username, animate=true, isDefault=false){
     return card;
 }
 
-// Show default users in their own section
-async function showDefaultUsers() {
-    console.log('Showing default users');
+// Show default users in their own section - FIXED
+function showDefaultUsers() {
+    console.log('Showing default users:', defaultUsers);
     defaultUsersElement.innerHTML = '';
     
-    for (let i = 0; i < defaultUsers.length; i++) {
-        const username = defaultUsers[i];
-        setTimeout(async () => {
-            const card = await addUserCard(username, true, true);
+    defaultUsers.forEach((username, i) => {
+        console.log(`Adding default user ${i + 1}: ${username}`);
+        setTimeout(() => {
+            const card = addUserCard(username, true, true);
             defaultUsersElement.appendChild(card);
-        }, i * 200);
-    }
+            console.log(`Default user ${username} added to DOM`);
+        }, i * 300);
+    });
 }
 
 // Load users from server
@@ -399,14 +376,16 @@ async function loadUsers(){
                 return; 
             }
             
-            // Show all server users in submissions section
-            for (let i = 0; i < users.length; i++) {
-                const username = users[i];
-                setTimeout(async () => {
-                    const card = await addUserCard(username, true, false);
+            // Show all server users in submissions section - FIXED
+            hallOfFame.innerHTML = ''; // Clear first
+            users.forEach((username, i) => {
+                console.log(`Adding server user ${i + 1}: ${username}`);
+                setTimeout(() => {
+                    const card = addUserCard(username, true, false);
                     hallOfFame.appendChild(card);
+                    console.log(`Server user ${username} added to DOM`);
                 }, i * 150);
-            }
+            });
             userCount.textContent = `${users.length} submissions and growing!`;
         } else {
             throw new Error(`Failed to load users: ${res.status}`);
@@ -433,9 +412,10 @@ async function saveUser(username){
             const result = await res.json();
             console.log('User saved successfully:', result);
             
-            // Add user to submissions section immediately
-            const card = await addUserCard(username, true, false);
+            // Add user to submissions section immediately - FIXED
+            const card = addUserCard(username, true, false);
             hallOfFame.appendChild(card);
+            console.log(`New user ${username} added to submissions`);
             
             // Update count
             const currentCount = hallOfFame.children.length;
@@ -447,9 +427,10 @@ async function saveUser(username){
         }
     } catch(e){ 
         console.error('Error saving user:', e);
-        // Add user locally even if server save fails
-        const card = await addUserCard(username, true, false);
+        // Add user locally even if server save fails - FIXED
+        const card = addUserCard(username, true, false);
         hallOfFame.appendChild(card);
+        console.log(`User ${username} added locally (offline mode)`);
         
         const currentCount = hallOfFame.children.length;
         userCount.textContent = `${currentCount} submissions (offline mode)`;
