@@ -1,743 +1,375 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plasma Hall of Fame</title>
-<script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plasma Hall of Fame</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-900 to-green-900 text-white overflow-hidden relative">
-
-<!-- Background Animations -->
-<div class="absolute inset-0 overflow-hidden">
+  <!-- Background Animations -->
+  <div class="absolute inset-0 overflow-hidden">
     <div class="plasma-bg absolute inset-0"></div>
     <div class="spinning-circle absolute inset-0 flex items-center justify-center">
-        <div class="loading-spinner"></div>
+      <div class="loading-spinner"></div>
     </div>
     <div class="stars absolute inset-0"></div>
-</div>
+  </div>
 
-<!-- Audio -->
-<audio id="bgMusic" loop preload="auto">
-    <source src="./interstellar.mp3" type="audio/mpeg">
-</audio>
+  <!-- Audio -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="./interstellar.mp3" type="audio/mpeg" />
+  </audio>
 
-<!-- Header -->
-<header class="relative z-10 text-center py-8">
+  <!-- Header -->
+  <header class="relative z-10 text-center py-8">
     <div class="flex items-center justify-center gap-4 mb-4">
-        <!-- Plasma Logo SVG -->
-        <div class="spinning-logo">
-            <svg width="60" height="60" viewBox="0 0 100 100" class="text-emerald-400">
-                <defs>
-                    <mask id="segments">
-                        <rect width="100" height="100" fill="black"/>
-                        <g fill="white">
-                            <path d="M50,10 A40,40 0 0,1 85.36,35 L75.36,42.5 A27.5,27.5 0 0,0 50,22.5 Z"/>
-                            <path d="M85.36,35 A40,40 0 0,1 85.36,65 L75.36,57.5 A27.5,27.5 0 0,0 75.36,42.5 Z"/>
-                            <path d="M85.36,65 A40,40 0 0,1 50,90 L50,77.5 A27.5,27.5 0 0,0 75.36,57.5 Z"/>
-                            <path d="M50,90 A40,40 0 0,1 14.64,65 L24.64,57.5 A27.5,27.5 0 0,0 50,77.5 Z"/>
-                            <path d="M14.64,65 A40,40 0 0,1 14.64,35 L24.64,42.5 A27.5,27.5 0 0,0 24.64,57.5 Z"/>
-                            <path d="M14.64,35 A40,40 0 0,1 50,10 L50,22.5 A27.5,27.5 0 0,0 24.64,42.5 Z"/>
-                        </g>
-                    </mask>
-                </defs>
-                <circle cx="50" cy="50" r="40" fill="currentColor" mask="url(#segments)"/>
-                <circle cx="50" cy="50" r="15" fill="#064e3b"/>
-            </svg>
-        </div>
-        <h1 class="text-6xl font-bold bg-gradient-to-r from-emerald-400 via-teal-500 to-green-500 bg-clip-text text-transparent animate-pulse">
-            PLASMA HALL OF FAME
-        </h1>
+      <!-- Plasma Logo SVG -->
+      <div class="spinning-logo">
+        <svg width="60" height="60" viewBox="0 0 100 100" class="text-emerald-400">
+          <defs>
+            <mask id="segments">
+              <rect width="100" height="100" fill="black" />
+              <g fill="white">
+                <path d="M50,10 A40,40 0 0,1 85.36,35 L75.36,42.5 A27.5,27.5 0 0,0 50,22.5 Z" />
+                <path d="M85.36,35 A40,40 0 0,1 85.36,65 L75.36,57.5 A27.5,27.5 0 0,0 75.36,42.5 Z" />
+                <path d="M85.36,65 A40,40 0 0,1 50,90 L50,77.5 A27.5,27.5 0 0,0 75.36,57.5 Z" />
+                <path d="M50,90 A40,40 0 0,1 14.64,65 L24.64,57.5 A27.5,27.5 0 0,0 50,77.5 Z" />
+                <path d="M14.64,65 A40,40 0 0,1 14.64,35 L24.64,42.5 A27.5,27.5 0 0,0 24.64,57.5 Z" />
+                <path d="M14.64,35 A40,40 0 0,1 50,10 L50,22.5 A27.5,27.5 0 0,0 24.64,42.5 Z" />
+              </g>
+            </mask>
+          </defs>
+          <circle cx="50" cy="50" r="40" fill="currentColor" mask="url(#segments)" />
+          <circle cx="50" cy="50" r="15" fill="#064e3b" />
+        </svg>
+      </div>
+      <h1 class="text-6xl font-bold bg-gradient-to-r from-emerald-400 via-teal-500 to-green-500 bg-clip-text text-transparent animate-pulse">
+        PLASMA HALL OF FAME
+      </h1>
     </div>
-    <p class="text-2xl text-teal-300 mb-4"> Trillions </p>
+    <p class="text-2xl text-teal-300 mb-4">🚀 Trillions 🚀</p>
     <button id="musicToggle" class="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform">
-        🎵 Play Music
+      🎵 Play Music
     </button>
-</header>
+  </header>
 
-<!-- Input Section -->
-<div class="relative z-10 flex flex-col items-center justify-center px-4 mb-8">
+  <!-- Input Section -->
+  <div class="relative z-10 flex flex-col items-center justify-center px-4 mb-8">
     <div class="bg-black/30 backdrop-blur-lg rounded-3xl p-8 border border-emerald-500/50 shadow-2xl max-w-md w-full">
-        <input type="text" id="usernameInput" placeholder="your_twitter_username" class="w-full pl-3 py-3 mb-4 rounded-xl text-white bg-gray-900/80 focus:outline-none border border-emerald-500/30">
-        <button id="submitBtn" class="w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 py-3 rounded-xl font-bold hover:scale-105 transition-transform">🚀 Join the Wall</button>
-        <div id="connectionStatus" class="mt-4 text-center text-yellow-400">Ready to join the legends</div>
+      <input
+        type="text"
+        id="usernameInput"
+        placeholder="your_twitter_username"
+        class="w-full pl-3 py-3 mb-4 rounded-xl text-white bg-gray-900/80 focus:outline-none border border-emerald-500/30"
+      />
+      <button
+        id="submitBtn"
+        class="w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 py-3 rounded-xl font-bold hover:scale-105 transition-transform"
+      >
+        🚀 Join the Wall
+      </button>
+      <div id="connectionStatus" class="mt-4 text-center text-yellow-400">Ready to join the legends</div>
     </div>
-</div>
+  </div>
 
-<!-- Hall of Fame -->
-<div class="relative z-10 px-4 pb-8">
+  <!-- Hall of Fame -->
+  <div class="relative z-10 px-4 pb-8">
     <!-- Plasma Legends Section - Always Visible -->
     <div class="mb-8">
-        <h3 class="text-3xl text-emerald-300 font-bold text-center mb-6"> PLASMA LEGENDS </h3>
-        <div id="defaultUsers" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 max-w-6xl mx-auto mb-6"></div>
-        <p class="text-center text-emerald-400 text-sm"> The Original Plasma Pioneers </p>
+      <h3 class="text-3xl text-emerald-300 font-bold text-center mb-6">👑 PLASMA LEGENDS 👑</h3>
+      <div id="defaultUsers" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 max-w-6xl mx-auto mb-6"></div>
+      <p class="text-center text-emerald-400 text-sm">⚡ The Original Plasma Pioneers ⚡</p>
     </div>
-    
+
     <!-- Recent Submissions Section -->
     <div class="bg-black/20 backdrop-blur-md rounded-3xl p-6 border border-teal-500/50 max-w-6xl mx-auto">
-        <h3 class="text-2xl text-teal-300 font-bold text-center mb-4">⚡ Recent Submissions ⚡</h3>
-        <p id="userCount" class="text-gray-400 text-center mb-4">No submissions yet - Be the first!</p>
-        <div id="hallOfFame" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
+      <h3 class="text-2xl text-teal-300 font-bold text-center mb-4">⚡ Recent Submissions ⚡</h3>
+      <p id="userCount" class="text-gray-400 text-center mb-4">Loading...</p>
+      <div id="hallOfFame" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
     </div>
-</div>
+  </div>
 
-<!-- Styles -->
-<style>
-.plasma-bg {
-    background: linear-gradient(45deg, #047857, #0d9488, #059669, #10b981, #34d399);
-    background-size: 400% 400%;
-    animation: plasmaMove 12s ease-in-out infinite;
-    opacity: 0.4;
-}
-
-@keyframes plasmaMove {
-    0%,100% { background-position:0% 50%; }
-    25% { background-position:100% 100%; }
-    50% { background-position:100% 0%; }
-    75% { background-position:0% 100%; }
-}
-
-.loading-spinner {
-    width: 300px;
-    height: 300px;
-    position: relative;
-}
-
-.loading-spinner::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: conic-gradient(
+  <!-- Styles -->
+  <style>
+    .plasma-bg {
+      background: linear-gradient(45deg, #047857, #0d9488, #059669, #10b981, #34d399);
+      background-size: 400% 400%;
+      animation: plasmaMove 12s ease-in-out infinite;
+      opacity: 0.4;
+    }
+    @keyframes plasmaMove {
+      0%, 100% { background-position: 0% 50%; }
+      25% { background-position: 100% 100%; }
+      50% { background-position: 100% 0%; }
+      75% { background-position: 0% 100%; }
+    }
+    .loading-spinner { width: 300px; height: 300px; position: relative; }
+    .loading-spinner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: conic-gradient(
         from 0deg,
-        #ffffff 0deg,
-        #ffffff 15deg,
-        transparent 15deg,
-        transparent 30deg,
-        #ffffff 30deg,
-        #ffffff 45deg,
-        transparent 45deg,
-        transparent 60deg,
-        #ffffff 60deg,
-        #ffffff 75deg,
-        transparent 75deg,
-        transparent 90deg,
-        #ffffff 90deg,
-        #ffffff 105deg,
-        transparent 105deg,
-        transparent 120deg,
-        #ffffff 120deg,
-        #ffffff 135deg,
-        transparent 135deg,
-        transparent 150deg,
-        #ffffff 150deg,
-        #ffffff 165deg,
-        transparent 165deg,
-        transparent 180deg,
-        #ffffff 180deg,
-        #ffffff 195deg,
-        transparent 195deg,
-        transparent 210deg,
-        #ffffff 210deg,
-        #ffffff 225deg,
-        transparent 225deg,
-        transparent 240deg,
-        #ffffff 240deg,
-        #ffffff 255deg,
-        transparent 255deg,
-        transparent 270deg,
-        #ffffff 270deg,
-        #ffffff 285deg,
-        transparent 285deg,
-        transparent 300deg,
-        #ffffff 300deg,
-        #ffffff 315deg,
-        transparent 315deg,
-        transparent 330deg,
-        #ffffff 330deg,
-        #ffffff 345deg,
-        transparent 345deg,
-        transparent 360deg
-    );
-    border-radius: 50%;
-    animation: spinLoader 4s linear infinite;
-    opacity: 0.8;
-}
+        #ffffff 0deg, #ffffff 15deg, transparent 15deg, transparent 30deg,
+        #ffffff 30deg, #ffffff 45deg, transparent 45deg, transparent 60deg,
+        #ffffff 60deg, #ffffff 75deg, transparent 75deg, transparent 90deg,
+        #ffffff 90deg, #ffffff 105deg, transparent 105deg, transparent 120deg,
+        #ffffff 120deg, #ffffff 135deg, transparent 135deg, transparent 150deg,
+        #ffffff 150deg, #ffffff 165deg, transparent 165deg, transparent 180deg,
+        #ffffff 180deg, #ffffff 195deg, transparent 195deg, transparent 210deg,
+        #ffffff 210deg, #ffffff 225deg, transparent 225deg, transparent 240deg,
+        #ffffff 240deg, #ffffff 255deg, transparent 255deg, transparent 270deg,
+        #ffffff 270deg, #ffffff 285deg, transparent 285deg, transparent 300deg,
+        #ffffff 300deg, #ffffff 315deg, transparent 315deg, transparent 330deg,
+        #ffffff 330deg, #ffffff 345deg, transparent 345deg, transparent 360deg
+      );
+      border-radius: 50%;
+      animation: spinLoader 4s linear infinite;
+      opacity: 0.8;
+    }
+    .loading-spinner::after {
+      content: '';
+      position: absolute; top: 50%; left: 50%; width: 120px; height: 120px; background: #064e3b; border-radius: 50%; transform: translate(-50%, -50%); z-index: 1;
+    }
+    @keyframes spinLoader { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-.loading-spinner::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 120px;
-    height: 120px;
-    background: #064e3b;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-}
+    .spinning-logo svg { animation: spinLogo 8s linear infinite; }
+    @keyframes spinLogo { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-@keyframes spinLoader {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
+    .border-3 { border-width: 3px; }
 
-.spinning-logo svg {
-    animation: spinLogo 8s linear infinite;
-}
-
-@keyframes spinLogo {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.border-3 {
-    border-width: 3px;
-}
-
-.stars {
-    background-image: 
+    .stars {
+      background-image:
         radial-gradient(2px 2px at 20px 30px, #34d399, transparent),
         radial-gradient(2px 2px at 40px 70px, rgba(52, 211, 153, 0.8), transparent),
         radial-gradient(1px 1px at 90px 40px, #10b981, transparent);
-    background-repeat: repeat;
-    background-size: 200px 100px;
-    animation: sparkle 20s linear infinite;
-    opacity: 0.3;
-}
-
-@keyframes sparkle {
-    from { transform: translateX(0); }
-    to { transform: translateX(-200px); }
-}
-
-.user-card {
-    transition: all 0.3s ease;
-    animation: slideUp 0.8s ease-out;
-}
-
-.user-card:hover { 
-    transform: translateY(-8px) scale(1.05); 
-    box-shadow: 0 25px 50px rgba(16, 185, 129, 0.4);
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(40px) scale(0.8); } 
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.pulse-ring {
-    animation: pulseRing 2s infinite;
-}
-
-@keyframes pulseRing {
-    0% { transform: scale(1); opacity: 1; } 
-    50% { transform: scale(1.15); opacity: 0.7; } 
-    100% { transform: scale(1); opacity: 1; }
-}
-
-.glow-effect {
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); 
-    animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    from { box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); } 
-    to { box-shadow: 0 0 30px rgba(52, 211, 153, 0.8); }
-}
-
-.verified-badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: linear-gradient(45deg, #10b981, #34d399);
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    border: 2px solid #064e3b;
-}
-</style>
-
-<!-- Script -->
-<script>
-// DOM elements
-const usernameInput = document.getElementById('usernameInput');
-const submitBtn = document.getElementById('submitBtn');
-const hallOfFame = document.getElementById('hallOfFame');
-const defaultUsersElement = document.getElementById('defaultUsers');
-const bgMusic = document.getElementById('bgMusic');
-const musicToggle = document.getElementById('musicToggle');
-const connectionStatus = document.getElementById('connectionStatus');
-const userCount = document.getElementById('userCount');
-
-let musicPlaying = false;
-
-// Your default users (Plasma Legends) - Change these to your usernames
-const defaultUsers = [
-    'proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax'
-];
-
-// Known profile pictures for better display
-const knownProfiles = {
-    'proofofnathan': 'https://pbs.twimg.com/profile_images/1234567890/profile.jpg',
-    'scene999': 'https://pbs.twimg.com/profile_images/1234567891/profile.jpg',
-    'MaxApoz': 'https://pbs.twimg.com/profile_images/1234567892/profile.jpg',
-    'shadowofthefax': 'https://pbs.twimg.com/profile_images/1234567893/profile.jpg'
-};
-
-// Music toggle
-musicToggle.addEventListener('click', async () => {
-    try {
-        if (musicPlaying) { 
-            bgMusic.pause(); 
-            musicToggle.innerHTML='🎵 Play Music'; 
-            musicPlaying=false; 
-        }
-        else { 
-            await bgMusic.play(); 
-            musicToggle.innerHTML='🔇 Pause Music'; 
-            musicPlaying=true; 
-        }
-    } catch(e){ 
-        console.log('Audio error:', e);
+      background-repeat: repeat;
+      background-size: 200px 100px;
+      animation: sparkle 20s linear infinite;
+      opacity: 0.3;
     }
-});
+    @keyframes sparkle { from { transform: translateX(0); } to { transform: translateX(-200px); } }
 
-// Generate consistent colors for users
-function getUserColor(username) {
-    let hash = 0;
-    for (let i = 0; i < username.length; i++) {
-        const char = username.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash;
-    }
-    
-    const colors = [
-        '#059669', '#0d9488', '#0891b2', '#0284c7', '#7c3aed', 
-        '#c026d3', '#e11d48', '#ea580c', '#ca8a04', '#65a30d'
-    ];
-    
-    return colors[Math.abs(hash) % colors.length];
-}
+    .user-card { transition: all 0.3s ease; animation: slideUp 0.8s ease-out; }
+    .user-card:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 25px 50px rgba(16, 185, 129, 0.4); }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.8); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-// Enhanced avatar system with reliable fallbacks
-function createAvatarImage(username, isLegend = false) {
-    console.log(`🔄 Creating avatar for ${username} (${isLegend ? 'Legend' : 'Member'})`);
-    
-    const img = document.createElement('img');
-    const borderColor = isLegend ? 'border-emerald-400' : 'border-teal-400';
-    img.className = `w-20 h-20 rounded-xl mx-auto border-3 ${borderColor} shadow-2xl object-cover bg-gray-800`;
-    img.alt = `@${username}`;
-    img.loading = 'lazy';
-    
-    const userColor = getUserColor(username);
-    
-    // Multiple reliable fallback sources
-    const fallbacks = [
-        // Known profiles first
-        knownProfiles[username],
-        // Twitter/X endpoints
-        `https://unavatar.io/x/${username}?fallback=false`,
-        `https://unavatar.io/twitter/${username}?fallback=false`,
-        // GitHub fallback
-        `https://avatars.githubusercontent.com/${username}?size=160`,
-        `https://github.com/${username}.png?size=160`,
-        // Generated avatars with user color
-        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&backgroundColor=${userColor.replace('#', '')}&radius=25&size=160`,
-        `https://api.dicebear.com/7.x/initials/svg?seed=${username}&backgroundColor=${userColor.replace('#', '')}&fontSize=50&size=160`,
-        // Final guaranteed fallback
-        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=${userColor.replace('#', '')}&color=fff&size=160&font-size=0.6&bold=true&rounded=true`
-    ].filter(Boolean); // Remove null entries
-    
-    let currentIndex = 0;
-    let loadTimeout;
-    
-    const tryNextFallback = () => {
-        if (currentIndex < fallbacks.length) {
-            const currentUrl = fallbacks[currentIndex];
-            console.log(`  📡 Trying method ${currentIndex + 1}/${fallbacks.length} for ${username}`);
-            
-            if (loadTimeout) clearTimeout(loadTimeout);
-            
-            // 2 second timeout per attempt
-            loadTimeout = setTimeout(() => {
-                console.log(`  ⏰ Timeout for ${username} method ${currentIndex + 1}`);
-                currentIndex++;
-                tryNextFallback();
-            }, 2000);
-            
-            img.src = currentUrl;
-            currentIndex++;
+    .pulse-ring { animation: pulseRing 2s infinite; }
+    @keyframes pulseRing { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.15); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+
+    .glow-effect { box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); animation: glow 2s ease-in-out infinite alternate; }
+    @keyframes glow { from { box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); } to { box-shadow: 0 0 30px rgba(52, 211, 153, 0.8); } }
+
+    .verified-badge { position: absolute; top: -5px; right: -5px; background: linear-gradient(45deg, #10b981, #34d399); border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; border: 2px solid #064e3b; }
+  </style>
+
+  <!-- Script -->
+  <script>
+    // DOM elements
+    const usernameInput = document.getElementById('usernameInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const hallOfFame = document.getElementById('hallOfFame');
+    const defaultUsersElement = document.getElementById('defaultUsers');
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    const connectionStatus = document.getElementById('connectionStatus');
+    const userCount = document.getElementById('userCount');
+
+    let musicPlaying = false;
+
+    // Legends (display-only)
+    const defaultUsers = ['proofofnathan', 'scene999', 'maxapoz', 'shadowofthefax'];
+
+    // Music toggle
+    musicToggle.addEventListener('click', async () => {
+      try {
+        if (musicPlaying) {
+          bgMusic.pause();
+          musicToggle.innerHTML = '🎵 Play Music';
+          musicPlaying = false;
         } else {
-            console.log(`  ❌ All methods failed for ${username}`);
+          await bgMusic.play();
+          musicToggle.innerHTML = '🔇 Pause Music';
+          musicPlaying = true;
         }
-    };
-    
-    img.onload = () => {
-        if (loadTimeout) clearTimeout(loadTimeout);
-        console.log(`  ✅ Avatar loaded for ${username}`);
-    };
-    
-    img.onerror = () => {
-        if (loadTimeout) clearTimeout(loadTimeout);
-        console.log(`  ❌ Method ${currentIndex} failed for ${username}`);
-        tryNextFallback();
-    };
-    
-    // Start loading
-    tryNextFallback();
-    
-    return img;
-}
+      } catch (e) {
+        console.log('Audio error:', e);
+      }
+    });
 
-// Create user card with enhanced styling
-function createUserCard(username, isLegend = false, animate = true) {
-    console.log(`🎯 Creating card for: ${username} (${isLegend ? 'Legend' : 'Member'})`);
-    
-    const card = document.createElement('div');
-    
-    if (isLegend) {
+    // Create avatar (now via backend proxy with graceful fallback)
+    function createAvatarImage(username, isLegend = false) {
+      const img = document.createElement('img');
+      const borderColor = isLegend ? 'border-emerald-400' : 'border-teal-400';
+      img.className = `w-20 h-20 rounded-xl mx-auto border-3 ${borderColor} shadow-2xl object-cover bg-gray-800`;
+      img.alt = `@${username}`;
+      img.loading = 'lazy';
+
+      // Primary source: backend proxy (avoids CORS/Twitter blocks)
+      img.src = `/api/avatar?username=${encodeURIComponent(username)}`;
+
+      // Fallback: generated avatar if proxy fails
+      img.onerror = () => {
+        img.src = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(username)}&size=160&fontSize=50`;
+      };
+
+      return img;
+    }
+
+    // Create user card
+    function createUserCard(username, isLegend = false, animate = true) {
+      const card = document.createElement('div');
+      if (isLegend) {
         card.className = `user-card bg-gradient-to-br from-emerald-500/50 to-green-500/50 backdrop-blur-sm rounded-3xl p-6 border-3 border-emerald-400/80 text-center glow-effect relative overflow-hidden ${animate ? 'pulse-ring' : ''}`;
-        
-        // Add crown decoration for legends
         const crown = document.createElement('div');
         crown.className = 'absolute top-2 right-2 text-yellow-400 text-xl';
         crown.innerHTML = '👑';
         card.appendChild(crown);
-    } else {
+      } else {
         card.className = `user-card bg-gradient-to-br from-teal-600/30 to-cyan-600/30 backdrop-blur-sm rounded-2xl p-4 border border-teal-500/40 text-center ${animate ? 'pulse-ring' : ''}`;
-    }
-    
-    // Create avatar
-    const avatarImg = createAvatarImage(username, isLegend);
-    
-    // Create text elements
-    const nameElement = document.createElement('h3');
-    nameElement.className = isLegend ? 'font-bold text-white text-lg mt-4' : 'font-bold text-white text-sm mt-3';
-    nameElement.textContent = `@${username}`;
-    
-    const labelElement = document.createElement('div');
-    if (isLegend) {
-        labelElement.className = 'text-sm text-emerald-200 mt-2 font-semibold';
-        labelElement.textContent = '⚡ PLASMA LEGEND ⚡';
-    } else {
-        labelElement.className = 'text-xs text-teal-300 mt-1';
-        labelElement.textContent = 'Digital Warrior';
-    }
-    
-    // Assemble card
-    card.appendChild(avatarImg);
-    card.appendChild(nameElement);
-    card.appendChild(labelElement);
-    
-    return card;
-}
-
-// Show default users (Legends) - Always visible
-function showDefaultUsers() {
-    console.log('👑 Loading Plasma Legends...');
-    defaultUsersElement.innerHTML = '';
-    
-    // Add loading indicator first
-    const loadingDiv = document.createElement('div');
-    loadingDiv.className = 'col-span-full text-center text-emerald-400';
-    loadingDiv.innerHTML = '🔄 Loading Legends...';
-    defaultUsersElement.appendChild(loadingDiv);
-    
-    // Remove loading and add legends with staggered animation
-    setTimeout(() => {
-        defaultUsersElement.innerHTML = '';
-        
-        defaultUsers.forEach((username, i) => {
-            setTimeout(() => {
-                console.log(`  👑 Adding Legend ${i + 1}/${defaultUsers.length}: ${username}`);
-                const card = createUserCard(username, true, true);
-                defaultUsersElement.appendChild(card);
-            }, i * 300); // Slower staggered animation for legends
-        });
-    }, 500);
-}
-
-// Temporary submissions storage
-let temporarySubmissions = [];
-
-// Handle submissions (temporary)
-submitBtn.addEventListener('click', () => {
-    const username = usernameInput.value.trim().replace('@','').replace(/[^a-zA-Z0-9_]/g, '');
-    
-    if (!username) {
-        alert('Please enter a valid username');
-        return;
-    }
-    
-    // Check if user already exists (in legends or submissions)
-    if (defaultUsers.includes(username.toLowerCase()) || 
-        temporarySubmissions.includes(username.toLowerCase())) {
-        alert('This user is already on the wall!');
-        return;
-    }
-    
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Joining...';
-    
-    // Add to temporary submissions
-    temporarySubmissions.push(username.toLowerCase());
-    
-    // Create and add card immediately
-    const card = createUserCard(username, false, true);
-    hallOfFame.appendChild(card);
-    
-    // Update UI
-    usernameInput.value = '';
-    userCount.textContent = `${temporarySubmissions.length} warriors have joined this session!`;
-    connectionStatus.innerHTML = '<span class="text-green-400">⚡ Welcome to the Plasma Wall!</span>';
-    
-    setTimeout(() => {
-        connectionStatus.innerHTML = 'Ready to join the legends';
-        submitBtn.disabled = false;
-        submitBtn.textContent = ' Join the Wall';
-    }, 2000);
-    
-    console.log(' Added submission:', username);
-});
-
-// Enter key support
-usernameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !submitBtn.disabled) {
-        submitBtn.click();
-    }
-});
-
-// Initialize application
-function init() {
-    console.log(' Initializing Plasma Hall of Fame...');
-    console.log(' Default Legends:', defaultUsers);
-    
-    // Show legends immediately
-    showDefaultUsers();
-    
-    // Set audio volume
-    bgMusic.volume = 0.3;
-    
-    console.log('✨ Plasma Hall of Fame ready!');
-    console.log('👑 Legends are always visible');
-    console.log('⚡ Submissions are temporary (refresh to reset)');
-}
-
-// Start the application
-init();
-</script>d = document.createElement('div');
-    const cardClass = isDefault ? 
-        'user-card bg-gradient-to-br from-emerald-600/40 to-green-600/40 backdrop-blur-sm rounded-2xl p-4 border-2 border-emerald-500/60 text-center glow-effect relative' :
-        'user-card bg-gradient-to-br from-teal-600/30 to-cyan-600/30 backdrop-blur-sm rounded-2xl p-4 border border-teal-500/40 text-center relative';
-    
-    card.className = `${cardClass} ${animate ? 'pulse-ring' : ''}`;
-    
-    // Create avatar
-    const avatarImg = createAvatarImage(username, isDefault);
-    
-    // Add verification badge for authenticated users
-    if (!isDefault) {
         const badge = document.createElement('div');
         badge.className = 'verified-badge';
         badge.innerHTML = '✓';
         card.appendChild(badge);
-    }
-    
-    // Create text elements
-    const nameElement = document.createElement('h3');
-    nameElement.className = 'font-bold text-white text-sm mt-3';
-    nameElement.textContent = `@${username}`;
-    
-    const labelElement = document.createElement('div');
-    const labelText = isDefault ? 'Plasma Legend' : 'Verified Member';
-    const labelColor = isDefault ? 'text-emerald-300' : 'text-teal-300';
-    labelElement.className = `text-xs ${labelColor} mt-1`;
-    labelElement.textContent = labelText;
-    
-    // Assemble card
-    card.appendChild(avatarImg);
-    card.appendChild(nameElement);
-    card.appendChild(labelElement);
-    
-    return card;
-}
+      }
 
-// Load verified users from storage
-function loadVerifiedUsers() {
-    try {
-        const stored = localStorage.getItem(USERS_STORAGE_KEY);
-        return stored ? JSON.parse(stored) : [];
-    } catch (e) {
-        console.error('Error loading users:', e);
-        return [];
-    }
-}
+      const avatarImg = createAvatarImage(username, isLegend);
 
-// Save verified users to storage
-function saveVerifiedUsers(users) {
-    try {
-        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
-        console.log('Users saved to storage:', users);
-    } catch (e) {
-        console.error('Error saving users:', e);
-    }
-}
+      const nameElement = document.createElement('h3');
+      nameElement.className = isLegend ? 'font-bold text-white text-lg mt-4' : 'font-bold text-white text-sm mt-3';
+      nameElement.textContent = `@${username}`;
 
-// Display functions
-function showDefaultUsers() {
-    console.log('🌟 Loading Plasma Legends...');
-    defaultUsersElement.innerHTML = '';
-    
-    defaultUsers.forEach((username, i) => {
+      const labelElement = document.createElement('div');
+      if (isLegend) {
+        labelElement.className = 'text-sm text-emerald-200 mt-2 font-semibold';
+        labelElement.textContent = '⚡ PLASMA LEGEND ⚡';
+      } else {
+        labelElement.className = 'text-xs text-teal-300 mt-1';
+        labelElement.textContent = 'Verified Member';
+      }
+
+      card.appendChild(avatarImg);
+      card.appendChild(nameElement);
+      card.appendChild(labelElement);
+      return card;
+    }
+
+    // Show Legends
+    function showDefaultUsers() {
+      defaultUsersElement.innerHTML = '';
+      defaultUsers.forEach((username, i) => {
         setTimeout(() => {
-            const card = createUserCard(username, true, true);
-            defaultUsersElement.appendChild(card);
-        }, i * 200);
-    });
-}
-
-function showVerifiedUsers() {
-    const verifiedUsers = loadVerifiedUsers();
-    console.log('📡 Loading verified members...', verifiedUsers);
-    
-    hallOfFame.innerHTML = '';
-    
-    if (verifiedUsers.length === 0) {
-        userCount.textContent = 'No verified members yet - Add the first one!';
-        return;
+          const card = createUserCard(username, true, true);
+          defaultUsersElement.appendChild(card);
+        }, i * 250);
+      });
     }
-    
-    verifiedUsers.forEach((username, i) => {
-        setTimeout(() => {
-            const card = createUserCard(username, false, true);
-            hallOfFame.appendChild(card);
-        }, i * 100);
-    });
-    
-    userCount.textContent = `${verifiedUsers.length} verified members and growing!`;
-}
 
-// Add user function
-function addVerifiedUser(username) {
-    const verifiedUsers = loadVerifiedUsers();
-    
-    // Check for duplicates
-    if (verifiedUsers.includes(username.toLowerCase()) || 
-        defaultUsers.includes(username.toLowerCase())) {
-        return false;
+    // Helpers
+    function normalizeUser(u) {
+      return u.trim().replace('@', '').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
     }
-    
-    // Add user
-    verifiedUsers.push(username.toLowerCase());
-    saveVerifiedUsers(verifiedUsers);
-    
-    // Refresh display
-    showVerifiedUsers();
-    
-    return true;
-}
 
-// Clear all users function
-function clearAllUsers() {
-    if (confirm('Are you sure you want to remove all verified members?')) {
-        localStorage.removeItem(USERS_STORAGE_KEY);
-        showVerifiedUsers();
-        connectionStatus.innerHTML = '<span class="text-green-400">✅ All users cleared</span>';
-    }
-}
+    // Load all users from backend (with localStorage fallback)
+    async function loadUsers() {
+      hallOfFame.innerHTML = '';
+      userCount.textContent = 'Loading...';
 
-// Event listeners
-authBtn.addEventListener('click', () => {
-    const password = adminPassword.value.trim();
-    
-    if (authenticate(password)) {
-        authStatus.innerHTML = '<span class="text-green-400">✅ Authentication successful!</span>';
-        setTimeout(() => {
-            showAdminSection();
-        }, 1000);
-    } else {
-        authStatus.innerHTML = '<span class="text-red-400">❌ Invalid password</span>';
-        adminPassword.value = '';
-    }
-});
+      try {
+        const res = await fetch('/api/users');
+        if (!res.ok) throw new Error('Failed to load users');
+        const data = await res.json();
+        const users = Array.isArray(data) ? data : (data.users || []);
 
-adminPassword.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        authBtn.click();
-    }
-});
+        if (!users.length) {
+          userCount.textContent = 'No submissions yet - Be the first!';
+          return;
+        }
 
-submitBtn.addEventListener('click', () => {
-    if (!isAuthenticated) {
-        alert('Authentication required');
-        return;
+        users.forEach((username, i) => {
+          setTimeout(() => {
+            hallOfFame.appendChild(createUserCard(username, false, true));
+          }, i * 120);
+        });
+        userCount.textContent = `${users.length} warriors have joined!`;
+      } catch (e) {
+        // Fallback to localStorage when backend is unavailable
+        console.warn('Backend unavailable, using localStorage. Error:', e);
+        const saved = JSON.parse(localStorage.getItem('phof_users') || '[]');
+        if (!saved.length) {
+          userCount.textContent = 'No submissions yet - Be the first!';
+          return;
+        }
+        saved.forEach((username) => hallOfFame.appendChild(createUserCard(username, false, false)));
+        userCount.textContent = `${saved.length} warriors (local) have joined!`;
+      }
     }
-    
-    const username = usernameInput.value.trim().replace('@','').replace(/[^a-zA-Z0-9_]/g, '');
-    
-    if (!username) {
+
+    // Add a user via backend (with localStorage fallback)
+    async function addUser(usernameRaw) {
+      const username = normalizeUser(usernameRaw);
+      if (!username) {
         alert('Please enter a valid username');
         return;
-    }
-    
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Adding...';
-    
-    if (addVerifiedUser(username)) {
+      }
+      if (defaultUsers.includes(username)) {
+        alert('This user is already a Plasma Legend!');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Joining...';
+
+      try {
+        const res = await fetch('/api/addUser', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username })
+        });
+        if (!res.ok) throw new Error('Failed to add user');
+        const data = await res.json();
+
+        // Update UI
+        hallOfFame.prepend(createUserCard(username, false, true));
+        userCount.textContent = `${data.totalUsers ?? 'More'} warriors have joined!`;
         usernameInput.value = '';
-        connectionStatus.innerHTML = '<span class="text-green-400">⚡ User verified and added!</span>';
-    } else {
-        connectionStatus.innerHTML = '<span class="text-yellow-400">⚠️ User already exists</span>';
+        connectionStatus.innerHTML = '<span class="text-green-400">⚡ Welcome to the Plasma Wall!</span>';
+      } catch (e) {
+        // Local fallback
+        console.warn('Backend add failed, saving local. Error:', e);
+        const saved = new Set(JSON.parse(localStorage.getItem('phof_users') || '[]'));
+        if (saved.has(username)) {
+          alert('User already exists (local).');
+        } else {
+          saved.add(username);
+          localStorage.setItem('phof_users', JSON.stringify(Array.from(saved)));
+          hallOfFame.prepend(createUserCard(username, false, true));
+          userCount.textContent = `${Array.from(saved).length} warriors (local) have joined!`;
+          usernameInput.value = '';
+          connectionStatus.innerHTML = '<span class="text-green-400">⚡ (Local) Welcome to the Plasma Wall!</span>';
+        }
+      } finally {
+        setTimeout(() => {
+          connectionStatus.innerHTML = 'Ready to join the legends';
+        }, 2000);
+        submitBtn.disabled = false;
+        submitBtn.textContent = '🚀 Join the Wall';
+      }
     }
-    
-    setTimeout(() => {
-        connectionStatus.innerHTML = 'Ready to add users';
-    }, 3000);
-    
-    submitBtn.disabled = false;
-    submitBtn.textContent = '🚀 Join the Wall';
-});
 
-usernameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !submitBtn.disabled) {
-        submitBtn.click();
+    // Events
+    submitBtn.addEventListener('click', () => addUser(usernameInput.value));
+    usernameInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !submitBtn.disabled) addUser(usernameInput.value);
+    });
+
+    // Init
+    function init() {
+      showDefaultUsers();
+      bgMusic.volume = 0.3;
+      loadUsers();
     }
-});
-
-clearAllBtn.addEventListener('click', clearAllUsers);
-
-logoutBtn.addEventListener('click', logout);
-
-// Initialize application
-function init() {
-    console.log('🚀 Initializing Plasma Hall of Fame with Authentication...');
-    
-    // Check if already authenticated
-    if (checkAuthentication()) {
-        showAdminSection();
-    } else {
-        showAuthSection();
-    }
-    
-    // Always show default users and verified users
-    showDefaultUsers();
-    showVerifiedUsers();
-    
-    // Set audio volume
-    bgMusic.volume = 0.3;
-    
-    console.log('✨ Plasma Hall of Fame ready!');
-    console.log('🔐 Authentication required for adding users');
-    console.log(`🔑 Admin password: ${ADMIN_PASSWORD}`);
-}
-
-// Start the application
-init();
-</script>
-
+    init();
+  </script>
 </body>
 </html>
