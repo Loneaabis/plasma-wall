@@ -83,8 +83,8 @@
 
 <!-- Script -->
 <script>
-// Force HTTP for testing
-const API_BASE = 'http://162.250.191.81:4000';
+// Use CORS proxy for HTTPS compatibility
+const API_BASE = 'https://cors-anywhere.herokuapp.com/http://162.250.191.81:4000';
 const usernameInput = document.getElementById('usernameInput');
 const submitBtn = document.getElementById('submitBtn');
 const hallOfFame = document.getElementById('hallOfFame');
