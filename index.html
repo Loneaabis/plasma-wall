@@ -250,21 +250,50 @@ const defaultUsers = [
     'proofofnathan', 'scene999'
 ];
 
-// Much simpler and more reliable avatar function
+// Improved avatar function with multiple fallbacks
 function getTwitterAvatar(username) {
-    // Create a unique, colorful avatar for each user
-    const colors = ['059669', '10b981', '34d399', '0d9488', '14b8a6', '047857', '065f46'];
-    const colorIndex = username.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length;
-    const backgroundColor = colors[colorIndex];
-    
-    // Try multiple services in order
-    const services = [
+    // Create multiple fallback URLs in order of preference
+    const fallbacks = [
         `https://unavatar.io/twitter/${username}`,
-        `https://github.com/${username}.png`,
-        `https://ui-avatars.com/api/?name=${username}&background=${backgroundColor}&color=fff&size=128&font-size=0.5&bold=true`
+        `https://unavatar.io/github/${username}`, 
+        `https://github.com/${username}.png?size=128`,
+        `https://avatars.dicebear.com/api/personas/${username}.svg?background=%23059669`,
+        `https://ui-avatars.com/api/?name=${username}&background=059669&color=fff&size=128&font-size=0.5&bold=true`
     ];
     
-    return services[0]; // Start with first, fallback in HTML
+    return fallbacks[0]; // Primary URL
+}
+
+// Create image element with cascading fallbacks
+function createAvatarImage(username, isDefault = false) {
+    const img = document.createElement('img');
+    img.className = `w-16 h-16 rounded-xl mx-auto border-2 ${isDefault ? 'border-emerald-400' : 'border-teal-400'} shadow-xl object-cover bg-gray-800`;
+    img.alt = `@${username}`;
+    
+    const fallbacks = [
+        `https://unavatar.io/twitter/${username}`,
+        `https://github.com/${username}.png?size=128`,
+        `https://avatars.dicebear.com/api/personas/${username}.svg?background=%23059669`,
+        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=059669&color=fff&size=128&font-size=0.6&bold=true`
+    ];
+    
+    let currentIndex = 0;
+    
+    const tryNextFallback = () => {
+        if (currentIndex < fallbacks.length) {
+            console.log(`Trying avatar ${currentIndex + 1}/${fallbacks.length} for ${username}: ${fallbacks[currentIndex]}`);
+            img.src = fallbacks[currentIndex];
+            currentIndex++;
+        }
+    };
+    
+    img.onerror = tryNextFallback;
+    img.onload = () => console.log(`Avatar loaded successfully for ${username}`);
+    
+    // Start with first URL
+    tryNextFallback();
+    
+    return img;
 }
 
 // Check VPS connection
@@ -299,9 +328,9 @@ async function checkConnection(){
     }
 }
 
-// Add user card with avatar - SIMPLIFIED
+// Add user card with improved avatar handling
 function addUserCard(username, animate=true, isDefault=false){
-    console.log('Adding user card for:', username);
+    console.log('Creating card for:', username, isDefault ? '(Legend)' : '(Submission)');
     
     const card = document.createElement('div');
     const cardClass = isDefault ? 
@@ -310,28 +339,30 @@ function addUserCard(username, animate=true, isDefault=false){
     
     card.className = `${cardClass} ${animate ? 'pulse-ring' : ''}`;
     
-    // Get avatar URL
-    const avatarUrl = getTwitterAvatar(username);
-    
-    // Create fallback chain for better reliability
-    const colors = ['059669', '10b981', '34d399', '0d9488', '14b8a6'];
-    const colorIndex = username.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length;
-    const fallbackColor = colors[colorIndex];
-    
     const labelText = isDefault ? 'Plasma Legend' : 'Digital Warrior';
     const labelColor = isDefault ? 'text-emerald-300' : 'text-teal-300';
     
-    card.innerHTML = `
-        <div class="avatar-container mb-3 relative">
-            <img src="${avatarUrl}" 
-                 onerror="this.onerror=null; this.src='https://github.com/${username}.png?size=128'"
-                 onload="console.log('Avatar loaded for ${username}')"
-                 class="w-16 h-16 rounded-xl mx-auto border-2 ${isDefault ? 'border-emerald-400' : 'border-teal-400'} shadow-xl object-cover bg-gray-800"
-                 alt="@${username}">
-        </div>
-        <h3 class="font-bold text-white text-sm">@${username}</h3>
-        <div class="text-xs ${labelColor} mt-1">${labelText}</div>
-    `;
+    // Create avatar container
+    const avatarContainer = document.createElement('div');
+    avatarContainer.className = 'avatar-container mb-3 relative';
+    
+    // Create avatar image with fallbacks
+    const avatarImg = createAvatarImage(username, isDefault);
+    avatarContainer.appendChild(avatarImg);
+    
+    // Create text elements
+    const nameElement = document.createElement('h3');
+    nameElement.className = 'font-bold text-white text-sm';
+    nameElement.textContent = `@${username}`;
+    
+    const labelElement = document.createElement('div');
+    labelElement.className = `text-xs ${labelColor} mt-1`;
+    labelElement.textContent = labelText;
+    
+    // Assemble card
+    card.appendChild(avatarContainer);
+    card.appendChild(nameElement);
+    card.appendChild(labelElement);
     
     return card;
 }
@@ -479,25 +510,40 @@ usernameInput.addEventListener('keypress', (e) => {
 
 // Initialize app
 async function init(){
-    console.log('Initializing app...');
+    console.log('🚀 Initializing Plasma Hall of Fame...');
     
     // Always show default users first in their own section
+    console.log('📋 Loading default users...');
     showDefaultUsers();
     
     // Check server connection
+    console.log('🔗 Checking server connection...');
     const connected = await checkConnection();
     
     // If connected, try to load server users in submissions section
     if (connected) {
+        console.log('✅ Server connected - loading submissions...');
         await loadUsers();
     } else {
+        console.log('❌ Server offline');
         userCount.textContent = 'Server offline - Submit to join when back online!';
     }
     
     // Set music volume
     bgMusic.volume = 0.3;
     
-    console.log('App initialized');
+    // Add test button for debugging (temporary)
+    console.log('🎯 Adding test submission for debugging...');
+    setTimeout(() => {
+        console.log('🧪 Testing submission system...');
+        // This will test if submissions work
+        const testCard = addUserCard('testuser123', true, false);
+        if (testCard) {
+            console.log('✅ Card creation working');
+        }
+    }, 2000);
+    
+    console.log('✨ App initialized successfully!');
 }
 
 // Start the app
