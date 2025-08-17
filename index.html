@@ -83,6 +83,7 @@
 
 <!-- Script -->
 <script>
+// Force HTTP for testing
 const API_BASE = 'http://162.250.191.81:4000';
 const usernameInput = document.getElementById('usernameInput');
 const submitBtn = document.getElementById('submitBtn');
@@ -105,10 +106,36 @@ musicToggle.addEventListener('click', async () => {
 // Check VPS connection
 async function checkConnection(){
     try {
-        const res = await fetch(`${API_BASE}/`);
-        if(res.ok){ connectionStatus.innerHTML='<span class="text-green-400">✅ Connected</span>'; return true;}
-        else throw new Error('Server error');
-    } catch(e){ connectionStatus.innerHTML='<span class="text-red-400">❌ Server offline</span>'; return false;}
+        console.log('Trying to connect to:', `${API_BASE}/`);
+        
+        // Try fetch with different options
+        const res = await fetch(`${API_BASE}/`, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        console.log('Response status:', res.status);
+        if(res.ok){ 
+            const data = await res.json();
+            console.log('Response data:', data);
+            connectionStatus.innerHTML='<span class="text-green-400">✅ Connected</span>'; 
+            return true;
+        }
+        else throw new Error(`Server responded with ${res.status}`);
+    } catch(e){ 
+        console.error('Connection error details:', e);
+        
+        // Show more specific error
+        if (e.name === 'TypeError' && e.message.includes('fetch')) {
+            connectionStatus.innerHTML=`<span class="text-red-400">❌ Network Error - Check CORS/HTTPS</span>`;
+        } else {
+            connectionStatus.innerHTML=`<span class="text-red-400">❌ ${e.message}</span>`; 
+        }
+        return false;
+    }
 }
 
 // Load users
@@ -141,9 +168,25 @@ async function saveUser(username){
 function addUserCard(username,animate=true){
     const card = document.createElement('div');
     card.className=`user-card bg-gradient-to-br from-purple-600/30 to-pink-600/30 backdrop-blur-sm rounded-2xl p-4 border border-purple-500/40 text-center ${animate?'pulse-ring':''}`;
+    
+    // Try multiple avatar sources
+    const avatarSources = [
+        `https://unavatar.io/twitter/${username}`,
+        `https://github.com/${username}.png`,
+        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`
+    ];
+    
+    let currentIndex = 0;
+    const tryNextAvatar = (img) => {
+        if (currentIndex < avatarSources.length - 1) {
+            currentIndex++;
+            img.src = avatarSources[currentIndex];
+        }
+    };
+    
     card.innerHTML=`
         <div class="mb-3 relative">
-            <img src="https://unavatar.io/twitter/${username}" onerror="this.src='plasma.jpg'" class="w-16 h-16 rounded-full mx-auto border-3 border-purple-400 shadow-xl">
+            <img src="${avatarSources[0]}" onerror="tryNextAvatar(this)" class="w-16 h-16 rounded-full mx-auto border-3 border-purple-400 shadow-xl">
         </div>
         <h3 class="font-bold text-white">@${username}</h3>
     `;
