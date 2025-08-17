@@ -46,14 +46,14 @@
     <!-- Default Users Section -->
     <div class="mb-8">
         <h3 class="text-2xl text-emerald-300 font-bold text-center mb-4">🌟 Plasma Legends 🌟</h3>
-        <div id="defaultUsers" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-6xl mx-auto mb-6"></div>
+        <div id="defaultUsers" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto mb-6"></div>
     </div>
     
     <!-- Recent Submissions Section -->
     <div class="bg-black/20 backdrop-blur-md rounded-3xl p-6 border border-teal-500/50 max-w-6xl mx-auto">
         <h3 class="text-2xl text-teal-300 font-bold text-center mb-4">⚡ Recent Submissions ⚡</h3>
         <p id="userCount" class="text-gray-400 text-center mb-4">Loading submissions...</p>
-        <div id="hallOfFame" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
+        <div id="hallOfFame" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
     </div>
 </div>
 
@@ -207,6 +207,17 @@
     from { box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); } 
     to { box-shadow: 0 0 30px rgba(52, 211, 153, 0.8); }
 }
+
+.avatar-loading {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
 </style>
 
 <!-- Script -->
@@ -245,52 +256,92 @@ musicToggle.addEventListener('click', async () => {
     }
 });
 
-// Default users to show if server is unavailable
+// Updated default users - including your requested additions
 const defaultUsers = [
-    'proofofnathan', 'scene999'
+    'proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax'
 ];
 
-// Improved avatar function with multiple fallbacks
-function getTwitterAvatar(username) {
-    // Create multiple fallback URLs in order of preference
-    const fallbacks = [
-        `https://unavatar.io/twitter/${username}`,
-        `https://unavatar.io/github/${username}`, 
-        `https://github.com/${username}.png?size=128`,
-        `https://avatars.dicebear.com/api/personas/${username}.svg?background=%23059669`,
-        `https://ui-avatars.com/api/?name=${username}&background=059669&color=fff&size=128&font-size=0.5&bold=true`
+// Generate a hash from username for consistent colors
+function getUserColor(username) {
+    let hash = 0;
+    for (let i = 0; i < username.length; i++) {
+        const char = username.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32-bit integer
+    }
+    
+    const colors = [
+        '#059669', '#0d9488', '#0891b2', '#0284c7', '#7c3aed', 
+        '#c026d3', '#e11d48', '#ea580c', '#ca8a04', '#65a30d'
     ];
     
-    return fallbacks[0]; // Primary URL
+    return colors[Math.abs(hash) % colors.length];
 }
 
-// Create image element with cascading fallbacks
+// Enhanced avatar system with multiple reliable fallbacks
 function createAvatarImage(username, isDefault = false) {
-    const img = document.createElement('img');
-    img.className = `w-16 h-16 rounded-xl mx-auto border-2 ${isDefault ? 'border-emerald-400' : 'border-teal-400'} shadow-xl object-cover bg-gray-800`;
-    img.alt = `@${username}`;
+    console.log(`🔄 Creating avatar for ${username} (${isDefault ? 'Legend' : 'Submission'})`);
     
+    const img = document.createElement('img');
+    const borderColor = isDefault ? 'border-emerald-400' : 'border-teal-400';
+    img.className = `w-16 h-16 rounded-xl mx-auto border-2 ${borderColor} shadow-xl object-cover bg-gray-800 avatar-loading`;
+    img.alt = `@${username}`;
+    img.loading = 'lazy';
+    
+    // Enhanced fallback chain with more reliable services
+    const userColor = getUserColor(username);
     const fallbacks = [
-        `https://unavatar.io/twitter/${username}`,
+        // Try multiple X/Twitter endpoints
+        `https://unavatar.io/x/${username}?fallback=false`,
+        `https://unavatar.io/twitter/${username}?fallback=false`, 
+        // GitHub (many Twitter users have same username on GitHub)
+        `https://avatars.githubusercontent.com/${username}?size=128`,
         `https://github.com/${username}.png?size=128`,
-        `https://avatars.dicebear.com/api/personas/${username}.svg?background=%23059669`,
-        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=059669&color=fff&size=128&font-size=0.6&bold=true`
+        // Reliable generated avatars
+        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&backgroundColor=${userColor.replace('#', '')}&radius=20`,
+        `https://api.dicebear.com/7.x/initials/svg?seed=${username}&backgroundColor=${userColor.replace('#', '')}&fontSize=40`,
+        // Final fallback - guaranteed to work
+        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=${userColor.replace('#', '')}&color=fff&size=128&font-size=0.6&bold=true&rounded=true`
     ];
     
     let currentIndex = 0;
+    let loadTimeout;
     
     const tryNextFallback = () => {
         if (currentIndex < fallbacks.length) {
-            console.log(`Trying avatar ${currentIndex + 1}/${fallbacks.length} for ${username}: ${fallbacks[currentIndex]}`);
-            img.src = fallbacks[currentIndex];
+            const currentUrl = fallbacks[currentIndex];
+            console.log(`  📡 Trying method ${currentIndex + 1}/${fallbacks.length}: ${currentUrl.split('?')[0]}`);
+            
+            // Clear any existing timeout
+            if (loadTimeout) clearTimeout(loadTimeout);
+            
+            // Set a timeout for each attempt (3 seconds)
+            loadTimeout = setTimeout(() => {
+                console.log(`  ⏰ Timeout for ${username} method ${currentIndex + 1}`);
+                currentIndex++;
+                tryNextFallback();
+            }, 3000);
+            
+            img.src = currentUrl;
             currentIndex++;
+        } else {
+            console.log(`  ❌ All methods failed for ${username}`);
         }
     };
     
-    img.onerror = tryNextFallback;
-    img.onload = () => console.log(`Avatar loaded successfully for ${username}`);
+    img.onload = () => {
+        if (loadTimeout) clearTimeout(loadTimeout);
+        img.classList.remove('avatar-loading');
+        console.log(`  ✅ Avatar loaded for ${username} using method ${currentIndex}`);
+    };
     
-    // Start with first URL
+    img.onerror = (e) => {
+        if (loadTimeout) clearTimeout(loadTimeout);
+        console.log(`  ❌ Method ${currentIndex} failed for ${username}:`, e);
+        tryNextFallback();
+    };
+    
+    // Start the fallback chain
     tryNextFallback();
     
     return img;
@@ -299,9 +350,9 @@ function createAvatarImage(username, isDefault = false) {
 // Check VPS connection
 async function checkConnection(){
     try {
-        console.log('Checking connection...');
+        console.log('🔗 Checking server connection...');
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
         
         const res = await fetch(`${API_GET}/`, {
             method: 'GET',
@@ -315,22 +366,22 @@ async function checkConnection(){
         
         if(res.ok){ 
             const data = await res.json();
-            console.log('Connection successful:', data);
+            console.log('✅ Connection successful:', data);
             connectionStatus.innerHTML='<span class="text-green-400">✅ Connected to Server</span>'; 
             return true;
         } else {
             throw new Error(`Server responded with ${res.status}`);
         }
     } catch(e){ 
-        console.error('Connection failed:', e);
+        console.error('❌ Connection failed:', e);
         connectionStatus.innerHTML=`<span class="text-red-400">❌ Server Offline - Showing Defaults</span>`; 
         return false;
     }
 }
 
-// Add user card with improved avatar handling
-function addUserCard(username, animate=true, isDefault=false){
-    console.log('Creating card for:', username, isDefault ? '(Legend)' : '(Submission)');
+// Enhanced card creation with better structure
+function createUserCard(username, isDefault = false, animate = true) {
+    console.log(`🎯 Creating card for: ${username} (${isDefault ? 'Legend' : 'Submission'})`);
     
     const card = document.createElement('div');
     const cardClass = isDefault ? 
@@ -339,52 +390,45 @@ function addUserCard(username, animate=true, isDefault=false){
     
     card.className = `${cardClass} ${animate ? 'pulse-ring' : ''}`;
     
-    const labelText = isDefault ? 'Plasma Legend' : 'Digital Warrior';
-    const labelColor = isDefault ? 'text-emerald-300' : 'text-teal-300';
-    
-    // Create avatar container
-    const avatarContainer = document.createElement('div');
-    avatarContainer.className = 'avatar-container mb-3 relative';
-    
-    // Create avatar image with fallbacks
+    // Create avatar with enhanced fallback system
     const avatarImg = createAvatarImage(username, isDefault);
-    avatarContainer.appendChild(avatarImg);
     
     // Create text elements
     const nameElement = document.createElement('h3');
-    nameElement.className = 'font-bold text-white text-sm';
+    nameElement.className = 'font-bold text-white text-sm mt-3';
     nameElement.textContent = `@${username}`;
     
     const labelElement = document.createElement('div');
+    const labelText = isDefault ? 'Plasma Legend' : 'Digital Warrior';
+    const labelColor = isDefault ? 'text-emerald-300' : 'text-teal-300';
     labelElement.className = `text-xs ${labelColor} mt-1`;
     labelElement.textContent = labelText;
     
     // Assemble card
-    card.appendChild(avatarContainer);
+    card.appendChild(avatarImg);
     card.appendChild(nameElement);
     card.appendChild(labelElement);
     
     return card;
 }
 
-// Show default users in their own section - FIXED
+// Show default users (Legends)
 function showDefaultUsers() {
-    console.log('Showing default users:', defaultUsers);
+    console.log('🌟 Loading Plasma Legends...');
     defaultUsersElement.innerHTML = '';
     
     defaultUsers.forEach((username, i) => {
-        console.log(`Adding default user ${i + 1}: ${username}`);
         setTimeout(() => {
-            const card = addUserCard(username, true, true);
+            console.log(`  📤 Adding Legend ${i + 1}/${defaultUsers.length}: ${username}`);
+            const card = createUserCard(username, true, true);
             defaultUsersElement.appendChild(card);
-            console.log(`Default user ${username} added to DOM`);
-        }, i * 300);
+        }, i * 200); // Staggered animation
     });
 }
 
 // Load users from server
 async function loadUsers(){
-    console.log('Loading users from server...');
+    console.log('📡 Loading server submissions...');
     userCount.textContent = 'Loading submissions...';
     
     try {
@@ -399,37 +443,37 @@ async function loadUsers(){
         
         if(res.ok){
             const users = await res.json();
-            console.log('Loaded users:', users);
+            console.log('✅ Server users loaded:', users);
             
-            // Don't clear existing users, just add new ones
             if(users.length === 0) { 
                 userCount.textContent = 'No submissions yet - Be the first!';
                 return; 
             }
             
-            // Show all server users in submissions section - FIXED
-            hallOfFame.innerHTML = ''; // Clear first
+            // Clear and show server users
+            hallOfFame.innerHTML = '';
             users.forEach((username, i) => {
-                console.log(`Adding server user ${i + 1}: ${username}`);
                 setTimeout(() => {
-                    const card = addUserCard(username, true, false);
+                    console.log(`  📤 Adding server user ${i + 1}/${users.length}: ${username}`);
+                    const card = createUserCard(username, false, true);
                     hallOfFame.appendChild(card);
-                    console.log(`Server user ${username} added to DOM`);
-                }, i * 150);
+                }, i * 100);
             });
-            userCount.textContent = `${users.length} submissions and growing!`;
+            
+            userCount.textContent = `${users.length} digital warriors and growing!`;
         } else {
             throw new Error(`Failed to load users: ${res.status}`);
         }
     } catch(e){ 
-        console.error('Failed to load users:', e);
+        console.error('❌ Failed to load server users:', e);
         userCount.textContent = 'Server offline - Submit to join when back online!';
     }
 }
 
-// Save user to server
+// Save user to server and display immediately
 async function saveUser(username){
-    console.log('Saving user:', username);
+    console.log('💾 Saving user to server:', username);
+    
     try {
         const res = await fetch(`${VPS_DIRECT}/users`, {
             method: 'POST',
@@ -441,59 +485,66 @@ async function saveUser(username){
         
         if (res.ok) {
             const result = await res.json();
-            console.log('User saved successfully:', result);
-            
-            // Add user to submissions section immediately - FIXED
-            const card = addUserCard(username, true, false);
-            hallOfFame.appendChild(card);
-            console.log(`New user ${username} added to submissions`);
-            
-            // Update count
-            const currentCount = hallOfFame.children.length;
-            userCount.textContent = `${currentCount} submissions and growing!`;
-            
-            return result;
+            console.log('✅ User saved to server:', result);
         } else {
-            throw new Error(`Failed to save user: ${res.status}`);
+            console.log('⚠️ Server save failed, adding locally only');
         }
     } catch(e){ 
-        console.error('Error saving user:', e);
-        // Add user locally even if server save fails - FIXED
-        const card = addUserCard(username, true, false);
-        hallOfFame.appendChild(card);
-        console.log(`User ${username} added locally (offline mode)`);
-        
-        const currentCount = hallOfFame.children.length;
-        userCount.textContent = `${currentCount} submissions (offline mode)`;
-        return null;
+        console.error('❌ Error saving to server:', e);
+        console.log('💻 Adding user locally (offline mode)');
     }
+    
+    // Always add user to UI immediately, regardless of server success
+    console.log('🎯 Adding user to UI:', username);
+    const card = createUserCard(username, false, true);
+    hallOfFame.appendChild(card);
+    
+    // Update count
+    const currentCount = hallOfFame.children.length;
+    userCount.textContent = `${currentCount} digital warriors and growing!`;
+    
+    return true;
 }
 
-// Submit handler
+// Enhanced submit handler
 submitBtn.addEventListener('click', async () => {
-    const username = usernameInput.value.trim().replace('@','');
+    const username = usernameInput.value.trim().replace('@','').replace(/[^a-zA-Z0-9_]/g, '');
+    
     if(!username){ 
-        alert('Please enter a username'); 
+        alert('Please enter a valid username'); 
+        return;
+    }
+    
+    // Check if user already exists
+    const existingCards = [...defaultUsersElement.children, ...hallOfFame.children];
+    const exists = existingCards.some(card => {
+        const nameEl = card.querySelector('h3');
+        return nameEl && nameEl.textContent === `@${username}`;
+    });
+    
+    if (exists) {
+        alert('This user is already on the wall!');
         return;
     }
     
     submitBtn.disabled = true; 
-    submitBtn.textContent = 'Joining...';
+    submitBtn.textContent = 'Joining the Plasma...';
     
-    console.log('Submitting username:', username);
+    console.log('🚀 Processing submission:', username);
     
     try {
         await saveUser(username);
         usernameInput.value = '';
-        connectionStatus.innerHTML = '<span class="text-green-400">✅ Added to Plasma Wall!</span>';
+        connectionStatus.innerHTML = '<span class="text-green-400">⚡ Welcome to the Plasma Wall!</span>';
+        
         setTimeout(() => {
-            const connected = connectionStatus.innerHTML.includes('Connected');
-            connectionStatus.innerHTML = connected ? 
+            connectionStatus.innerHTML = connectionStatus.innerHTML.includes('Connected') ? 
                 '<span class="text-green-400">✅ Connected to Server</span>' : 
                 '<span class="text-red-400">❌ Server Offline - Showing Defaults</span>';
-        }, 2000);
+        }, 3000);
+        
     } catch (e) {
-        console.error('Submit error:', e);
+        console.error('❌ Submit error:', e);
         connectionStatus.innerHTML = '<span class="text-red-400">❌ Failed to Add User</span>';
     }
     
@@ -508,45 +559,36 @@ usernameInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Initialize app
+// Initialize application
 async function init(){
-    console.log('🚀 Initializing Plasma Hall of Fame...');
+    console.log('🚀 Initializing Plasma Hall of Fame v2.0...');
+    console.log('👥 Default users (Legends):', defaultUsers);
     
-    // Always show default users first in their own section
-    console.log('📋 Loading default users...');
+    // Show legends immediately
+    console.log('📋 Displaying Plasma Legends...');
     showDefaultUsers();
     
     // Check server connection
-    console.log('🔗 Checking server connection...');
     const connected = await checkConnection();
     
-    // If connected, try to load server users in submissions section
+    // Load server users if connected
     if (connected) {
-        console.log('✅ Server connected - loading submissions...');
+        console.log('🌐 Server online - loading submissions...');
         await loadUsers();
     } else {
-        console.log('❌ Server offline');
+        console.log('💻 Offline mode - server submissions unavailable');
         userCount.textContent = 'Server offline - Submit to join when back online!';
     }
     
-    // Set music volume
+    // Set audio volume
     bgMusic.volume = 0.3;
     
-    // Add test button for debugging (temporary)
-    console.log('🎯 Adding test submission for debugging...');
-    setTimeout(() => {
-        console.log('🧪 Testing submission system...');
-        // This will test if submissions work
-        const testCard = addUserCard('testuser123', true, false);
-        if (testCard) {
-            console.log('✅ Card creation working');
-        }
-    }, 2000);
-    
-    console.log('✨ App initialized successfully!');
+    console.log('✨ Plasma Hall of Fame ready!');
+    console.log('🎯 Users can now submit their Twitter usernames');
+    console.log('🔧 Check console for avatar loading details');
 }
 
-// Start the app
+// Start the application
 init();
 </script>
 
