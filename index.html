@@ -8,24 +8,14 @@
 </head>
 <body class="min-h-screen text-white overflow-hidden relative" style="background: linear-gradient(135deg, #1a3b2e, #0f2922, #1a3b2e);">
 
-<!-- Enhanced Interstellar Background -->
+<!-- Interstellar Background -->
 <div class="absolute inset-0 overflow-hidden">
-    <!-- Main spinning portal -->
+    <!-- Main spinning circle like your image -->
     <div class="spinning-portal absolute inset-0 flex items-center justify-center">
         <div class="interstellar-ring"></div>
-        <div class="inner-ring"></div>
     </div>
-    <!-- Floating energy particles -->
-    <div class="energy-particles absolute inset-0"></div>
-    <!-- Pulsing orbs -->
-    <div class="floating-orbs absolute inset-0">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-        <div class="orb orb-4"></div>
-    </div>
-    <!-- Moving grid -->
-    <div class="cyber-grid absolute inset-0"></div>
+    <!-- Floating particles -->
+    <div class="space-particles absolute inset-0"></div>
 </div>
 
 <!-- Audio -->
@@ -35,65 +25,65 @@
     <source src="./music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Header with glow effect -->
+<!-- Header -->
 <header class="relative z-10 text-center py-6">
-    <h1 class="text-4xl font-bold text-white mb-4 glow-text animate-pulse">
+    <h1 class="text-4xl font-bold text-white mb-4">
         Submit your X handle. Join Plasma Wall
     </h1>
 </header>
 
-<!-- Enhanced Input Section -->
+<!-- Input Section -->
 <div class="relative z-10 flex flex-col items-center justify-center px-4 mb-8">
-    <div class="input-container flex items-center gap-4 max-w-4xl w-full">
+    <div class="flex items-center gap-4 max-w-4xl w-full">
         <input 
             type="text" 
             id="usernameInput" 
             placeholder="@handle" 
-            class="flex-1 px-6 py-4 rounded-full text-gray-900 bg-white/90 focus:outline-none focus:ring-2 focus:ring-green-400 text-lg backdrop-blur-sm glow-input transition-all duration-300"
+            class="flex-1 px-6 py-4 rounded-full text-gray-900 bg-white/90 focus:outline-none focus:ring-2 focus:ring-green-400 text-lg backdrop-blur-sm"
         >
         <button 
             id="submitBtn" 
-            class="px-8 py-4 bg-green-600 hover:bg-green-700 rounded-full font-bold transition-all duration-300 text-lg glow-button transform hover:scale-105"
+            class="px-8 py-4 bg-green-600 hover:bg-green-700 rounded-full font-bold transition-colors text-lg"
         >
             Submit
         </button>
     </div>
     <button 
         id="musicToggle" 
-        class="mt-4 px-8 py-3 bg-green-800 hover:bg-green-900 rounded-full font-medium transition-all duration-300 pulse-button"
+        class="mt-4 px-8 py-3 bg-green-800 hover:bg-green-900 rounded-full font-medium transition-colors"
     >
         🎵 Play Music
     </button>
     <div id="connectionStatus" class="mt-4 text-center text-green-300">Ready to submit</div>
 </div>
 
-<!-- Enhanced Moving Wall Container -->
+<!-- Moving Wall Container -->
 <div class="relative z-10 px-4 pb-8">
-    <div class="wall-container bg-black/40 backdrop-blur-md rounded-3xl p-8 border border-green-500/30 max-w-7xl mx-auto overflow-hidden">
-        <div id="userCount" class="text-center text-green-200 mb-6 pulse-text">Loading users...</div>
+    <div class="bg-black/40 backdrop-blur-md rounded-3xl p-8 border border-green-500/30 max-w-7xl mx-auto overflow-hidden">
+        <div id="userCount" class="text-center text-green-200 mb-6">Loading users...</div>
         
-        <!-- Moving Wall with enhanced animations -->
+        <!-- Moving Wall -->
         <div class="moving-wall-container relative h-96 overflow-hidden">
-            <div id="movingWall" class="moving-wall absolute top-0 left-0 flex flex-wrap gap-4"></div>
+            <div id="movingWall" class="moving-wall absolute top-0 left-0 flex flex-wrap gap-4 animate-move"></div>
         </div>
         
-        <div class="text-center mt-6 text-sm text-green-400 fade-in">Built by @seumcoded</div>
+        <div class="text-center mt-6 text-sm text-green-400">Built by @seumcoded</div>
     </div>
 </div>
 
-<!-- Enhanced Styles -->
+<!-- Styles -->
 <style>
-/* Enhanced Interstellar Effects */
+/* Interstellar spinning ring */
 .spinning-portal {
     pointer-events: none;
 }
 
 .interstellar-ring {
-    width: 500px;
-    height: 500px;
+    width: 400px;
+    height: 400px;
     position: relative;
-    animation: spinPortal 15s linear infinite;
-    opacity: 0.4;
+    animation: spinPortal 20s linear infinite;
+    opacity: 0.3;
 }
 
 .interstellar-ring::before {
@@ -103,67 +93,34 @@
     background: conic-gradient(
         from 0deg,
         transparent 0deg,
-        #22c55e 8deg,
-        transparent 16deg,
-        transparent 24deg,
-        #16a34a 32deg,
-        transparent 40deg,
-        transparent 48deg,
-        #22c55e 56deg,
-        transparent 64deg,
-        transparent 72deg,
-        #15803d 80deg,
-        transparent 88deg,
-        transparent 96deg,
-        #22c55e 104deg,
-        transparent 112deg,
+        #22c55e 15deg,
+        transparent 30deg,
+        transparent 45deg,
+        #16a34a 60deg,
+        transparent 75deg,
+        transparent 90deg,
+        #22c55e 105deg,
         transparent 120deg,
-        #16a34a 128deg,
-        transparent 136deg,
-        transparent 144deg,
-        #22c55e 152deg,
-        transparent 160deg,
-        transparent 168deg,
-        #15803d 176deg,
-        transparent 184deg,
-        transparent 192deg,
-        #22c55e 200deg,
-        transparent 208deg,
-        transparent 216deg,
-        #16a34a 224deg,
-        transparent 232deg,
-        transparent 240deg,
-        #22c55e 248deg,
-        transparent 256deg,
-        transparent 264deg,
-        #15803d 272deg,
-        transparent 280deg,
-        transparent 288deg,
-        #22c55e 296deg,
-        transparent 304deg,
-        transparent 312deg,
-        #16a34a 320deg,
-        transparent 328deg,
-        transparent 336deg,
-        #22c55e 344deg,
-        transparent 352deg,
+        transparent 135deg,
+        #15803d 150deg,
+        transparent 165deg,
+        transparent 180deg,
+        #22c55e 195deg,
+        transparent 210deg,
+        transparent 225deg,
+        #16a34a 240deg,
+        transparent 255deg,
+        transparent 270deg,
+        #22c55e 285deg,
+        transparent 300deg,
+        transparent 315deg,
+        #15803d 330deg,
+        transparent 345deg,
         transparent 360deg
     );
     border-radius: 50%;
-    mask: radial-gradient(circle, transparent 35%, black 36%, black 65%, transparent 66%);
-    -webkit-mask: radial-gradient(circle, transparent 35%, black 36%, black 65%, transparent 66%);
-}
-
-.inner-ring {
-    width: 200px;
-    height: 200px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 2px solid rgba(34, 197, 94, 0.3);
-    border-radius: 50%;
-    animation: spinPortalReverse 10s linear infinite;
+    mask: radial-gradient(circle, transparent 30%, black 31%, black 70%, transparent 71%);
+    -webkit-mask: radial-gradient(circle, transparent 30%, black 31%, black 70%, transparent 71%);
 }
 
 @keyframes spinPortal {
@@ -171,165 +128,36 @@
     to { transform: rotate(360deg); }
 }
 
-@keyframes spinPortalReverse {
-    from { transform: translate(-50%, -50%) rotate(360deg); }
-    to { transform: translate(-50%, -50%) rotate(0deg); }
-}
-
-/* Energy particles */
-.energy-particles {
+/* Space particles */
+.space-particles {
     background-image: 
-        radial-gradient(3px 3px at 100px 150px, #22c55e, transparent),
-        radial-gradient(2px 2px at 300px 80px, rgba(34, 197, 94, 0.8), transparent),
-        radial-gradient(2px 2px at 500px 200px, #16a34a, transparent),
-        radial-gradient(1px 1px at 200px 300px, rgba(21, 128, 61, 0.9), transparent),
-        radial-gradient(2px 2px at 700px 100px, #22c55e, transparent),
-        radial-gradient(1px 1px at 150px 400px, rgba(34, 197, 94, 0.7), transparent);
+        radial-gradient(2px 2px at 100px 150px, #22c55e, transparent),
+        radial-gradient(1px 1px at 300px 80px, rgba(34, 197, 94, 0.8), transparent),
+        radial-gradient(1px 1px at 500px 200px, #16a34a, transparent),
+        radial-gradient(1px 1px at 200px 300px, rgba(21, 128, 61, 0.6), transparent);
     background-repeat: repeat;
-    background-size: 800px 500px, 600px 400px, 700px 450px, 500px 350px, 900px 600px, 400px 300px;
-    animation: energyFloat 25s linear infinite;
-    opacity: 0.8;
+    background-size: 600px 400px, 400px 300px, 500px 350px, 300px 250px;
+    animation: particleFloat 30s linear infinite;
+    opacity: 0.7;
 }
 
-@keyframes energyFloat {
+@keyframes particleFloat {
     0% { transform: translateX(0) translateY(0); }
-    25% { transform: translateX(-80px) translateY(-40px); }
-    50% { transform: translateX(-160px) translateY(30px); }
-    75% { transform: translateX(-40px) translateY(-60px); }
+    25% { transform: translateX(-50px) translateY(-30px); }
+    50% { transform: translateX(-100px) translateY(20px); }
+    75% { transform: translateX(-30px) translateY(-50px); }
     100% { transform: translateX(0) translateY(0); }
 }
 
-/* Floating orbs */
-.floating-orbs {
-    pointer-events: none;
-}
-
-.orb {
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(34, 197, 94, 0.8), rgba(34, 197, 94, 0.2), transparent);
-    animation: floatOrb 8s ease-in-out infinite;
-}
-
-.orb-1 {
-    width: 20px;
-    height: 20px;
-    top: 20%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.orb-2 {
-    width: 15px;
-    height: 15px;
-    top: 60%;
-    right: 15%;
-    animation-delay: -2s;
-}
-
-.orb-3 {
-    width: 25px;
-    height: 25px;
-    bottom: 30%;
-    left: 20%;
-    animation-delay: -4s;
-}
-
-.orb-4 {
-    width: 18px;
-    height: 18px;
-    top: 40%;
-    right: 25%;
-    animation-delay: -6s;
-}
-
-@keyframes floatOrb {
-    0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; }
-    25% { transform: translateY(-30px) scale(1.1); opacity: 1; }
-    50% { transform: translateY(-60px) scale(0.9); opacity: 0.6; }
-    75% { transform: translateY(-20px) scale(1.05); opacity: 0.9; }
-}
-
-/* Cyber grid */
-.cyber-grid {
-    background-image: 
-        linear-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34, 197, 94, 0.1) 1px, transparent 1px);
-    background-size: 100px 100px;
-    animation: gridMove 20s linear infinite;
-    opacity: 0.3;
-}
-
-@keyframes gridMove {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(100px, 100px); }
-}
-
-/* Enhanced Text Effects */
-.glow-text {
-    text-shadow: 0 0 10px rgba(34, 197, 94, 0.5), 0 0 20px rgba(34, 197, 94, 0.3);
-}
-
-.pulse-text {
-    animation: pulseGlow 2s ease-in-out infinite alternate;
-}
-
-@keyframes pulseGlow {
-    from { text-shadow: 0 0 5px rgba(34, 197, 94, 0.5); }
-    to { text-shadow: 0 0 15px rgba(34, 197, 94, 0.8); }
-}
-
-/* Enhanced Input Effects */
-.input-container {
-    animation: slideInFromTop 1s ease-out;
-}
-
-@keyframes slideInFromTop {
-    from { transform: translateY(-50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-.glow-input:focus {
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
-}
-
-.glow-button {
-    box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
-}
-
-.glow-button:hover {
-    box-shadow: 0 0 25px rgba(34, 197, 94, 0.5);
-}
-
-.pulse-button {
-    animation: buttonPulse 3s ease-in-out infinite;
-}
-
-@keyframes buttonPulse {
-    0%, 100% { box-shadow: 0 0 10px rgba(34, 197, 94, 0.3); }
-    50% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.6); }
-}
-
-/* Enhanced Wall Container */
-.wall-container {
-    animation: slideInFromBottom 1.2s ease-out;
-    box-shadow: 0 0 30px rgba(34, 197, 94, 0.2);
-}
-
-@keyframes slideInFromBottom {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-/* Enhanced Moving Wall */
+/* Moving Wall Animation */
 .moving-wall-container {
-    mask: linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%);
-    -webkit-mask: linear-gradient(90deg, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
 }
 
 .moving-wall {
     width: max-content;
-    animation: slideWall 80s linear infinite;
+    animation: slideWall 60s linear infinite;
 }
 
 @keyframes slideWall {
@@ -337,23 +165,16 @@
     to { transform: translateX(-50%); }
 }
 
-/* Enhanced User Cards */
 .user-card {
     flex-shrink: 0;
-    width: 130px;
-    height: 130px;
+    width: 120px;
+    height: 120px;
     position: relative;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    animation: cardSlideIn 0.8s ease-out;
-}
-
-@keyframes cardSlideIn {
-    from { transform: scale(0.5) rotate(10deg); opacity: 0; }
-    to { transform: scale(1) rotate(0deg); opacity: 1; }
+    transition: transform 0.3s ease;
 }
 
 .user-card:hover {
-    transform: scale(1.2) translateY(-10px) rotate(2deg);
+    transform: scale(1.15) translateY(-8px);
     z-index: 10;
 }
 
@@ -361,114 +182,63 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 15px;
-    border: 4px solid rgba(34, 197, 94, 0.8);
-    box-shadow: 0 0 25px rgba(34, 197, 94, 0.4);
-    transition: all 0.3s ease;
-}
-
-.user-card:hover .profile-img {
-    border-color: rgba(34, 197, 94, 1);
-    box-shadow: 0 0 35px rgba(34, 197, 94, 0.7);
-    filter: brightness(1.1);
+    border-radius: 12px;
+    border: 3px solid rgba(34, 197, 94, 0.8);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
 }
 
 .username-overlay {
     position: absolute;
-    bottom: -8px;
+    bottom: -5px;
     left: 0;
     right: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(21, 128, 61, 0.8));
+    background: rgba(0,0,0,0.9);
     color: #22c55e;
     text-align: center;
-    padding: 6px;
-    font-size: 12px;
+    padding: 4px;
+    font-size: 11px;
     font-weight: bold;
-    border-radius: 0 0 15px 15px;
-    border: 2px solid rgba(34, 197, 94, 0.6);
-    backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
+    border-radius: 0 0 12px 12px;
+    border: 1px solid rgba(34, 197, 94, 0.5);
 }
 
-.user-card:hover .username-overlay {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(21, 128, 61, 0.9));
-    color: white;
-    transform: translateY(-2px);
-}
-
-/* Enhanced Loading States */
 .loading-placeholder {
-    background: linear-gradient(
-        90deg, 
-        rgba(31, 41, 55, 0.8) 25%, 
-        rgba(34, 197, 94, 0.3) 50%, 
-        rgba(31, 41, 55, 0.8) 75%
-    );
+    background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
     background-size: 200% 100%;
-    animation: enhancedShimmer 2s ease-in-out infinite;
-    border-radius: 15px;
-    border: 4px solid rgba(34, 197, 94, 0.5);
-    position: relative;
+    animation: shimmer 1.5s infinite;
+    border-radius: 12px;
+    border: 3px solid rgba(34, 197, 94, 0.5);
 }
 
-.loading-placeholder::before {
-    content: '🔄';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 24px;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes enhancedShimmer {
+@keyframes shimmer {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
 
-@keyframes spin {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
 .error-avatar {
-    background: linear-gradient(135deg, #16a34a 0%, #15803d 50%, #22c55e 100%);
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
-    border-radius: 15px;
-    border: 4px solid rgba(34, 197, 94, 0.8);
-    box-shadow: 0 0 25px rgba(34, 197, 94, 0.4);
-    animation: errorPulse 2s ease-in-out infinite alternate;
-}
-
-@keyframes errorPulse {
-    from { box-shadow: 0 0 25px rgba(34, 197, 94, 0.4); }
-    to { box-shadow: 0 0 35px rgba(34, 197, 94, 0.7); }
-}
-
-.fade-in {
-    animation: fadeIn 2s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    border-radius: 12px;
+    border: 3px solid rgba(34, 197, 94, 0.8);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
 }
 </style>
 
-<!-- Enhanced Script -->
+<!-- Script -->
 <script>
 // Configuration
 const CONFIG = {
     SERVER_URL: 'http://162.250.191.81:4000',
     PROXY_URL: 'https://api.allorigins.win/raw?url=',
-    TIMEOUT: 6000
+    TIMEOUT: 8000
 };
 
+// Storage key for localStorage
 const STORAGE_KEY = 'plasma_wall_users';
 
 // DOM elements
@@ -482,13 +252,10 @@ const userCount = document.getElementById('userCount');
 
 let musicPlaying = false;
 
-// Extended default users including the new ones you requested
-const DEFAULT_USERS = [
-    'proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax',
-    'primay_eth', 'kolyposts', 'Buja_Ques', 'CATTtwit', 
-    'The9bo', 'cryptobaikan', 'ImFaziiii'
-];
+// Default users (always show these 4)
+const DEFAULT_USERS = ['proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax'];
 
+// All users array
 let allUsers = [...DEFAULT_USERS];
 
 // Enhanced localStorage functions
@@ -496,7 +263,7 @@ function saveUsersToStorage() {
     try {
         const usersToSave = allUsers.filter(user => !DEFAULT_USERS.includes(user));
         localStorage.setItem(STORAGE_KEY, JSON.stringify(usersToSave));
-        console.log('💾 Saved to localStorage:', usersToSave.length, 'users');
+        console.log('💾 Saved to localStorage:', usersToSave);
     } catch (e) {
         console.error('❌ Failed to save to localStorage:', e);
     }
@@ -507,7 +274,7 @@ function loadUsersFromStorage() {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
             const savedUsers = JSON.parse(saved);
-            console.log('📦 Loaded from localStorage:', savedUsers.length, 'users');
+            console.log('📦 Loaded from localStorage:', savedUsers);
             allUsers = [...DEFAULT_USERS, ...savedUsers];
             return savedUsers;
         }
@@ -517,7 +284,7 @@ function loadUsersFromStorage() {
     return [];
 }
 
-// Enhanced music functionality
+// Music functionality
 musicToggle.addEventListener('click', async () => {
     try {
         if (musicPlaying) { 
@@ -534,16 +301,16 @@ musicToggle.addEventListener('click', async () => {
         }
     } catch(e) { 
         console.error('❌ Audio error:', e);
-        connectionStatus.textContent = '⚠️ Music file not found';
+        connectionStatus.textContent = '⚠️ Music file not found - make sure interstellar.mp3 is in same folder';
         setTimeout(() => {
             connectionStatus.textContent = 'Ready to submit';
         }, 3000);
     }
 });
 
-// MASSIVELY Enhanced avatar loading system
+// Enhanced avatar loading with more reliable sources
 function createUserCard(username) {
-    console.log(`🖼️ Creating enhanced card for: ${username}`);
+    console.log(`🖼️ Creating card for: ${username}`);
     
     const card = document.createElement('div');
     card.className = 'user-card';
@@ -559,58 +326,23 @@ function createUserCard(username) {
     card.appendChild(img);
     card.appendChild(overlay);
     
-    // MASSIVE list of avatar sources for maximum reliability
+    // Improved avatar sources with better order
     const avatarSources = [
-        // Primary Twitter/X sources (most reliable)
+        // Twitter/X - Most reliable for Twitter users
         `https://unavatar.io/twitter/${username}?fallback=false`,
         `https://unavatar.io/x/${username}?fallback=false`,
-        
-        // Alternative Twitter services
-        `https://avatars.io/twitter/${username}?size=130`,
-        `https://twitter-avatar.vercel.app/${username}`,
-        
-        // GitHub (many Twitter users have same handle)
-        `https://avatars.githubusercontent.com/${username}?size=130`,
-        `https://github.com/${username}.png?size=130`,
-        
-        // Instagram (some users have same handle)
-        `https://unavatar.io/instagram/${username}?fallback=false`,
-        
-        // Generic avatar services
-        `https://unavatar.io/${username}?fallback=false`,
-        
-        // Generated avatars with different styles
-        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=130&backgroundColor=random`,
-        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=130&backgroundColor=random`,
-        `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}&size=130&backgroundColor=random`,
-        `https://api.dicebear.com/7.x/big-smile/svg?seed=${username}&size=130&backgroundColor=random`,
-        `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&size=130&backgroundColor=random`,
-        
-        // Robohash with different sets
-        `https://robohash.org/${username}?size=130x130&set=set1`,
-        `https://robohash.org/${username}?size=130x130&set=set2`,
-        `https://robohash.org/${username}?size=130x130&set=set3`,
-        `https://robohash.org/${username}?size=130x130&set=set4`,
-        
-        // More generated options
-        `https://api.multiavatar.com/${username}.png?apikey=free`,
-        `https://source.boringavatars.com/beam/130/${username}?colors=22c55e,16a34a,15803d,0f766e,047857`,
-        `https://source.boringavatars.com/marble/130/${username}?colors=22c55e,16a34a,15803d,0f766e,047857`,
-        `https://source.boringavatars.com/pixel/130/${username}?colors=22c55e,16a34a,15803d,0f766e,047857`,
-        
-        // UI Avatars with different backgrounds
-        `https://ui-avatars.com/api/?name=${username.charAt(0)}&background=22c55e&color=fff&size=130&bold=true&rounded=true`,
-        `https://ui-avatars.com/api/?name=${username.charAt(0)}&background=16a34a&color=fff&size=130&bold=true&rounded=true`,
-        `https://ui-avatars.com/api/?name=${username.charAt(0)}&background=15803d&color=fff&size=130&bold=true&rounded=true`,
-        
-        // Placeholder services
-        `https://via.placeholder.com/130/22c55e/ffffff?text=${username.charAt(0).toUpperCase()}`,
-        `https://dummyimage.com/130x130/22c55e/ffffff&text=${username.charAt(0).toUpperCase()}`,
-        
-        // Identicon services
-        `https://www.gravatar.com/avatar/${btoa(username)}?s=130&d=identicon`,
-        `https://www.gravatar.com/avatar/${btoa(username)}?s=130&d=retro`,
-        `https://www.gravatar.com/avatar/${btoa(username)}?s=130&d=wavatar`
+        // Alternative Twitter sources
+        `https://avatars.io/twitter/${username}`,
+        // GitHub (many Twitter users have same username)
+        `https://avatars.githubusercontent.com/${username}?size=120`,
+        `https://github.com/${username}.png?size=120`,
+        // Reliable generated sources
+        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=120&backgroundColor=random`,
+        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=120&backgroundColor=random`,
+        `https://robohash.org/${username}?size=120x120&set=set4`,
+        // Final fallbacks
+        `https://ui-avatars.com/api/?name=${username.charAt(0)}&background=16a34a&color=fff&size=120&bold=true&rounded=true`,
+        `https://via.placeholder.com/120/16a34a/ffffff?text=${username.charAt(0).toUpperCase()}`
     ];
     
     let sourceIndex = 0;
@@ -619,7 +351,8 @@ function createUserCard(username) {
     
     const tryNextSource = () => {
         if (attempts >= maxAttempts) {
-            console.log(`❌ All ${maxAttempts} sources failed for ${username}, creating letter avatar`);
+            // All sources failed - create letter avatar
+            console.log(`❌ All ${maxAttempts} sources failed for ${username}, using letter avatar`);
             card.removeChild(img);
             const letterDiv = document.createElement('div');
             letterDiv.className = 'error-avatar';
@@ -631,23 +364,20 @@ function createUserCard(username) {
         }
         
         const currentSource = avatarSources[sourceIndex];
-        console.log(`  📡 Trying source ${attempts + 1}/${maxAttempts} for ${username}: ${currentSource.split('?')[0].split('/').pop()}`);
+        console.log(`  📡 Trying source ${attempts + 1}/${maxAttempts} for ${username}: ${currentSource.split('?')[0]}`);
         
-        // Longer timeout for better loading
+        // Longer timeout for each source
         const timeout = setTimeout(() => {
             console.log(`  ⏰ Timeout for ${username} source ${attempts + 1}`);
             attempts++;
             sourceIndex = (sourceIndex + 1) % avatarSources.length;
             tryNextSource();
-        }, 6000); // 6 seconds per source
+        }, 5000);
         
         img.onload = () => {
             clearTimeout(timeout);
             img.classList.remove('loading-placeholder');
-            console.log(`  ✅ SUCCESS: Avatar loaded for ${username} from source ${attempts + 1} (${currentSource.split('?')[0].split('/').pop()})`);
-            
-            // Add success animation
-            img.style.animation = 'cardSlideIn 0.5s ease-out';
+            console.log(`  ✅ Avatar loaded for ${username} from source ${attempts + 1}`);
         };
         
         img.onerror = () => {
@@ -665,62 +395,53 @@ function createUserCard(username) {
     return card;
 }
 
-// Enhanced display function with staggered animations
+// Display users in moving wall
 function displayMovingWall() {
-    console.log('🎯 Displaying enhanced moving wall with', allUsers.length, 'users');
+    console.log('🎯 Displaying moving wall with users:', allUsers.length);
     
+    // Clear wall
     movingWall.innerHTML = '';
     
-    // Create cards with staggered timing
-    allUsers.forEach((username, index) => {
-        setTimeout(() => {
-            const card = createUserCard(username);
-            card.style.animationDelay = `${index * 0.1}s`;
-            movingWall.appendChild(card);
-        }, index * 50);
+    // Create cards for all users
+    allUsers.forEach(username => {
+        const card = createUserCard(username);
+        movingWall.appendChild(card);
     });
     
-    // Duplicate for seamless loop with delay
-    setTimeout(() => {
-        allUsers.forEach((username, index) => {
-            setTimeout(() => {
-                const card = createUserCard(username);
-                card.style.animationDelay = `${(allUsers.length + index) * 0.1}s`;
-                movingWall.appendChild(card);
-            }, index * 50);
-        });
-    }, allUsers.length * 50);
+    // Duplicate for seamless loop
+    allUsers.forEach(username => {
+        const card = createUserCard(username);
+        movingWall.appendChild(card);
+    });
     
-    userCount.textContent = `${allUsers.length} plasma warriors in the wall`;
+    userCount.textContent = `${allUsers.length} members in the Plasma Wall`;
 }
 
-// Enhanced backend save with multiple retry strategies
+// Enhanced backend save with retry logic
 async function saveToBackend(username) {
-    console.log('💾 Enhanced save attempt for:', username);
+    console.log('💾 Attempting to save to backend:', username);
     
-    const saveMethods = [
-        // Method 1: Direct CORS headers
+    const methods = [
+        // Method 1: Direct connection
         async () => {
             const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-                    'Access-Control-Allow-Headers': 'Content-Type'
+                    'Access-Control-Allow-Origin': '*'
                 },
                 body: JSON.stringify({ username }),
                 signal: AbortSignal.timeout(CONFIG.TIMEOUT)
             });
             
             if (response.ok) {
-                console.log('✅ Saved via direct connection with CORS');
+                console.log('✅ Saved via direct connection');
                 return true;
             }
-            throw new Error(`Direct CORS: ${response.status}`);
+            throw new Error(`Direct: ${response.status}`);
         },
         
-        // Method 2: AllOrigins proxy
+        // Method 2: CORS proxy
         async () => {
             const proxyUrl = `${CONFIG.PROXY_URL}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
             const response = await fetch(proxyUrl, {
@@ -731,16 +452,166 @@ async function saveToBackend(username) {
             });
             
             if (response.ok) {
-                console.log('✅ Saved via AllOrigins proxy');
+                console.log('✅ Saved via CORS proxy');
                 return true;
             }
-            throw new Error(`AllOrigins proxy: ${response.status}`);
-        },
-        
-        // Method 3: Alternative proxy
-        async () => {
-            const altProxy = `https://cors-anywhere.herokuapp.com/${CONFIG.SERVER_URL}/users`;
-            const response = await fetch(altProxy, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
+            throw new Error(`Proxy: ${response.status}`);
+        }
+    ];
+    
+    // Try each method
+    for (let i = 0; i < methods.length; i++) {
+        try {
+            console.log(`  🔄 Trying save method ${i + 1}/${methods.length}`);
+            const result = await methods[i]();
+            if (result) return true;
+        } catch (error) {
+            console.log(`  ❌ Save method ${i + 1} failed:`, error.message);
+        }
+    }
+    
+    console.error('❌ All backend save methods failed');
+    return false;
+}
+
+// Load from backend with better error handling
+async function loadFromBackend() {
+    console.log('📡 Loading users from backend...');
+    
+    const loadMethods = [
+        `${CONFIG.PROXY_URL}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`,
+        `${CONFIG.SERVER_URL}/users`
+    ];
+    
+    for (const url of loadMethods) {
+        try {
+            console.log('  🔄 Trying to load from:', url.includes('proxy') ? 'proxy' : 'direct');
+            const response = await fetch(url, {
+                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+            });
+            
+            if (response.ok) {
+                const serverUsers = await response.json();
+                console.log('✅ Loaded from backend:', serverUsers);
+                
+                // Load saved users from localStorage
+                const savedUsers = loadUsersFromStorage();
+                
+                // Combine all users (defaults + server + localStorage, no duplicates)
+                allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...savedUsers])];
+                
+                connectionStatus.textContent = '✅ Connected to server';
+                return true;
+            }
+        } catch (error) {
+            console.log('  ❌ Load method failed:', error.message);
+        }
+    }
+    
+    console.log('⚠️ Backend unavailable, using localStorage');
+    
+    // Load from localStorage only
+    loadUsersFromStorage();
+    connectionStatus.textContent = '⚠️ Offline mode - using saved data';
+    return false;
+}
+
+// Submit user with immediate persistence
+async function submitUser(username) {
+    const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
+    
+    if (!cleanUsername || cleanUsername.length < 2) {
+        alert('Please enter a valid username (at least 2 characters)');
+        return;
+    }
+    
+    if (allUsers.includes(cleanUsername)) {
+        alert('This user is already in the Plasma Wall!');
+        return;
+    }
+    
+    console.log('🚀 Processing submission:', cleanUsername);
+    
+    // Disable submit
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Adding to Plasma...';
+    connectionStatus.textContent = 'Adding user to the wall...';
+    
+    // Add immediately to local array and save to localStorage
+    allUsers.push(cleanUsername);
+    saveUsersToStorage();
+    
+    // Update wall immediately
+    displayMovingWall();
+    
+    // Try to save to backend in background
+    const saved = await saveToBackend(cleanUsername);
+    
+    if (saved) {
+        connectionStatus.textContent = '✅ Added to Plasma Wall and synced to server!';
+    } else {
+        connectionStatus.textContent = '✅ Added to Plasma Wall (saved locally, will sync when server is back)';
+    }
+    
+    // Clear input
+    usernameInput.value = '';
+    
+    // Reset button and status
+    setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit';
+        connectionStatus.textContent = saved ? '✅ Connected to server' : '⚠️ Offline mode - using saved data';
+    }, 3000);
+    
+    console.log('✨ User successfully added to Plasma Wall');
+}
+
+// Event listeners
+submitBtn.addEventListener('click', () => {
+    const username = usernameInput.value.trim();
+    if (username) {
+        submitUser(username);
+    }
+});
+
+usernameInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !submitBtn.disabled) {
+        const username = usernameInput.value.trim();
+        if (username) {
+            submitUser(username);
+        }
+    }
+});
+
+// Initialize application
+async function init() {
+    console.log('🚀 Initializing Plasma Wall...');
+    console.log('🎵 Looking for music files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
+    console.log('👥 Default users:', DEFAULT_USERS);
+    console.log('💾 Using localStorage for persistence');
+    
+    connectionStatus.textContent = 'Initializing Plasma Wall...';
+    
+    // Load users (backend + localStorage)
+    await loadFromBackend();
+    
+    // Display the moving wall
+    displayMovingWall();
+    
+    console.log('✨ Plasma Wall ready!');
+    console.log(`👥 Total users in wall: ${allUsers.length}`);
+    
+    // Final status update
+    setTimeout(() => {
+        if (connectionStatus.textContent.includes('Initializing')) {
+            connectionStatus.textContent = 'Ready to submit';
+        }
+    }, 1000);
+}
+
+// Start the application
+init();
+</script>
+
+</body>
+</html>
