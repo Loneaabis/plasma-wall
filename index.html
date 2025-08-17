@@ -426,13 +426,10 @@ function showDefaultUsers() {
     });
 }
 
-// Load users from server with session fallback
+// Load users from server
 async function loadUsers(){
     console.log('📡 Loading server submissions...');
     userCount.textContent = 'Loading submissions...';
-    
-    let serverUsers = [];
-    let serverConnected = false;
     
     try {
         const controller = new AbortController();
@@ -445,103 +442,59 @@ async function loadUsers(){
         clearTimeout(timeoutId);
         
         if(res.ok){
-            serverUsers = await res.json();
-            serverConnected = true;
-            console.log('✅ Server users loaded:', serverUsers);
+            const users = await res.json();
+            console.log('✅ Server users loaded:', users);
+            
+            if(users.length === 0) { 
+                userCount.textContent = 'No submissions yet - Be the first!';
+                return; 
+            }
+            
+            // Clear and show server users
+            hallOfFame.innerHTML = '';
+            users.forEach((username, i) => {
+                setTimeout(() => {
+                    console.log(`  📤 Adding server user ${i + 1}/${users.length}: ${username}`);
+                    const card = createUserCard(username, false, true);
+                    hallOfFame.appendChild(card);
+                }, i * 100);
+            });
+            
+            userCount.textContent = `${users.length} digital warriors and growing!`;
         } else {
             throw new Error(`Failed to load users: ${res.status}`);
         }
     } catch(e){ 
         console.error('❌ Failed to load server users:', e);
-        console.log('💻 Using session storage as fallback...');
+        userCount.textContent = 'Server offline - Submit to join when back online!';
     }
-    
-    // Load session users if server failed
-    let sessionUsers = [];
-    if (!serverConnected) {
-        sessionUsers = JSON.parse(sessionStorage.getItem('plasmaUsers') || '[]');
-        console.log('💾 Session users loaded:', sessionUsers);
-    }
-    
-    // Combine server and session users, removing duplicates
-    const allUsers = [...new Set([...serverUsers, ...sessionUsers])];
-    
-    if(allUsers.length === 0) { 
-        userCount.textContent = 'No submissions yet - Be the first!';
-        return; 
-    }
-    
-    // Clear and show all users
-    hallOfFame.innerHTML = '';
-    allUsers.forEach((username, i) => {
-        setTimeout(() => {
-            console.log(`  📤 Adding user ${i + 1}/${allUsers.length}: ${username} (${serverUsers.includes(username) ? 'server' : 'session'})`);
-            const card = createUserCard(username, false, true);
-            hallOfFame.appendChild(card);
-        }, i * 100);
-    });
-    
-    const statusText = serverConnected ? 
-        `${allUsers.length} digital warriors and growing!` :
-        `${allUsers.length} digital warriors (offline mode)`;
-    
-    userCount.textContent = statusText;
 }
 
-// Save user to server with better error handling
+// Save user to server and display immediately
 async function saveUser(username){
-    console.log('💾 Attempting to save user to server:', username);
-    
-    // First, try to save to server
-    let serverSaveSuccess = false;
+    console.log('💾 Saving user to server:', username);
     
     try {
-        // Try direct VPS connection first
-        console.log('📡 Trying direct VPS connection...');
-        const directRes = await fetch(`${VPS_DIRECT}/users`, {
+        const res = await fetch(`${VPS_DIRECT}/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
             },
             body: JSON.stringify({ username: username })
         });
         
-        if (directRes.ok) {
-            const result = await directRes.json();
-            console.log('✅ User saved via direct connection:', result);
-            serverSaveSuccess = true;
+        if (res.ok) {
+            const result = await res.json();
+            console.log('✅ User saved to server:', result);
         } else {
-            throw new Error(`Direct connection failed: ${directRes.status}`);
+            console.log('⚠️ Server save failed, adding locally only');
         }
-    } catch(directError) {
-        console.log('⚠️ Direct connection failed:', directError.message);
-        
-        // Try with CORS proxy
-        try {
-            console.log('📡 Trying with CORS proxy...');
-            const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(`${VPS_DIRECT}/users`);
-            const proxyRes = await fetch(proxyUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username: username })
-            });
-            
-            if (proxyRes.ok) {
-                const result = await proxyRes.json();
-                console.log('✅ User saved via proxy:', result);
-                serverSaveSuccess = true;
-            } else {
-                throw new Error(`Proxy connection failed: ${proxyRes.status}`);
-            }
-        } catch(proxyError) {
-            console.error('❌ Both direct and proxy methods failed:', proxyError);
-        }
+    } catch(e){ 
+        console.error('❌ Error saving to server:', e);
+        console.log('💻 Adding user locally (offline mode)');
     }
     
-    // Always add user to UI regardless of server save status
+    // Always add user to UI immediately, regardless of server success
     console.log('🎯 Adding user to UI:', username);
     const card = createUserCard(username, false, true);
     hallOfFame.appendChild(card);
@@ -550,15 +503,7 @@ async function saveUser(username){
     const currentCount = hallOfFame.children.length;
     userCount.textContent = `${currentCount} digital warriors and growing!`;
     
-    // Store in browser memory for session persistence
-    let sessionUsers = JSON.parse(sessionStorage.getItem('plasmaUsers') || '[]');
-    if (!sessionUsers.includes(username)) {
-        sessionUsers.push(username);
-        sessionStorage.setItem('plasmaUsers', JSON.stringify(sessionUsers));
-        console.log('💾 User stored in session:', username);
-    }
-    
-    return serverSaveSuccess;
+    return true;
 }
 
 // Enhanced submit handler
@@ -588,20 +533,15 @@ submitBtn.addEventListener('click', async () => {
     console.log('🚀 Processing submission:', username);
     
     try {
-        const serverSaved = await saveUser(username);
+        await saveUser(username);
         usernameInput.value = '';
-        
-        if (serverSaved) {
-            connectionStatus.innerHTML = '<span class="text-green-400">⚡ Saved to Server - Welcome to the Plasma Wall!</span>';
-        } else {
-            connectionStatus.innerHTML = '<span class="text-yellow-400">⚡ Added Locally - Will sync when server is back!</span>';
-        }
+        connectionStatus.innerHTML = '<span class="text-green-400">⚡ Welcome to the Plasma Wall!</span>';
         
         setTimeout(() => {
             connectionStatus.innerHTML = connectionStatus.innerHTML.includes('Connected') ? 
                 '<span class="text-green-400">✅ Connected to Server</span>' : 
                 '<span class="text-red-400">❌ Server Offline - Showing Defaults</span>';
-        }, 4000);
+        }, 3000);
         
     } catch (e) {
         console.error('❌ Submit error:', e);
