@@ -280,28 +280,28 @@ function getUserColor(username) {
 
 // Enhanced avatar system with multiple reliable fallbacks
 function createAvatarImage(username, isDefault = false) {
-    console.log(🔄 Creating avatar for ${username} (${isDefault ? 'Legend' : 'Submission'}));
+    console.log(`🔄 Creating avatar for ${username} (${isDefault ? 'Legend' : 'Submission'})`);
     
     const img = document.createElement('img');
     const borderColor = isDefault ? 'border-emerald-400' : 'border-teal-400';
-    img.className = w-16 h-16 rounded-xl mx-auto border-2 ${borderColor} shadow-xl object-cover bg-gray-800 avatar-loading;
-    img.alt = @${username};
+    img.className = `w-16 h-16 rounded-xl mx-auto border-2 ${borderColor} shadow-xl object-cover bg-gray-800 avatar-loading`;
+    img.alt = `@${username}`;
     img.loading = 'lazy';
     
     // Enhanced fallback chain with more reliable services
     const userColor = getUserColor(username);
     const fallbacks = [
         // Try multiple X/Twitter endpoints
-        https://unavatar.io/x/${username}?fallback=false,
-        https://unavatar.io/twitter/${username}?fallback=false, 
+        `https://unavatar.io/x/${username}?fallback=false`,
+        `https://unavatar.io/twitter/${username}?fallback=false`, 
         // GitHub (many Twitter users have same username on GitHub)
-        https://avatars.githubusercontent.com/${username}?size=128,
-        https://github.com/${username}.png?size=128,
+        `https://avatars.githubusercontent.com/${username}?size=128`,
+        `https://github.com/${username}.png?size=128`,
         // Reliable generated avatars
-        https://api.dicebear.com/7.x/personas/svg?seed=${username}&backgroundColor=${userColor.replace('#', '')}&radius=20,
-        https://api.dicebear.com/7.x/initials/svg?seed=${username}&backgroundColor=${userColor.replace('#', '')}&fontSize=40,
+        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&backgroundColor=${userColor.replace('#', '')}&radius=20`,
+        `https://api.dicebear.com/7.x/initials/svg?seed=${username}&backgroundColor=${userColor.replace('#', '')}&fontSize=40`,
         // Final fallback - guaranteed to work
-        https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=${userColor.replace('#', '')}&color=fff&size=128&font-size=0.6&bold=true&rounded=true
+        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=${userColor.replace('#', '')}&color=fff&size=128&font-size=0.6&bold=true&rounded=true`
     ];
     
     let currentIndex = 0;
@@ -354,7 +354,7 @@ async function checkConnection(){
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
         
-        const res = await fetch(${API_GET}/, {
+        const res = await fetch(`${API_GET}/`, {
             method: 'GET',
             signal: controller.signal,
             headers: {
@@ -370,25 +370,25 @@ async function checkConnection(){
             connectionStatus.innerHTML='<span class="text-green-400">✅ Connected to Server</span>'; 
             return true;
         } else {
-            throw new Error(Server responded with ${res.status});
+            throw new Error(`Server responded with ${res.status}`);
         }
     } catch(e){ 
         console.error('❌ Connection failed:', e);
-        connectionStatus.innerHTML=<span class="text-red-400">❌ Server Offline - Showing Defaults</span>; 
+        connectionStatus.innerHTML=`<span class="text-red-400">❌ Server Offline - Showing Defaults</span>`; 
         return false;
     }
 }
 
 // Enhanced card creation with better structure
 function createUserCard(username, isDefault = false, animate = true) {
-    console.log(🎯 Creating card for: ${username} (${isDefault ? 'Legend' : 'Submission'}));
+    console.log(`🎯 Creating card for: ${username} (${isDefault ? 'Legend' : 'Submission'})`);
     
     const card = document.createElement('div');
     const cardClass = isDefault ? 
         'user-card bg-gradient-to-br from-emerald-600/40 to-green-600/40 backdrop-blur-sm rounded-2xl p-4 border-2 border-emerald-500/60 text-center glow-effect' :
         'user-card bg-gradient-to-br from-teal-600/30 to-cyan-600/30 backdrop-blur-sm rounded-2xl p-4 border border-teal-500/40 text-center';
     
-    card.className = ${cardClass} ${animate ? 'pulse-ring' : ''};
+    card.className = `${cardClass} ${animate ? 'pulse-ring' : ''}`;
     
     // Create avatar with enhanced fallback system
     const avatarImg = createAvatarImage(username, isDefault);
@@ -396,12 +396,12 @@ function createUserCard(username, isDefault = false, animate = true) {
     // Create text elements
     const nameElement = document.createElement('h3');
     nameElement.className = 'font-bold text-white text-sm mt-3';
-    nameElement.textContent = @${username};
+    nameElement.textContent = `@${username}`;
     
     const labelElement = document.createElement('div');
     const labelText = isDefault ? 'Plasma Legend' : 'Digital Warrior';
     const labelColor = isDefault ? 'text-emerald-300' : 'text-teal-300';
-    labelElement.className = text-xs ${labelColor} mt-1;
+    labelElement.className = `text-xs ${labelColor} mt-1`;
     labelElement.textContent = labelText;
     
     // Assemble card
@@ -426,84 +426,139 @@ function showDefaultUsers() {
     });
 }
 
-// Load users from server
+// Load users from server with session fallback
 async function loadUsers(){
     console.log('📡 Loading server submissions...');
     userCount.textContent = 'Loading submissions...';
+    
+    let serverUsers = [];
+    let serverConnected = false;
     
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 8000);
         
-        const res = await fetch(${API_GET}/users, {
+        const res = await fetch(`${API_GET}/users`, {
             signal: controller.signal
         });
         
         clearTimeout(timeoutId);
         
         if(res.ok){
-            const users = await res.json();
-            console.log('✅ Server users loaded:', users);
-            
-            if(users.length === 0) { 
-                userCount.textContent = 'No submissions yet - Be the first!';
-                return; 
-            }
-            
-            // Clear and show server users
-            hallOfFame.innerHTML = '';
-            users.forEach((username, i) => {
-                setTimeout(() => {
-                    console.log(`  📤 Adding server user ${i + 1}/${users.length}: ${username}`);
-                    const card = createUserCard(username, false, true);
-                    hallOfFame.appendChild(card);
-                }, i * 100);
-            });
-            
-            userCount.textContent = ${users.length} digital warriors and growing!;
+            serverUsers = await res.json();
+            serverConnected = true;
+            console.log('✅ Server users loaded:', serverUsers);
         } else {
-            throw new Error(Failed to load users: ${res.status});
+            throw new Error(`Failed to load users: ${res.status}`);
         }
     } catch(e){ 
         console.error('❌ Failed to load server users:', e);
-        userCount.textContent = 'Server offline - Submit to join when back online!';
+        console.log('💻 Using session storage as fallback...');
     }
+    
+    // Load session users if server failed
+    let sessionUsers = [];
+    if (!serverConnected) {
+        sessionUsers = JSON.parse(sessionStorage.getItem('plasmaUsers') || '[]');
+        console.log('💾 Session users loaded:', sessionUsers);
+    }
+    
+    // Combine server and session users, removing duplicates
+    const allUsers = [...new Set([...serverUsers, ...sessionUsers])];
+    
+    if(allUsers.length === 0) { 
+        userCount.textContent = 'No submissions yet - Be the first!';
+        return; 
+    }
+    
+    // Clear and show all users
+    hallOfFame.innerHTML = '';
+    allUsers.forEach((username, i) => {
+        setTimeout(() => {
+            console.log(`  📤 Adding user ${i + 1}/${allUsers.length}: ${username} (${serverUsers.includes(username) ? 'server' : 'session'})`);
+            const card = createUserCard(username, false, true);
+            hallOfFame.appendChild(card);
+        }, i * 100);
+    });
+    
+    const statusText = serverConnected ? 
+        `${allUsers.length} digital warriors and growing!` :
+        `${allUsers.length} digital warriors (offline mode)`;
+    
+    userCount.textContent = statusText;
 }
 
-// Save user to server and display immediately
+// Save user to server with better error handling
 async function saveUser(username){
-    console.log('💾 Saving user to server:', username);
+    console.log('💾 Attempting to save user to server:', username);
+    
+    // First, try to save to server
+    let serverSaveSuccess = false;
     
     try {
-        const res = await fetch(${VPS_DIRECT}/users, {
+        // Try direct VPS connection first
+        console.log('📡 Trying direct VPS connection...');
+        const directRes = await fetch(`${VPS_DIRECT}/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
             },
             body: JSON.stringify({ username: username })
         });
         
-        if (res.ok) {
-            const result = await res.json();
-            console.log('✅ User saved to server:', result);
+        if (directRes.ok) {
+            const result = await directRes.json();
+            console.log('✅ User saved via direct connection:', result);
+            serverSaveSuccess = true;
         } else {
-            console.log('⚠ Server save failed, adding locally only');
+            throw new Error(`Direct connection failed: ${directRes.status}`);
         }
-    } catch(e){ 
-        console.error('❌ Error saving to server:', e);
-        console.log('💻 Adding user locally (offline mode)');
+    } catch(directError) {
+        console.log('⚠️ Direct connection failed:', directError.message);
+        
+        // Try with CORS proxy
+        try {
+            console.log('📡 Trying with CORS proxy...');
+            const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(`${VPS_DIRECT}/users`);
+            const proxyRes = await fetch(proxyUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: username })
+            });
+            
+            if (proxyRes.ok) {
+                const result = await proxyRes.json();
+                console.log('✅ User saved via proxy:', result);
+                serverSaveSuccess = true;
+            } else {
+                throw new Error(`Proxy connection failed: ${proxyRes.status}`);
+            }
+        } catch(proxyError) {
+            console.error('❌ Both direct and proxy methods failed:', proxyError);
+        }
     }
     
-    // Always add user to UI immediately, regardless of server success
+    // Always add user to UI regardless of server save status
     console.log('🎯 Adding user to UI:', username);
     const card = createUserCard(username, false, true);
     hallOfFame.appendChild(card);
     
     // Update count
     const currentCount = hallOfFame.children.length;
-    userCount.textContent = ${currentCount} digital warriors and growing!;
+    userCount.textContent = `${currentCount} digital warriors and growing!`;
     
-    return true;
+    // Store in browser memory for session persistence
+    let sessionUsers = JSON.parse(sessionStorage.getItem('plasmaUsers') || '[]');
+    if (!sessionUsers.includes(username)) {
+        sessionUsers.push(username);
+        sessionStorage.setItem('plasmaUsers', JSON.stringify(sessionUsers));
+        console.log('💾 User stored in session:', username);
+    }
+    
+    return serverSaveSuccess;
 }
 
 // Enhanced submit handler
@@ -519,7 +574,7 @@ submitBtn.addEventListener('click', async () => {
     const existingCards = [...defaultUsersElement.children, ...hallOfFame.children];
     const exists = existingCards.some(card => {
         const nameEl = card.querySelector('h3');
-        return nameEl && nameEl.textContent === @${username};
+        return nameEl && nameEl.textContent === `@${username}`;
     });
     
     if (exists) {
@@ -533,15 +588,20 @@ submitBtn.addEventListener('click', async () => {
     console.log('🚀 Processing submission:', username);
     
     try {
-        await saveUser(username);
+        const serverSaved = await saveUser(username);
         usernameInput.value = '';
-        connectionStatus.innerHTML = '<span class="text-green-400">⚡ Welcome to the Plasma Wall!</span>';
+        
+        if (serverSaved) {
+            connectionStatus.innerHTML = '<span class="text-green-400">⚡ Saved to Server - Welcome to the Plasma Wall!</span>';
+        } else {
+            connectionStatus.innerHTML = '<span class="text-yellow-400">⚡ Added Locally - Will sync when server is back!</span>';
+        }
         
         setTimeout(() => {
             connectionStatus.innerHTML = connectionStatus.innerHTML.includes('Connected') ? 
                 '<span class="text-green-400">✅ Connected to Server</span>' : 
                 '<span class="text-red-400">❌ Server Offline - Showing Defaults</span>';
-        }, 3000);
+        }, 4000);
         
     } catch (e) {
         console.error('❌ Submit error:', e);
