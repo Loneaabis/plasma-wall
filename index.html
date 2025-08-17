@@ -49,7 +49,7 @@
             PLASMA HALL OF FAME
         </h1>
     </div>
-    <p class="text-2xl text-teal-300 mb-4">🚀 Trillions 🚀</p>
+    <p class="text-2xl text-teal-300 mb-4"> Trillions </p>
     <button id="musicToggle" class="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform">
         🎵 Play Music
     </button>
@@ -68,9 +68,9 @@
 <div class="relative z-10 px-4 pb-8">
     <!-- Plasma Legends Section - Always Visible -->
     <div class="mb-8">
-        <h3 class="text-3xl text-emerald-300 font-bold text-center mb-6">👑 PLASMA LEGENDS 👑</h3>
+        <h3 class="text-3xl text-emerald-300 font-bold text-center mb-6"> PLASMA LEGENDS </h3>
         <div id="defaultUsers" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 max-w-6xl mx-auto mb-6"></div>
-        <p class="text-center text-emerald-400 text-sm">⚡ The Original Plasma Pioneers ⚡</p>
+        <p class="text-center text-emerald-400 text-sm"> The Original Plasma Pioneers </p>
     </div>
     
     <!-- Recent Submissions Section -->
@@ -498,10 +498,10 @@ submitBtn.addEventListener('click', () => {
     setTimeout(() => {
         connectionStatus.innerHTML = 'Ready to join the legends';
         submitBtn.disabled = false;
-        submitBtn.textContent = '🚀 Join the Wall';
+        submitBtn.textContent = ' Join the Wall';
     }, 2000);
     
-    console.log('🚀 Added submission:', username);
+    console.log(' Added submission:', username);
 });
 
 // Enter key support
@@ -513,8 +513,8 @@ usernameInput.addEventListener('keypress', (e) => {
 
 // Initialize application
 function init() {
-    console.log('🚀 Initializing Plasma Hall of Fame...');
-    console.log('👑 Default Legends:', defaultUsers);
+    console.log(' Initializing Plasma Hall of Fame...');
+    console.log(' Default Legends:', defaultUsers);
     
     // Show legends immediately
     showDefaultUsers();
