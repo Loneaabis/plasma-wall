@@ -424,7 +424,7 @@ musicToggle.addEventListener('click', async () => {
     }
 });
 
-// Greatly improved avatar loading system
+// Enhanced avatar loading with multiple reliable sources
 function createUserCard(username) {
     console.log(`🖼️ Creating card for: ${username}`);
     
@@ -442,92 +442,89 @@ function createUserCard(username) {
     card.appendChild(img);
     card.appendChild(overlay);
     
-    // Enhanced avatar sources with better Twitter/X support
+    // Multiple avatar sources in order of reliability
     const avatarSources = [
-        // Primary Twitter/X sources - most reliable
-        `https://unavatar.io/twitter/${username}`,
-        `https://unavatar.io/x/${username}`, 
-        
-        // Backup Twitter sources
-        `https://avatars.io/twitter/${username}`,
-        `https://twitter.com/${username}/profile_image?size=normal`,
-        
-        // GitHub (many users have same handle)
+        // Most reliable avatar services
+        `https://unavatar.io/twitter/${username}?fallback=false`,
+        `https://unavatar.io/github/${username}?fallback=false`,
         `https://avatars.githubusercontent.com/${username}?size=130`,
-        `https://github.com/${username}.png?size=130`,
         
-        // Reliable fallback services
-        `https://api.dicebear.com/8.x/personas/svg?seed=${username}&size=130&backgroundColor=059669,047857,065f46&radius=20`,
-        `https://api.dicebear.com/8.x/avataaars/svg?seed=${username}&size=130&backgroundColor=059669&radius=20`,
+        // Alternative avatar services
+        `https://www.gravatar.com/avatar/${btoa(username)}?s=130&d=404`,
+        `https://api.multiavatar.com/${username}.svg`,
         
-        // Letter-based fallbacks
-        `https://ui-avatars.com/api/?name=${username}&background=16a34a&color=fff&size=130&bold=true&rounded=true&font-size=0.4`,
-        `https://via.placeholder.com/130x130/16a34a/ffffff/PNG/?text=${username.charAt(0).toUpperCase()}`
+        // Generated avatars - always work
+        `https://api.dicebear.com/7.x/initials/svg?seed=${username}&size=130&backgroundColor=059669`,
+        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=130&backgroundColor=16a34a`,
+        `https://robohash.org/${username}?size=130x130&set=set4&bgset=bg1`,
+        
+        // Reliable fallbacks
+        `https://ui-avatars.com/api/?name=${username}&background=random&size=130&bold=true`,
+        `https://source.boringavatars.com/beam/130/${username}?colors=059669,16a34a,22c55e`
     ];
     
-    let sourceIndex = 0;
-    let hasLoaded = false;
+    let currentIndex = 0;
+    let loaded = false;
     
-    const loadNextSource = () => {
-        if (hasLoaded || sourceIndex >= avatarSources.length) {
-            if (!hasLoaded) {
-                console.log(`❌ All sources failed for ${username}, creating letter avatar`);
+    const tryLoadAvatar = () => {
+        if (loaded || currentIndex >= avatarSources.length) {
+            if (!loaded) {
+                console.log(`❌ Creating letter avatar for ${username}`);
                 createLetterAvatar();
             }
             return;
         }
         
-        const currentSource = avatarSources[sourceIndex];
-        console.log(`  📡 Loading ${username} from source ${sourceIndex + 1}/${avatarSources.length}`);
+        const source = avatarSources[currentIndex];
+        console.log(`  🔄 Trying source ${currentIndex + 1} for ${username}`);
         
-        // Create a new image to test loading
-        const testImg = new Image();
-        testImg.crossOrigin = 'anonymous';
+        const tempImg = new Image();
+        tempImg.crossOrigin = 'anonymous';
         
-        const timeout = setTimeout(() => {
-            console.log(`  ⏰ Timeout for ${username} source ${sourceIndex + 1}`);
-            sourceIndex++;
-            loadNextSource();
-        }, 8000);
+        const timer = setTimeout(() => {
+            console.log(`  ⏰ Timeout for ${username} source ${currentIndex + 1}`);
+            currentIndex++;
+            tryLoadAvatar();
+        }, 5000);
         
-        testImg.onload = () => {
-            if (hasLoaded) return;
-            clearTimeout(timeout);
+        tempImg.onload = function() {
+            if (loaded) return;
+            clearTimeout(timer);
             
-            // Check if image is actually valid (not a 1x1 error image)
-            if (testImg.naturalWidth > 1 && testImg.naturalHeight > 1) {
-                hasLoaded = true;
-                img.src = currentSource;
+            // Verify image is valid
+            if (this.naturalWidth > 10 && this.naturalHeight > 10) {
+                loaded = true;
+                img.src = source;
                 img.classList.remove('loading-placeholder');
-                console.log(`  ✅ Avatar loaded for ${username} from source ${sourceIndex + 1}`);
+                console.log(`  ✅ Loaded ${username} from source ${currentIndex + 1}`);
             } else {
-                console.log(`  ❌ Invalid image for ${username} from source ${sourceIndex + 1}`);
-                sourceIndex++;
-                loadNextSource();
+                console.log(`  ❌ Invalid image size for ${username}`);
+                currentIndex++;
+                tryLoadAvatar();
             }
         };
         
-        testImg.onerror = () => {
-            if (hasLoaded) return;
-            clearTimeout(timeout);
-            console.log(`  ❌ Source ${sourceIndex + 1} failed for ${username}`);
-            sourceIndex++;
-            loadNextSource();
+        tempImg.onerror = function() {
+            if (loaded) return;
+            clearTimeout(timer);
+            console.log(`  ❌ Failed source ${currentIndex + 1} for ${username}`);
+            currentIndex++;
+            tryLoadAvatar();
         };
         
-        testImg.src = currentSource;
+        tempImg.src = source;
     };
     
     const createLetterAvatar = () => {
-        card.removeChild(img);
+        img.style.display = 'none';
         const letterDiv = document.createElement('div');
         letterDiv.className = 'error-avatar';
         letterDiv.textContent = username.charAt(0).toUpperCase();
         card.insertBefore(letterDiv, overlay);
     };
     
-    // Start loading
-    loadNextSource();
+    // Start the loading process
+    tryLoadAvatar();
     
     return card;
 }
@@ -550,55 +547,143 @@ function displayMovingWall() {
     userCount.textContent = `${allUsers.length} members in the Plasma Wall`;
 }
 
-// Backend save function (simplified)
+// Enhanced backend save with multiple methods
 async function saveToBackend(username) {
     console.log('💾 Attempting to save to backend:', username);
     
-    try {
-        const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username }),
-            signal: AbortSignal.timeout(CONFIG.TIMEOUT)
-        });
+    const methods = [
+        // Method 1: Direct connection
+        async () => {
+            const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({ username }),
+                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+            });
+            
+            if (response.ok) {
+                console.log('✅ Saved via direct connection');
+                return true;
+            }
+            throw new Error(`Direct: ${response.status}`);
+        },
         
-        if (response.ok) {
-            console.log('✅ Saved to backend successfully');
-            return true;
+        // Method 2: CORS proxy
+        async () => {
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
+            const response = await fetch(proxyUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username }),
+                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+            });
+            
+            if (response.ok) {
+                console.log('✅ Saved via CORS proxy');
+                return true;
+            }
+            throw new Error(`Proxy: ${response.status}`);
+        },
+        
+        // Method 3: Alternative proxy
+        async () => {
+            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
+            const response = await fetch(proxyUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username }),
+                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+            });
+            
+            if (response.ok) {
+                console.log('✅ Saved via alternative proxy');
+                return true;
+            }
+            throw new Error(`Alt proxy: ${response.status}`);
         }
-    } catch (error) {
-        console.log('❌ Backend save failed:', error.message);
+    ];
+    
+    // Try each method
+    for (let i = 0; i < methods.length; i++) {
+        try {
+            console.log(`  🔄 Trying save method ${i + 1}/${methods.length}`);
+            const result = await methods[i]();
+            if (result) return true;
+        } catch (error) {
+            console.log(`  ❌ Save method ${i + 1} failed:`, error.message);
+        }
     }
     
+    console.error('❌ All backend save methods failed');
     return false;
 }
 
-// Load from backend
+// Enhanced backend loading with multiple methods
 async function loadFromBackend() {
     console.log('📡 Loading users from backend...');
     
-    try {
-        const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
-            signal: AbortSignal.timeout(CONFIG.TIMEOUT)
-        });
+    const loadMethods = [
+        // Direct connection
+        async () => {
+            const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
+                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+            });
+            if (response.ok) {
+                return await response.json();
+            }
+            throw new Error(`Direct: ${response.status}`);
+        },
         
-        if (response.ok) {
-            const serverUsers = await response.json();
+        // CORS proxy
+        async () => {
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
+            const response = await fetch(proxyUrl, {
+                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+            });
+            if (response.ok) {
+                return await response.json();
+            }
+            throw new Error(`Proxy: ${response.status}`);
+        },
+        
+        // Alternative proxy
+        async () => {
+            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
+            const response = await fetch(proxyUrl, {
+                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+            });
+            if (response.ok) {
+                return await response.json();
+            }
+            throw new Error(`Alt proxy: ${response.status}`);
+        }
+    ];
+    
+    for (let i = 0; i < loadMethods.length; i++) {
+        try {
+            console.log(`  🔄 Trying load method ${i + 1}/${loadMethods.length}`);
+            const serverUsers = await loadMethods[i]();
             console.log('✅ Loaded from backend:', serverUsers);
             
+            // Load saved users from localStorage
             const savedUsers = loadUsersFromStorage();
+            
+            // Combine all users (defaults + server + localStorage, no duplicates)
             allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...savedUsers])];
             
             connectionStatus.textContent = '✅ Connected to server';
             return true;
+        } catch (error) {
+            console.log(`  ❌ Load method ${i + 1} failed:`, error.message);
         }
-    } catch (error) {
-        console.log('❌ Backend load failed:', error.message);
     }
     
-    console.log('⚠️ Using offline mode');
+    console.log('⚠️ Backend unavailable, using localStorage');
+    
+    // Load from localStorage only
     loadUsersFromStorage();
     connectionStatus.textContent = '⚠️ Offline mode - using saved data';
     return false;
