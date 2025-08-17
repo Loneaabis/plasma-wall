@@ -6,37 +6,44 @@
 <title>Plasma Hall of Fame</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white overflow-hidden relative">
+<body class="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-900 to-green-900 text-white overflow-hidden relative">
 
 <!-- Background Animations -->
 <div class="absolute inset-0 overflow-hidden">
     <div class="plasma-bg absolute inset-0"></div>
+    <div class="spinning-circle absolute inset-0 flex items-center justify-center">
+        <div class="loading-spinner"></div>
+    </div>
     <div class="stars absolute inset-0"></div>
 </div>
 
+<!-- Audio -->
+<audio id="bgMusic" loop preload="auto">
+    <source src="./interstellar.mp3" type="audio/mpeg">
+</audio>
+
 <!-- Header -->
 <header class="relative z-10 text-center py-8">
-    <h1 class="text-6xl font-bold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4 animate-pulse">
+    <h1 class="text-6xl font-bold bg-gradient-to-r from-emerald-400 via-teal-500 to-green-500 bg-clip-text text-transparent mb-4 animate-pulse">
         ⚡ PLASMA HALL OF FAME ⚡
     </h1>
-    <button id="musicToggle" class="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform">
+    <button id="musicToggle" class="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform">
         🎵 Play Music
     </button>
 </header>
 
 <!-- Input Section -->
 <div class="relative z-10 flex flex-col items-center justify-center px-4">
-    <div class="bg-black/30 backdrop-blur-lg rounded-3xl p-8 border border-purple-500/50 shadow-2xl max-w-md w-full">
-        <input type="text" id="usernameInput" placeholder="your_twitter_username" class="w-full pl-3 py-3 mb-4 rounded-xl text-white bg-gray-900/80 focus:outline-none border border-purple-500/30">
-        <button id="submitBtn" class="w-full bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 py-3 rounded-xl font-bold hover:scale-105 transition-transform">🚀 Join the Wall</button>
+    <div class="bg-black/30 backdrop-blur-lg rounded-3xl p-8 border border-emerald-500/50 shadow-2xl max-w-md w-full">
+        <input type="text" id="usernameInput" placeholder="your_twitter_username" class="w-full pl-3 py-3 mb-4 rounded-xl text-white bg-gray-900/80 focus:outline-none border border-emerald-500/30">
+        <button id="submitBtn" class="w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 py-3 rounded-xl font-bold hover:scale-105 transition-transform">🚀 Join the Wall</button>
         <div id="connectionStatus" class="mt-4 text-center text-yellow-400">🔄 Checking connection...</div>
-        <div id="errorMsg" class="mt-2 text-center text-red-400 hidden"></div>
     </div>
 </div>
 
 <!-- Hall of Fame -->
 <div class="relative z-10 px-4 pb-8">
-    <h3 class="text-2xl text-purple-300 font-bold text-center mb-4">🌟 Hall of Fame 🌟</h3>
+    <h3 class="text-2xl text-emerald-300 font-bold text-center mb-4">🌟 Hall of Fame 🌟</h3>
     <p id="userCount" class="text-gray-400 text-center mb-4">Loading legends...</p>
     <div id="hallOfFame" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-6xl mx-auto"></div>
 </div>
@@ -44,7 +51,7 @@
 <!-- Styles -->
 <style>
 .plasma-bg {
-    background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5, #ffbe0b);
+    background: linear-gradient(45deg, #047857, #0d9488, #059669, #10b981, #34d399);
     background-size: 400% 400%;
     animation: plasmaMove 12s ease-in-out infinite;
     opacity: 0.4;
@@ -57,15 +64,50 @@
     75% { background-position:0% 100%; }
 }
 
+.loading-spinner {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        transparent 60deg,
+        #10b981 60deg,
+        #10b981 80deg,
+        transparent 80deg,
+        transparent 140deg,
+        #34d399 140deg,
+        #34d399 160deg,
+        transparent 160deg,
+        transparent 220deg,
+        #0d9488 220deg,
+        #0d9488 240deg,
+        transparent 240deg,
+        transparent 300deg,
+        #059669 300deg,
+        #059669 320deg,
+        transparent 320deg,
+        transparent 360deg
+    );
+    animation: spinLoader 3s linear infinite;
+    opacity: 0.6;
+    filter: blur(1px);
+}
+
+@keyframes spinLoader {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 .stars {
     background-image: 
-        radial-gradient(2px 2px at 20px 30px,#eee,transparent),
-        radial-gradient(2px 2px at 40px 70px,rgba(255,255,255,0.8),transparent),
-        radial-gradient(1px 1px at 90px 40px,#fff,transparent);
+        radial-gradient(2px 2px at 20px 30px, #34d399, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(52, 211, 153, 0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, #10b981, transparent);
     background-repeat: repeat;
     background-size: 200px 100px;
     animation: sparkle 20s linear infinite;
-    opacity: 0.5;
+    opacity: 0.3;
 }
 
 @keyframes sparkle {
@@ -80,7 +122,7 @@
 
 .user-card:hover { 
     transform: translateY(-8px) scale(1.05); 
-    box-shadow: 0 25px 50px rgba(139,92,246,0.4);
+    box-shadow: 0 25px 50px rgba(16, 185, 129, 0.4);
 }
 
 @keyframes slideUp {
@@ -99,259 +141,160 @@
 }
 
 .glow-effect {
-    box-shadow: 0 0 20px rgba(139,92,246,0.6); 
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); 
     animation: glow 2s ease-in-out infinite alternate;
 }
 
 @keyframes glow {
-    from { box-shadow: 0 0 20px rgba(139,92,246,0.6); } 
-    to { box-shadow: 0 0 30px rgba(139,92,246,0.8); }
+    from { box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); } 
+    to { box-shadow: 0 0 30px rgba(52, 211, 153, 0.8); }
 }
 </style>
 
 <!-- Script -->
 <script>
-// Your VPS endpoint
-const API_BASE = 'http://162.250.191.81:4000';
-
+// Use CORS proxy like your original working code
+const API_BASE = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://162.250.191.81:4000');
 const usernameInput = document.getElementById('usernameInput');
 const submitBtn = document.getElementById('submitBtn');
 const hallOfFame = document.getElementById('hallOfFame');
+const bgMusic = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
 const connectionStatus = document.getElementById('connectionStatus');
 const userCount = document.getElementById('userCount');
-const errorMsg = document.getElementById('errorMsg');
 
 let musicPlaying = false;
 
-// Create audio element for background music
-const bgMusic = new Audio();
-bgMusic.loop = true;
-bgMusic.volume = 0.3;
-
-// Music toggle functionality
+// Music toggle
 musicToggle.addEventListener('click', async () => {
     try {
         if (musicPlaying) { 
             bgMusic.pause(); 
-            musicToggle.innerHTML = '🎵 Play Music'; 
-            musicPlaying = false; 
-        } else {
-            // Try to play music if available
-            try {
-                await bgMusic.play();
-                musicToggle.innerHTML = '🔇 Pause Music'; 
-                musicPlaying = true;
-            } catch(e) {
-                console.log('No audio file available');
-                musicToggle.innerHTML = '🎵 No Audio';
-                musicToggle.disabled = true;
-            }
+            musicToggle.innerHTML='🎵 Play Music'; 
+            musicPlaying=false; 
         }
-    } catch(e) { 
-        console.log('Music error:', e);
+        else { 
+            await bgMusic.play(); 
+            musicToggle.innerHTML='🔇 Pause Music'; 
+            musicPlaying=true; 
+        }
+    } catch(e){ 
+        console.log(e);
     }
 });
 
-// Show error/success message
-function showMessage(message, isError = true) {
-    errorMsg.textContent = message;
-    errorMsg.className = `mt-2 text-center ${isError ? 'text-red-400' : 'text-green-400'}`;
-    errorMsg.classList.remove('hidden');
-    
-    setTimeout(() => {
-        errorMsg.classList.add('hidden');
-    }, 5000);
-}
-
 // Check VPS connection
-async function checkConnection() {
+async function checkConnection(){
     try {
-        console.log('Testing connection to VPS...');
+        console.log('Trying to connect to:', `${API_BASE}/`);
         
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
-        
-        const response = await fetch(`${API_BASE}/`, {
+        const res = await fetch(`${API_BASE}/`, {
             method: 'GET',
-            signal: controller.signal,
+            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
             }
         });
         
-        clearTimeout(timeoutId);
-        
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Connection successful:', data);
-            connectionStatus.innerHTML = '<span class="text-green-400">✅ Connected to Server</span>'; 
+        console.log('Response status:', res.status);
+        if(res.ok){ 
+            const data = await res.json();
+            console.log('Response data:', data);
+            connectionStatus.innerHTML='<span class="text-green-400">✅ Connected</span>'; 
             return true;
-        } else {
-            throw new Error(`HTTP ${response.status}`);
         }
-    } catch(error) { 
-        console.error('Connection failed:', error);
-        
-        if (error.name === 'AbortError') {
-            connectionStatus.innerHTML = '<span class="text-red-400">❌ Connection timeout</span>';
-        } else {
-            connectionStatus.innerHTML = '<span class="text-red-400">❌ Server unavailable</span>';
-        }
+        else throw new Error(`Server responded with ${res.status}`);
+    } catch(e){ 
+        console.error('Connection error details:', e);
+        connectionStatus.innerHTML=`<span class="text-red-400">❌ Server unavailable</span>`; 
         return false;
     }
 }
 
-// Load users from server
-async function loadUsers() {
+// Load users
+async function loadUsers(){
     try {
-        console.log('Loading users...');
-        
-        const response = await fetch(`${API_BASE}/users`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        
-        if (response.ok) {
-            const users = await response.json();
-            console.log('Loaded users:', users);
-            
-            hallOfFame.innerHTML = '';
-            
-            if (users.length === 0) { 
-                userCount.textContent = 'No legends yet - be the first!'; 
+        const res = await fetch(`${API_BASE}/users`);
+        if(res.ok){
+            const users = await res.json();
+            hallOfFame.innerHTML='';
+            if(users.length===0) { 
+                userCount.textContent='No legends yet'; 
                 return; 
             }
-            
-            // Add users with staggered animation
-            users.forEach((username, index) => {
-                setTimeout(() => addUserCard(username), index * 100);
-            });
-            
-            userCount.textContent = `${users.length} digital legend${users.length === 1 ? '' : 's'}`;
-        } else {
-            throw new Error(`Failed to load users: ${response.status}`);
+            users.forEach((u,i)=>setTimeout(()=>addUserCard(u,true),i*100));
+            userCount.textContent=`${users.length} digital legends`;
         }
-    } catch(error) { 
-        console.error('Error loading users:', error);
-        userCount.textContent = 'Failed to load users';
+    } catch(e){ 
+        console.log(e);
     }
 }
 
-// Save user to server
-async function saveUser(username) {
+// Save user
+async function saveUser(username){
     try {
-        console.log('Saving user:', username);
-        
-        const response = await fetch(`${API_BASE}/users`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username: username })
+        const res = await fetch(`${API_BASE}/users`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({username})
         });
-        
-        if (response.ok) {
-            const result = await response.json();
-            console.log('User saved successfully:', result);
-            return result;
-        } else {
-            const errorText = await response.text();
-            throw new Error(`Server error: ${response.status}`);
-        }
-    } catch(error) { 
-        console.error('Error saving user:', error);
-        throw error;
+        return await res.json();
+    } catch(e){ 
+        console.log(e);
     }
 }
 
-// Add user card to hall of fame
-function addUserCard(username) {
+// Add user card
+function addUserCard(username, animate=true){
     const card = document.createElement('div');
-    card.className = 'user-card bg-gradient-to-br from-purple-600/30 to-pink-600/30 backdrop-blur-sm rounded-2xl p-4 border border-purple-500/40 text-center glow-effect';
+    card.className=`user-card bg-gradient-to-br from-emerald-600/30 to-teal-600/30 backdrop-blur-sm rounded-2xl p-4 border border-emerald-500/40 text-center ${animate?'pulse-ring':''}`;
     
-    // Avatar with multiple fallback sources
-    const avatarContainer = document.createElement('div');
-    avatarContainer.className = 'mb-3 relative';
-    
-    const avatar = document.createElement('img');
-    avatar.className = 'w-16 h-16 rounded-full mx-auto border-2 border-purple-400 shadow-xl';
-    avatar.alt = `${username} avatar`;
-    
+    // Avatar with fallback
     const avatarSources = [
         `https://unavatar.io/twitter/${username}`,
         `https://github.com/${username}.png`,
         `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`
     ];
     
-    let sourceIndex = 0;
-    
-    const tryLoadAvatar = () => {
-        if (sourceIndex < avatarSources.length) {
-            avatar.src = avatarSources[sourceIndex];
-            sourceIndex++;
+    let currentIndex = 0;
+    const tryNextAvatar = (img) => {
+        if (currentIndex < avatarSources.length - 1) {
+            currentIndex++;
+            img.src = avatarSources[currentIndex];
         } else {
-            // All sources failed, show fallback
-            avatar.style.display = 'none';
+            // Show fallback letter
+            img.style.display = 'none';
             const fallback = document.createElement('div');
-            fallback.className = 'w-16 h-16 rounded-full mx-auto border-2 border-purple-400 shadow-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-2xl font-bold';
+            fallback.className = 'w-16 h-16 rounded-full mx-auto border-2 border-emerald-400 shadow-xl bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center text-2xl font-bold';
             fallback.textContent = username.charAt(0).toUpperCase();
-            avatarContainer.appendChild(fallback);
+            card.querySelector('.avatar-container').appendChild(fallback);
         }
     };
     
-    avatar.onerror = tryLoadAvatar;
-    tryLoadAvatar(); // Start loading first source
-    
-    avatarContainer.appendChild(avatar);
-    
-    // User info
-    const userInfo = document.createElement('div');
-    userInfo.innerHTML = `
-        <h3 class="font-bold text-white mb-1">@${username}</h3>
-        <div class="text-xs text-purple-300">Digital Legend</div>
+    card.innerHTML=`
+        <div class="avatar-container mb-3 relative">
+            <img src="${avatarSources[0]}" onerror="(${tryNextAvatar.toString()})(this)" class="w-16 h-16 rounded-full mx-auto border-2 border-emerald-400 shadow-xl">
+        </div>
+        <h3 class="font-bold text-white">@${username}</h3>
+        <div class="text-xs text-emerald-300 mt-1">Digital Legend</div>
     `;
-    
-    card.appendChild(avatarContainer);
-    card.appendChild(userInfo);
     hallOfFame.appendChild(card);
 }
 
-// Submit new user
-submitBtn.addEventListener('click', async () => {
-    const username = usernameInput.value.trim().replace('@', '');
-    
-    if (!username) { 
-        showMessage('Please enter a Twitter username');
-        usernameInput.focus();
+// Submit
+submitBtn.addEventListener('click',async()=>{
+    const username = usernameInput.value.trim().replace('@','');
+    if(!username){ 
+        alert('Enter username'); 
         return;
     }
-    
-    if (username.length < 1 || username.length > 50) {
-        showMessage('Username must be between 1-50 characters');
-        return;
-    }
-    
-    // Disable submit button during request
-    submitBtn.disabled = true;
-    submitBtn.textContent = '⏳ Joining...';
-    
-    try {
-        await saveUser(username);
-        await loadUsers();
-        
-        usernameInput.value = '';
-        showMessage(`Welcome to the Hall of Fame, @${username}! 🎉`, false);
-        
-    } catch (error) {
-        console.error('Failed to add user:', error);
-        showMessage(`Failed to join: ${error.message}`);
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = '🚀 Join the Wall';
-    }
+    submitBtn.disabled=true; 
+    submitBtn.textContent='Joining...';
+    await saveUser(username);
+    await loadUsers();
+    submitBtn.disabled=false; 
+    submitBtn.textContent='🚀 Join the Wall';
+    usernameInput.value='';
 });
 
 // Enter key support
@@ -361,19 +304,12 @@ usernameInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Initialize the app
-async function init() {
-    console.log('🚀 Initializing Plasma Hall of Fame...');
-    
-    const connected = await checkConnection();
-    if (connected) {
-        await loadUsers();
-    }
-    
-    console.log('✅ Initialization complete');
+// Init
+async function init(){
+    await checkConnection();
+    await loadUsers();
+    bgMusic.volume=0.3;
 }
-
-// Start the app
 init();
 </script>
 
