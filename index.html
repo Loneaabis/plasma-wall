@@ -153,8 +153,9 @@
 
 <!-- Script -->
 <script>
-// Use CORS proxy like your original working code
-const API_BASE = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://162.250.191.81:4000');
+// Use direct API for POST, CORS proxy only for GET
+const VPS_DIRECT = 'http://162.250.191.81:4000';
+const API_GET = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://162.250.191.81:4000');
 const usernameInput = document.getElementById('usernameInput');
 const submitBtn = document.getElementById('submitBtn');
 const hallOfFame = document.getElementById('hallOfFame');
@@ -186,9 +187,9 @@ musicToggle.addEventListener('click', async () => {
 // Check VPS connection
 async function checkConnection(){
     try {
-        console.log('Trying to connect to:', `${API_BASE}/`);
+        console.log('Trying to connect to:', `${API_GET}/`);
         
-        const res = await fetch(`${API_BASE}/`, {
+        const res = await fetch(`${API_GET}/`, {
             method: 'GET',
             mode: 'cors',
             headers: {
@@ -214,7 +215,7 @@ async function checkConnection(){
 // Load users
 async function loadUsers(){
     try {
-        const res = await fetch(`${API_BASE}/users`);
+        const res = await fetch(`${API_GET}/users`);
         if(res.ok){
             const users = await res.json();
             hallOfFame.innerHTML='';
@@ -230,10 +231,10 @@ async function loadUsers(){
     }
 }
 
-// Save user
+// Save user - use direct VPS connection to avoid CORS proxy issues with POST
 async function saveUser(username){
     try {
-        const res = await fetch(`${API_BASE}/users`,{
+        const res = await fetch(`${VPS_DIRECT}/users`,{
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({username})
@@ -244,17 +245,30 @@ async function saveUser(username){
     }
 }
 
-// Add user card
+// Add user card with hardcoded Twitter profiles for better reliability
 function addUserCard(username, animate=true){
+    // Hardcoded Twitter profile pictures for popular usernames
+    const twitterAvatars = {
+        'elonmusk': 'https://pbs.twimg.com/profile_images/1683325380441128960/yRsRRjGO_400x400.jpg',
+        'sundarpichai': 'https://pbs.twimg.com/profile_images/864282616597405701/M-FEJMز_400x400.jpg',
+        'satyanadella': 'https://pbs.twimg.com/profile_images/1221837516816306177/_Ld4un5A_400x400.jpg',
+        'sundarpichai': 'https://pbs.twimg.com/profile_images/864282616597405701/M-FEJMز_400x400.jpg',
+        'jeffbezos': 'https://pbs.twimg.com/profile_images/1591558315254890500/ETIHb4Nl_400x400.jpg',
+        'tim_cook': 'https://pbs.twimg.com/profile_images/1535420431766671360/Pwq-1eJc_400x400.jpg',
+        'sundarpichai': 'https://pbs.twimg.com/profile_images/864282616597405701/M-FEJMز_400x400.jpg',
+        'billgates': 'https://pbs.twimg.com/profile_images/1414439092373254147/JdS8yLGI_400x400.jpg'
+    };
+
     const card = document.createElement('div');
     card.className=`user-card bg-gradient-to-br from-emerald-600/30 to-teal-600/30 backdrop-blur-sm rounded-2xl p-4 border border-emerald-500/40 text-center ${animate?'pulse-ring':''}`;
     
-    // Avatar with fallback
+    // Try hardcoded avatar first, then fallbacks
     const avatarSources = [
+        twitterAvatars[username.toLowerCase()], // Hardcoded Twitter avatar
         `https://unavatar.io/twitter/${username}`,
         `https://github.com/${username}.png`,
         `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`
-    ];
+    ].filter(Boolean); // Remove undefined values
     
     let currentIndex = 0;
     const tryNextAvatar = (img) => {
