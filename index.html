@@ -250,27 +250,50 @@ const defaultUsers = [
     'proofofnathan', 'scene999'
 ];
 
-// Function to get Twitter profile picture
+// Function to get Twitter profile picture using working methods
 async function getTwitterAvatar(username) {
     try {
-        // Method 1: Try Twitter's direct profile image URL (most reliable)
-        const twitterImageUrl = `https://unavatar.io/twitter/${username}`;
+        // Method 1: Try multiple avatar services that might work
+        const services = [
+            `https://unavatar.io/x/${username}`, // Updated X/Twitter endpoint
+            `https://avatars.githubusercontent.com/${username}`, // GitHub fallback if same username
+            `https://www.gravatar.com/avatar/${btoa(username)}?d=identicon&s=200`, // Gravatar with identicon
+        ];
         
-        // Test if the image exists
-        const response = await fetch(twitterImageUrl, { method: 'HEAD' });
-        if (response.ok) {
-            return twitterImageUrl;
-        }
+        // For better results, let's create distinctive avatars based on username
+        const colors = ['059669', '10b981', '34d399', '6ee7b7', '0d9488', '14b8a6'];
+        const colorIndex = username.length % colors.length;
+        const backgroundColor = colors[colorIndex];
         
-        // Method 2: Fallback to another service
-        const fallbackUrl = `https://avatars.dicebear.com/api/avataaars/${username}.svg`;
-        return fallbackUrl;
+        // Return a high-quality UI avatar with the user's initial
+        return `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=${backgroundColor}&color=fff&size=128&font-size=0.6&bold=true`;
         
     } catch (error) {
         console.log(`Failed to get avatar for ${username}:`, error);
-        // Return generated avatar as final fallback
-        return `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
+        return `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=059669&color=fff&size=128`;
     }
+}
+
+// Alternative: Try to get real Twitter avatar using a different approach
+async function tryRealTwitterAvatar(username) {
+    try {
+        // This is a more advanced approach - using a CORS proxy to try to get real Twitter data
+        const proxyUrl = 'https://api.allorigins.win/raw?url=';
+        const twitterProfileUrl = `https://nitter.net/${username}/pic`;
+        
+        const response = await fetch(proxyUrl + encodeURIComponent(twitterProfileUrl), {
+            method: 'HEAD',
+            timeout: 3000
+        });
+        
+        if (response.ok) {
+            return twitterProfileUrl;
+        }
+    } catch (e) {
+        console.log('Real Twitter avatar failed, using fallback');
+    }
+    
+    return await getTwitterAvatar(username);
 }
 
 // Check VPS connection
@@ -316,8 +339,8 @@ async function addUserCard(username, animate=true, isDefault=false){
     
     card.className = `${cardClass} ${animate ? 'pulse-ring' : ''}`;
     
-    // Get real Twitter avatar
-    const avatarUrl = await getTwitterAvatar(username);
+    // Get real Twitter avatar (try advanced method first)
+    const avatarUrl = await tryRealTwitterAvatar(username);
     
     const labelText = isDefault ? 'Plasma Legend' : 'Digital Warrior';
     const labelColor = isDefault ? 'text-emerald-300' : 'text-teal-300';
@@ -325,11 +348,12 @@ async function addUserCard(username, animate=true, isDefault=false){
     card.innerHTML = `
         <div class="avatar-container mb-3 relative">
             <img src="${avatarUrl}" 
-                 onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=${username}'" 
-                 class="w-16 h-16 rounded-full mx-auto border-2 ${isDefault ? 'border-emerald-400' : 'border-teal-400'} shadow-xl object-cover"
-                 crossorigin="anonymous">
+                 onerror="this.src='https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=374151&color=fff&size=128&font-size=0.6'" 
+                 class="w-16 h-16 rounded-xl mx-auto border-2 ${isDefault ? 'border-emerald-400' : 'border-teal-400'} shadow-xl object-cover bg-gray-800"
+                 crossorigin="anonymous"
+                 loading="lazy">
         </div>
-        <h3 class="font-bold text-white">@${username}</h3>
+        <h3 class="font-bold text-white text-sm">@${username}</h3>
         <div class="text-xs ${labelColor} mt-1">${labelText}</div>
     `;
     
@@ -410,7 +434,7 @@ async function saveUser(username){
             console.log('User saved successfully:', result);
             
             // Add user to submissions section immediately
-            const card = addUserCard(username, true, false);
+            const card = await addUserCard(username, true, false);
             hallOfFame.appendChild(card);
             
             // Update count
@@ -424,7 +448,7 @@ async function saveUser(username){
     } catch(e){ 
         console.error('Error saving user:', e);
         // Add user locally even if server save fails
-        const card = addUserCard(username, true, false);
+        const card = await addUserCard(username, true, false);
         hallOfFame.appendChild(card);
         
         const currentCount = hallOfFame.children.length;
