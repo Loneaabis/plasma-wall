@@ -65,33 +65,130 @@
 }
 
 .loading-spinner {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+    position: relative;
+}
+
+.loading-spinner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
     background: conic-gradient(
         from 0deg,
         transparent 0deg,
+        transparent 10deg,
+        white 10deg,
+        white 15deg,
+        transparent 15deg,
+        transparent 25deg,
+        white 25deg,
+        white 30deg,
+        transparent 30deg,
+        transparent 40deg,
+        white 40deg,
+        white 45deg,
+        transparent 45deg,
+        transparent 55deg,
+        white 55deg,
+        white 60deg,
         transparent 60deg,
-        #10b981 60deg,
-        #10b981 80deg,
-        transparent 80deg,
-        transparent 140deg,
-        #34d399 140deg,
-        #34d399 160deg,
+        transparent 70deg,
+        white 70deg,
+        white 75deg,
+        transparent 75deg,
+        transparent 85deg,
+        white 85deg,
+        white 90deg,
+        transparent 90deg,
+        transparent 100deg,
+        white 100deg,
+        white 105deg,
+        transparent 105deg,
+        transparent 115deg,
+        white 115deg,
+        white 120deg,
+        transparent 120deg,
+        transparent 130deg,
+        white 130deg,
+        white 135deg,
+        transparent 135deg,
+        transparent 145deg,
+        white 145deg,
+        white 150deg,
+        transparent 150deg,
         transparent 160deg,
+        white 160deg,
+        white 165deg,
+        transparent 165deg,
+        transparent 175deg,
+        white 175deg,
+        white 180deg,
+        transparent 180deg,
+        transparent 190deg,
+        white 190deg,
+        white 195deg,
+        transparent 195deg,
+        transparent 205deg,
+        white 205deg,
+        white 210deg,
+        transparent 210deg,
         transparent 220deg,
-        #0d9488 220deg,
-        #0d9488 240deg,
+        white 220deg,
+        white 225deg,
+        transparent 225deg,
+        transparent 235deg,
+        white 235deg,
+        white 240deg,
         transparent 240deg,
+        transparent 250deg,
+        white 250deg,
+        white 255deg,
+        transparent 255deg,
+        transparent 265deg,
+        white 265deg,
+        white 270deg,
+        transparent 270deg,
+        transparent 280deg,
+        white 280deg,
+        white 285deg,
+        transparent 285deg,
+        transparent 295deg,
+        white 295deg,
+        white 300deg,
         transparent 300deg,
-        #059669 300deg,
-        #059669 320deg,
-        transparent 320deg,
-        transparent 360deg
+        transparent 310deg,
+        white 310deg,
+        white 315deg,
+        transparent 315deg,
+        transparent 325deg,
+        white 325deg,
+        white 330deg,
+        transparent 330deg,
+        transparent 340deg,
+        white 340deg,
+        white 345deg,
+        transparent 345deg,
+        transparent 355deg,
+        white 355deg,
+        white 360deg
     );
-    animation: spinLoader 3s linear infinite;
-    opacity: 0.6;
-    filter: blur(1px);
+    border-radius: 50%;
+    animation: spinLoader 4s linear infinite;
+    opacity: 0.8;
+}
+
+.loading-spinner::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, #064e3b, #065f46);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
 }
 
 @keyframes spinLoader {
@@ -212,7 +309,7 @@ async function checkConnection(){
     }
 }
 
-// Load users
+// Load users from server or show defaults
 async function loadUsers(){
     try {
         const res = await fetch(`${API_GET}/users`);
@@ -220,7 +317,8 @@ async function loadUsers(){
             const users = await res.json();
             hallOfFame.innerHTML='';
             if(users.length===0) { 
-                userCount.textContent='No legends yet'; 
+                // Show default users if no users in database
+                addDefaultUsers();
                 return; 
             }
             users.forEach((u,i)=>setTimeout(()=>addUserCard(u,true),i*100));
@@ -228,6 +326,9 @@ async function loadUsers(){
         }
     } catch(e){ 
         console.log(e);
+        // Show default users if connection fails
+        hallOfFame.innerHTML='';
+        addDefaultUsers();
     }
 }
 
@@ -252,11 +353,12 @@ function addUserCard(username, animate=true){
         'elonmusk': 'https://pbs.twimg.com/profile_images/1683325380441128960/yRsRRjGO_400x400.jpg',
         'sundarpichai': 'https://pbs.twimg.com/profile_images/864282616597405701/M-FEJMز_400x400.jpg',
         'satyanadella': 'https://pbs.twimg.com/profile_images/1221837516816306177/_Ld4un5A_400x400.jpg',
-        'sundarpichai': 'https://pbs.twimg.com/profile_images/864282616597405701/M-FEJMز_400x400.jpg',
         'jeffbezos': 'https://pbs.twimg.com/profile_images/1591558315254890500/ETIHb4Nl_400x400.jpg',
         'tim_cook': 'https://pbs.twimg.com/profile_images/1535420431766671360/Pwq-1eJc_400x400.jpg',
-        'sundarpichai': 'https://pbs.twimg.com/profile_images/864282616597405701/M-FEJMز_400x400.jpg',
-        'billgates': 'https://pbs.twimg.com/profile_images/1414439092373254147/JdS8yLGI_400x400.jpg'
+        'billgates': 'https://pbs.twimg.com/profile_images/1414439092373254147/JdS8yLGI_400x400.jpg',
+        'naval': 'https://pbs.twimg.com/profile_images/1296275068927275008/_sG_zhPj_400x400.jpg',
+        'karpathy': 'https://pbs.twimg.com/profile_images/1296667294148382721/9Pr6XrPB_400x400.jpg',
+        'lexfridman': 'https://pbs.twimg.com/profile_images/1449365282775584769/Ls06kB_z_400x400.jpg'
     };
 
     const card = document.createElement('div');
