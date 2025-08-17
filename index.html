@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plasma Hall of Fame</title>
+<title>Plasma Hall of Fame - Authenticated</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-900 to-green-900 text-white overflow-hidden relative">
@@ -24,53 +24,76 @@
 
 <!-- Header -->
 <header class="relative z-10 text-center py-8">
-    <div class="flex items-center justify-center mb-4">
-        <svg width="80" height="80" viewBox="0 0 100 100" class="w-16 h-16 mr-4 animate-spin" style="animation-duration: 3s;">
-            <defs>
-                <style>
-                    .segment { fill: white; }
-                </style>
-            </defs>
-            <g transform="translate(50,50)">
-                <!-- Segmented circle with gaps like the image -->
-                <path d="M 0,-45 A 45,45 0 0,1 31.82,-31.82" class="segment" />
-                <path d="M 36.82,-26.82 A 45,45 0 0,1 45,0" class="segment" />
-                <path d="M 45,5 A 45,45 0 0,1 31.82,31.82" class="segment" />
-                <path d="M 26.82,36.82 A 45,45 0 0,1 0,45" class="segment" />
-                <path d="M -5,45 A 45,45 0 0,1 -31.82,31.82" class="segment" />
-                <path d="M -36.82,26.82 A 45,45 0 0,1 -45,0" class="segment" />
-                <path d="M -45,-5 A 45,45 0 0,1 -31.82,-31.82" class="segment" />
-                <path d="M -26.82,-36.82 A 45,45 0 0,1 0,-45" class="segment" />
-            </g>
-        </svg>
-        <div>
-            <h1 class="text-6xl font-bold bg-gradient-to-r from-emerald-400 via-teal-500 to-green-500 bg-clip-text text-transparent animate-pulse">
-                 PLASMA HALL OF FAME 
-            </h1>
-            <div class="text-lg text-emerald-400 font-semibold mt-2">
-                 Trillions 
-            </div>
+    <div class="flex items-center justify-center gap-4 mb-4">
+        <!-- Plasma Logo SVG -->
+        <div class="spinning-logo">
+            <svg width="60" height="60" viewBox="0 0 100 100" class="text-emerald-400">
+                <defs>
+                    <mask id="segments">
+                        <rect width="100" height="100" fill="black"/>
+                        <g fill="white">
+                            <path d="M50,10 A40,40 0 0,1 85.36,35 L75.36,42.5 A27.5,27.5 0 0,0 50,22.5 Z"/>
+                            <path d="M85.36,35 A40,40 0 0,1 85.36,65 L75.36,57.5 A27.5,27.5 0 0,0 75.36,42.5 Z"/>
+                            <path d="M85.36,65 A40,40 0 0,1 50,90 L50,77.5 A27.5,27.5 0 0,0 75.36,57.5 Z"/>
+                            <path d="M50,90 A40,40 0 0,1 14.64,65 L24.64,57.5 A27.5,27.5 0 0,0 50,77.5 Z"/>
+                            <path d="M14.64,65 A40,40 0 0,1 14.64,35 L24.64,42.5 A27.5,27.5 0 0,0 24.64,57.5 Z"/>
+                            <path d="M14.64,35 A40,40 0 0,1 50,10 L50,22.5 A27.5,27.5 0 0,0 24.64,42.5 Z"/>
+                        </g>
+                    </mask>
+                </defs>
+                <circle cx="50" cy="50" r="40" fill="currentColor" mask="url(#segments)"/>
+                <circle cx="50" cy="50" r="15" fill="#064e3b"/>
+            </svg>
         </div>
+        <h1 class="text-6xl font-bold bg-gradient-to-r from-emerald-400 via-teal-500 to-green-500 bg-clip-text text-transparent animate-pulse">
+            PLASMA HALL OF FAME
+        </h1>
     </div>
+    <p class="text-2xl text-teal-300 mb-4">🚀 Trillions 🚀</p>
     <button id="musicToggle" class="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform">
         🎵 Play Music
     </button>
 </header>
 
-<!-- Input Section -->
-<div class="relative z-10 flex flex-col items-center justify-center px-4">
+<!-- Authentication Section -->
+<div id="authSection" class="relative z-10 flex flex-col items-center justify-center px-4 mb-8">
+    <div class="bg-black/30 backdrop-blur-lg rounded-3xl p-8 border border-purple-500/50 shadow-2xl max-w-md w-full">
+        <h3 class="text-xl text-purple-300 font-bold text-center mb-4">🔐 Admin Access</h3>
+        <input type="password" id="adminPassword" placeholder="Enter admin password" class="w-full pl-3 py-3 mb-4 rounded-xl text-white bg-gray-900/80 focus:outline-none border border-purple-500/30">
+        <button id="authBtn" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-3 rounded-xl font-bold hover:scale-105 transition-transform">🔑 Authenticate</button>
+        <div id="authStatus" class="mt-4 text-center text-purple-400">Enter password to manage submissions</div>
+    </div>
+</div>
+
+<!-- Input Section (Hidden until authenticated) -->
+<div id="inputSection" class="relative z-10 flex-col items-center justify-center px-4 mb-8" style="display: none;">
     <div class="bg-black/30 backdrop-blur-lg rounded-3xl p-8 border border-emerald-500/50 shadow-2xl max-w-md w-full">
         <input type="text" id="usernameInput" placeholder="your_twitter_username" class="w-full pl-3 py-3 mb-4 rounded-xl text-white bg-gray-900/80 focus:outline-none border border-emerald-500/30">
         <button id="submitBtn" class="w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 py-3 rounded-xl font-bold hover:scale-105 transition-transform">🚀 Join the Wall</button>
-        <div id="connectionStatus" class="mt-4 text-center text-yellow-400">🔄 Checking connection...</div>
+        <div id="connectionStatus" class="mt-4 text-center text-yellow-400">Ready to add users</div>
     </div>
 </div>
 
 <!-- Hall of Fame -->
 <div class="relative z-10 px-4 pb-8">
-    <h3 class="text-2xl text-emerald-300 font-bold text-center mb-4">🌟 Hall of Fame 🌟</h3>
-    <p id="userCount" class="text-gray-400 text-center mb-4">Loading legends...</p>
-    <div id="hallOfFame" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-6xl mx-auto"></div>
+    <!-- Plasma Legends Section -->
+    <div class="mb-8">
+        <h3 class="text-2xl text-emerald-300 font-bold text-center mb-4">🌟 Plasma Legends 🌟</h3>
+        <div id="defaultUsers" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto mb-6"></div>
+    </div>
+    
+    <!-- Authenticated Submissions Section -->
+    <div class="bg-black/20 backdrop-blur-md rounded-3xl p-6 border border-teal-500/50 max-w-6xl mx-auto">
+        <h3 class="text-2xl text-teal-300 font-bold text-center mb-4">⚡ Verified Members ⚡</h3>
+        <p id="userCount" class="text-gray-400 text-center mb-4">Loading members...</p>
+        <div id="hallOfFame" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
+        
+        <!-- Admin Controls (Hidden until authenticated) -->
+        <div id="adminControls" class="mt-6 text-center" style="display: none;">
+            <button id="clearAllBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg mr-4 transition-colors">🗑️ Clear All</button>
+            <button id="logoutBtn" class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors">🚪 Logout</button>
+        </div>
+    </div>
 </div>
 
 <!-- Styles -->
@@ -173,6 +196,15 @@
     to { transform: rotate(360deg); }
 }
 
+.spinning-logo svg {
+    animation: spinLogo 8s linear infinite;
+}
+
+@keyframes spinLogo {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 .stars {
     background-image: 
         radial-gradient(2px 2px at 20px 30px, #34d399, transparent),
@@ -223,24 +255,57 @@
     from { box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); } 
     to { box-shadow: 0 0 30px rgba(52, 211, 153, 0.8); }
 }
+
+.verified-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: linear-gradient(45deg, #10b981, #34d399);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    border: 2px solid #064e3b;
+}
 </style>
 
 <!-- Script -->
 <script>
-// API endpoints
-const VPS_DIRECT = 'http://162.250.191.81:4000';
-const API_GET = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://162.250.191.81:4000');
+// Authentication configuration
+const ADMIN_PASSWORD = "plasma2024"; // Change this to your secure password
+const SESSION_KEY = "plasma_auth_session";
 
 // DOM elements
+const authSection = document.getElementById('authSection');
+const inputSection = document.getElementById('inputSection');
+const adminControls = document.getElementById('adminControls');
+const adminPassword = document.getElementById('adminPassword');
+const authBtn = document.getElementById('authBtn');
+const authStatus = document.getElementById('authStatus');
 const usernameInput = document.getElementById('usernameInput');
 const submitBtn = document.getElementById('submitBtn');
+const clearAllBtn = document.getElementById('clearAllBtn');
+const logoutBtn = document.getElementById('logoutBtn');
 const hallOfFame = document.getElementById('hallOfFame');
+const defaultUsersElement = document.getElementById('defaultUsers');
 const bgMusic = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
 const connectionStatus = document.getElementById('connectionStatus');
 const userCount = document.getElementById('userCount');
 
 let musicPlaying = false;
+let isAuthenticated = false;
+
+// Default users (Plasma Legends)
+const defaultUsers = [
+    'your_username_here' // Replace with your actual username
+];
+
+// Persistent storage key
+const USERS_STORAGE_KEY = "plasma_verified_users";
 
 // Music toggle
 musicToggle.addEventListener('click', async () => {
@@ -260,217 +325,299 @@ musicToggle.addEventListener('click', async () => {
     }
 });
 
-// Default users to show if server is unavailable
-const defaultUsers = [
-    'elonmusk', 'sundarpichai', 'satyanadella', 'tim_cook', 
-    'jeffbezos', 'billgates', 'naval', 'lexfridman'
-];
-
-// Twitter profile pictures
-const twitterAvatars = {
-    'elonmusk': 'https://pbs.twimg.com/profile_images/1683325380441128960/yRsRRjGO_400x400.jpg',
-    'sundarpichai': 'https://pbs.twimg.com/profile_images/864282616597405701/M-FEJM-z_400x400.jpg',
-    'satyanadella': 'https://pbs.twimg.com/profile_images/1221837516816306177/_Ld4un5A_400x400.jpg',
-    'jeffbezos': 'https://pbs.twimg.com/profile_images/1591558315254890500/ETIHb4Nl_400x400.jpg',
-    'tim_cook': 'https://pbs.twimg.com/profile_images/1535420431766671360/Pwq-1eJc_400x400.jpg',
-    'billgates': 'https://pbs.twimg.com/profile_images/1414439092373254147/JdS8yLGI_400x400.jpg',
-    'naval': 'https://pbs.twimg.com/profile_images/1296275068927275008/_sG_zhPj_400x400.jpg',
-    'lexfridman': 'https://pbs.twimg.com/profile_images/1449365282775584769/Ls06kB_z_400x400.jpg'
-};
-
-// Check VPS connection
-async function checkConnection(){
-    try {
-        console.log('Checking connection...');
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
-        
-        const res = await fetch(`${API_GET}/`, {
-            method: 'GET',
-            signal: controller.signal,
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        
-        clearTimeout(timeoutId);
-        
-        if(res.ok){ 
-            const data = await res.json();
-            console.log('Connection successful:', data);
-            connectionStatus.innerHTML='<span class="text-green-400">✅ Connected to Server</span>'; 
-            return true;
-        } else {
-            throw new Error(`Server responded with ${res.status}`);
-        }
-    } catch(e){ 
-        console.error('Connection failed:', e);
-        connectionStatus.innerHTML=`<span class="text-red-400">❌ Server Offline - Showing Defaults</span>`; 
-        return false;
+// Authentication functions
+function checkAuthentication() {
+    const session = sessionStorage.getItem(SESSION_KEY);
+    const storedTime = localStorage.getItem(SESSION_KEY + "_time");
+    const currentTime = Date.now();
+    
+    // Session expires after 24 hours
+    if (session === "authenticated" && storedTime && (currentTime - parseInt(storedTime)) < 86400000) {
+        return true;
     }
+    
+    // Clear expired session
+    sessionStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(SESSION_KEY + "_time");
+    return false;
 }
 
-// Add user card with avatar
-function addUserCard(username, animate=true){
-    console.log('Adding user card for:', username);
+function authenticate(password) {
+    if (password === ADMIN_PASSWORD) {
+        sessionStorage.setItem(SESSION_KEY, "authenticated");
+        localStorage.setItem(SESSION_KEY + "_time", Date.now().toString());
+        return true;
+    }
+    return false;
+}
+
+function logout() {
+    sessionStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(SESSION_KEY + "_time");
+    isAuthenticated = false;
+    showAuthSection();
+}
+
+function showAuthSection() {
+    authSection.style.display = 'flex';
+    inputSection.style.display = 'none';
+    adminControls.style.display = 'none';
+}
+
+function showAdminSection() {
+    authSection.style.display = 'none';
+    inputSection.style.display = 'flex';
+    adminControls.style.display = 'block';
+    isAuthenticated = true;
+}
+
+// Enhanced avatar system
+function createAvatarImage(username, isDefault = false) {
+    const img = document.createElement('img');
+    const borderColor = isDefault ? 'border-emerald-400' : 'border-teal-400';
+    img.className = `w-16 h-16 rounded-xl mx-auto border-2 ${borderColor} shadow-xl object-cover bg-gray-800`;
+    img.alt = `@${username}`;
+    img.loading = 'lazy';
     
+    // Multiple fallback sources
+    const fallbacks = [
+        `https://unavatar.io/x/${username}?fallback=false`,
+        `https://unavatar.io/twitter/${username}?fallback=false`,
+        `https://avatars.githubusercontent.com/${username}?size=128`,
+        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&backgroundColor=10b981&radius=20`,
+        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=10b981&color=fff&size=128&font-size=0.6&bold=true&rounded=true`
+    ];
+    
+    let currentIndex = 0;
+    
+    const tryNextFallback = () => {
+        if (currentIndex < fallbacks.length) {
+            img.src = fallbacks[currentIndex];
+            currentIndex++;
+        }
+    };
+    
+    img.onload = () => {
+        console.log(`✅ Avatar loaded for ${username}`);
+    };
+    
+    img.onerror = () => {
+        tryNextFallback();
+    };
+    
+    tryNextFallback();
+    return img;
+}
+
+// Enhanced card creation
+function createUserCard(username, isDefault = false, animate = true) {
     const card = document.createElement('div');
-    card.className = `user-card bg-gradient-to-br from-emerald-600/30 to-teal-600/30 backdrop-blur-sm rounded-2xl p-4 border border-emerald-500/40 text-center ${animate ? 'pulse-ring' : ''}`;
+    const cardClass = isDefault ? 
+        'user-card bg-gradient-to-br from-emerald-600/40 to-green-600/40 backdrop-blur-sm rounded-2xl p-4 border-2 border-emerald-500/60 text-center glow-effect relative' :
+        'user-card bg-gradient-to-br from-teal-600/30 to-cyan-600/30 backdrop-blur-sm rounded-2xl p-4 border border-teal-500/40 text-center relative';
     
-    // Try hardcoded avatar first, then fallback to generated
-    const avatarUrl = twitterAvatars[username.toLowerCase()] || `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
+    card.className = `${cardClass} ${animate ? 'pulse-ring' : ''}`;
     
-    card.innerHTML = `
-        <div class="avatar-container mb-3 relative">
-            <img src="${avatarUrl}" 
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" 
-                 class="w-16 h-16 rounded-full mx-auto border-2 border-emerald-400 shadow-xl">
-            <div style="display:none;" class="w-16 h-16 rounded-full mx-auto border-2 border-emerald-400 shadow-xl bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center text-2xl font-bold">
-                ${username.charAt(0).toUpperCase()}
-            </div>
-        </div>
-        <h3 class="font-bold text-white">@${username}</h3>
-        <div class="text-xs text-emerald-300 mt-1">Digital Legend</div>
-    `;
+    // Create avatar
+    const avatarImg = createAvatarImage(username, isDefault);
     
-    hallOfFame.appendChild(card);
+    // Add verification badge for authenticated users
+    if (!isDefault) {
+        const badge = document.createElement('div');
+        badge.className = 'verified-badge';
+        badge.innerHTML = '✓';
+        card.appendChild(badge);
+    }
+    
+    // Create text elements
+    const nameElement = document.createElement('h3');
+    nameElement.className = 'font-bold text-white text-sm mt-3';
+    nameElement.textContent = `@${username}`;
+    
+    const labelElement = document.createElement('div');
+    const labelText = isDefault ? 'Plasma Legend' : 'Verified Member';
+    const labelColor = isDefault ? 'text-emerald-300' : 'text-teal-300';
+    labelElement.className = `text-xs ${labelColor} mt-1`;
+    labelElement.textContent = labelText;
+    
+    // Assemble card
+    card.appendChild(avatarImg);
+    card.appendChild(nameElement);
+    card.appendChild(labelElement);
+    
+    return card;
 }
 
-// Show default users
+// Load verified users from storage
+function loadVerifiedUsers() {
+    try {
+        const stored = localStorage.getItem(USERS_STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+    } catch (e) {
+        console.error('Error loading users:', e);
+        return [];
+    }
+}
+
+// Save verified users to storage
+function saveVerifiedUsers(users) {
+    try {
+        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+        console.log('Users saved to storage:', users);
+    } catch (e) {
+        console.error('Error saving users:', e);
+    }
+}
+
+// Display functions
 function showDefaultUsers() {
-    console.log('Showing default users');
-    hallOfFame.innerHTML = '';
+    console.log('🌟 Loading Plasma Legends...');
+    defaultUsersElement.innerHTML = '';
+    
     defaultUsers.forEach((username, i) => {
-        setTimeout(() => addUserCard(username, true), i * 100);
+        setTimeout(() => {
+            const card = createUserCard(username, true, true);
+            defaultUsersElement.appendChild(card);
+        }, i * 200);
     });
-    userCount.textContent = `${defaultUsers.length} digital legends (defaults)`;
 }
 
-// Load users from server
-async function loadUsers(){
-    console.log('Loading users from server...');
-    try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
-        
-        const res = await fetch(`${API_GET}/users`, {
-            signal: controller.signal
-        });
-        
-        clearTimeout(timeoutId);
-        
-        if(res.ok){
-            const users = await res.json();
-            console.log('Loaded users:', users);
-            
-            hallOfFame.innerHTML = '';
-            
-            if(users.length === 0) { 
-                console.log('No users found, showing defaults');
-                showDefaultUsers();
-                return; 
-            }
-            
-            // Show server users
-            users.forEach((username, i) => {
-                setTimeout(() => addUserCard(username, true), i * 100);
-            });
-            userCount.textContent = `${users.length} digital legends`;
-        } else {
-            throw new Error(`Failed to load users: ${res.status}`);
-        }
-    } catch(e){ 
-        console.error('Failed to load users:', e);
-        showDefaultUsers();
-    }
-}
-
-// Save user to server
-async function saveUser(username){
-    console.log('Saving user:', username);
-    try {
-        const res = await fetch(`${VPS_DIRECT}/users`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username: username })
-        });
-        
-        if (res.ok) {
-            const result = await res.json();
-            console.log('User saved successfully:', result);
-            return result;
-        } else {
-            throw new Error(`Failed to save user: ${res.status}`);
-        }
-    } catch(e){ 
-        console.error('Error saving user:', e);
-        // Add user locally even if server save fails
-        addUserCard(username, true);
-        return null;
-    }
-}
-
-// Submit handler
-submitBtn.addEventListener('click', async () => {
-    const username = usernameInput.value.trim().replace('@','');
-    if(!username){ 
-        alert('Please enter a username'); 
+function showVerifiedUsers() {
+    const verifiedUsers = loadVerifiedUsers();
+    console.log('📡 Loading verified members...', verifiedUsers);
+    
+    hallOfFame.innerHTML = '';
+    
+    if (verifiedUsers.length === 0) {
+        userCount.textContent = 'No verified members yet - Add the first one!';
         return;
     }
     
-    submitBtn.disabled = true; 
-    submitBtn.textContent = 'Joining...';
-    
-    console.log('Submitting username:', username);
-    
-    try {
-        await saveUser(username);
-        await loadUsers(); // Reload to show the new user
-        usernameInput.value = '';
-        connectionStatus.innerHTML = '<span class="text-green-400">✅ User Added Successfully!</span>';
+    verifiedUsers.forEach((username, i) => {
         setTimeout(() => {
-            connectionStatus.innerHTML = '<span class="text-green-400">✅ Connected to Server</span>';
-        }, 2000);
-    } catch (e) {
-        console.error('Submit error:', e);
-        connectionStatus.innerHTML = '<span class="text-red-400">❌ Failed to Add User</span>';
+            const card = createUserCard(username, false, true);
+            hallOfFame.appendChild(card);
+        }, i * 100);
+    });
+    
+    userCount.textContent = `${verifiedUsers.length} verified members and growing!`;
+}
+
+// Add user function
+function addVerifiedUser(username) {
+    const verifiedUsers = loadVerifiedUsers();
+    
+    // Check for duplicates
+    if (verifiedUsers.includes(username.toLowerCase()) || 
+        defaultUsers.includes(username.toLowerCase())) {
+        return false;
     }
     
-    submitBtn.disabled = false; 
+    // Add user
+    verifiedUsers.push(username.toLowerCase());
+    saveVerifiedUsers(verifiedUsers);
+    
+    // Refresh display
+    showVerifiedUsers();
+    
+    return true;
+}
+
+// Clear all users function
+function clearAllUsers() {
+    if (confirm('Are you sure you want to remove all verified members?')) {
+        localStorage.removeItem(USERS_STORAGE_KEY);
+        showVerifiedUsers();
+        connectionStatus.innerHTML = '<span class="text-green-400">✅ All users cleared</span>';
+    }
+}
+
+// Event listeners
+authBtn.addEventListener('click', () => {
+    const password = adminPassword.value.trim();
+    
+    if (authenticate(password)) {
+        authStatus.innerHTML = '<span class="text-green-400">✅ Authentication successful!</span>';
+        setTimeout(() => {
+            showAdminSection();
+        }, 1000);
+    } else {
+        authStatus.innerHTML = '<span class="text-red-400">❌ Invalid password</span>';
+        adminPassword.value = '';
+    }
+});
+
+adminPassword.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        authBtn.click();
+    }
+});
+
+submitBtn.addEventListener('click', () => {
+    if (!isAuthenticated) {
+        alert('Authentication required');
+        return;
+    }
+    
+    const username = usernameInput.value.trim().replace('@','').replace(/[^a-zA-Z0-9_]/g, '');
+    
+    if (!username) {
+        alert('Please enter a valid username');
+        return;
+    }
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Adding...';
+    
+    if (addVerifiedUser(username)) {
+        usernameInput.value = '';
+        connectionStatus.innerHTML = '<span class="text-green-400">⚡ User verified and added!</span>';
+    } else {
+        connectionStatus.innerHTML = '<span class="text-yellow-400">⚠️ User already exists</span>';
+    }
+    
+    setTimeout(() => {
+        connectionStatus.innerHTML = 'Ready to add users';
+    }, 3000);
+    
+    submitBtn.disabled = false;
     submitBtn.textContent = '🚀 Join the Wall';
 });
 
-// Enter key support
 usernameInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && !submitBtn.disabled) {
         submitBtn.click();
     }
 });
 
-// Initialize app
-async function init(){
-    console.log('Initializing app...');
+clearAllBtn.addEventListener('click', clearAllUsers);
+
+logoutBtn.addEventListener('click', logout);
+
+// Initialize application
+function init() {
+    console.log('🚀 Initializing Plasma Hall of Fame with Authentication...');
     
-    // Always show default users first for immediate feedback
-    showDefaultUsers();
-    
-    // Check server connection
-    const connected = await checkConnection();
-    
-    // If connected, try to load server users
-    if (connected) {
-        await loadUsers();
+    // Check if already authenticated
+    if (checkAuthentication()) {
+        showAdminSection();
+    } else {
+        showAuthSection();
     }
     
-    // Set music volume
+    // Always show default users and verified users
+    showDefaultUsers();
+    showVerifiedUsers();
+    
+    // Set audio volume
     bgMusic.volume = 0.3;
     
-    console.log('App initialized');
+    console.log('✨ Plasma Hall of Fame ready!');
+    console.log('🔐 Authentication required for adding users');
+    console.log(`🔑 Admin password: ${ADMIN_PASSWORD}`);
 }
 
-// Start the app
+// Start the application
 init();
 </script>
 
