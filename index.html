@@ -1,217 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plasma Hall of Fame</title>
-<script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Plasma Hall of Fame</title>
+    <link rel="icon" href="data:,">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .title {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 10px rgba(255,255,255,0.2); }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.4); }
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .status {
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .status.online {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+
+        .status.offline {
+            background: rgba(244, 67, 54, 0.2);
+            color: #F44336;
+            border: 2px solid #F44336;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .username-input {
+            flex: 1;
+            padding: 15px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            placeholder-color: rgba(255, 255, 255, 0.7);
+            min-width: 200px;
+        }
+
+        .username-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .username-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .submit-btn {
+            padding: 15px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .hall-of-fame {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .hall-title {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .user-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .user-name {
+            color: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        .loading {
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            color: #F44336;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 1px solid #F44336;
+        }
+
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .input-container {
+                flex-direction: column;
+            }
+            
+            .username-input {
+                min-width: 100%;
+            }
+        }
+    </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white overflow-hidden relative">
-
-<!-- Background Animations -->
-<div class="absolute inset-0 overflow-hidden">
-    <div class="plasma-bg absolute inset-0"></div>
-    <div class="stars absolute inset-0"></div>
-</div>
-
-<!-- Audio -->
-<audio id="bgMusic" loop preload="auto">
-    <source src="./interstellar.mp3" type="audio/mpeg">
-</audio>
-
-<!-- Header -->
-<header class="relative z-10 text-center py-8">
-    <h1 class="text-6xl font-bold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4 animate-pulse">
-        ⚡ PLASMA HALL OF FAME ⚡
-    </h1>
-    <button id="musicToggle" class="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform">
-        🎵 Play Music
-    </button>
-</header>
-
-<!-- Input Section -->
-<div class="relative z-10 flex flex-col items-center justify-center px-4">
-    <div class="bg-black/30 backdrop-blur-lg rounded-3xl p-8 border border-purple-500/50 shadow-2xl max-w-md w-full">
-        <input type="text" id="usernameInput" placeholder="your_twitter_username" class="w-full pl-3 py-3 mb-4 rounded-xl text-white bg-gray-900/80 focus:outline-none">
-        <button id="submitBtn" class="w-full bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 py-3 rounded-xl font-bold">🚀 Join the Wall</button>
-        <div id="connectionStatus" class="mt-4 text-center text-yellow-400">🔄 Checking connection...</div>
-    </div>
-</div>
-
-<!-- Hall of Fame -->
-<div class="relative z-10 px-4 pb-8">
-    <h3 class="text-2xl text-purple-300 font-bold text-center mb-4">🌟 Hall of Fame 🌟</h3>
-    <p id="userCount" class="text-gray-400 text-center mb-4">Loading legends...</p>
-    <div id="hallOfFame" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-6xl mx-auto"></div>
-</div>
-
-<!-- Styles -->
-<style>
-.plasma-bg {
-    background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5, #ffbe0b);
-    background-size: 400% 400%;
-    animation: plasmaMove 12s ease-in-out infinite;
-    opacity: 0.4;
-}
-@keyframes plasmaMove {
-    0%,100% { background-position:0% 50%; }
-    25% { background-position:100% 100%; }
-    50% { background-position:100% 0%; }
-    75% { background-position:0% 100%; }
-}
-.stars {
-    background-image: radial-gradient(2px 2px at 20px 30px,#eee,transparent), radial-gradient(2px 2px at 40px 70px,rgba(255,255,255,0.8),transparent), radial-gradient(1px 1px at 90px 40px,#fff,transparent);
-    background-repeat: repeat;
-    background-size:200px 100px;
-    animation: sparkle 20s linear infinite;
-    opacity:0.5;
-}
-@keyframes sparkle {
-    from { transform: translateX(0); } to { transform: translateX(-200px);}
-}
-.user-card {
-    transition: all 0.3s ease;
-    animation: slideUp 0.8s ease-out;
-}
-.user-card:hover { transform: translateY(-8px) scale(1.05); box-shadow:0 25px 50px rgba(139,92,246,0.4);}
-@keyframes slideUp {from {opacity:0; transform:translateY(40px) scale(0.8);} to {opacity:1; transform:translateY(0) scale(1);}}
-.pulse-ring {animation: pulseRing 2s infinite;}
-@keyframes pulseRing {0% {transform: scale(1); opacity:1;} 50% {transform: scale(1.15); opacity:0.7;} 100% {transform: scale(1); opacity:1;}}
-.glow-effect {box-shadow:0 0 20px rgba(139,92,246,0.6); animation: glow 2s ease-in-out infinite alternate;}
-@keyframes glow {from {box-shadow:0 0 20px rgba(139,92,246,0.6);} to {box-shadow:0 0 30px rgba(139,92,246,0.8);}}
-</style>
-
-<!-- Script -->
-<script>
-// Direct connection - should work now with proper CORS
-const API_BASE = 'http://162.250.191.81:4000';
-const usernameInput = document.getElementById('usernameInput');
-const submitBtn = document.getElementById('submitBtn');
-const hallOfFame = document.getElementById('hallOfFame');
-const bgMusic = document.getElementById('bgMusic');
-const musicToggle = document.getElementById('musicToggle');
-const connectionStatus = document.getElementById('connectionStatus');
-const userCount = document.getElementById('userCount');
-
-let musicPlaying = false;
-
-// Music toggle
-musicToggle.addEventListener('click', async () => {
-    try {
-        if (musicPlaying) { bgMusic.pause(); musicToggle.innerHTML='🎵 Play Music'; musicPlaying=false; }
-        else { await bgMusic.play(); musicToggle.innerHTML='🔇 Pause Music'; musicPlaying=true; }
-    } catch(e){ console.log(e);}
-});
-
-// Check VPS connection
-async function checkConnection(){
-    try {
-        console.log('Trying to connect to:', `${API_BASE}/`);
+<body>
+    <button class="music-btn" onclick="toggleMusic()" title="Toggle Music">🎵</button>
+    
+    <div class="container">
+        <h1 class="title">🌟 Plasma Hall of Fame</h1>
+        <p class="subtitle">Join the elite circle of Twitter/X legends!</p>
         
-        // Try fetch with different options
-        const res = await fetch(`${API_BASE}/`, {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
+        <div id="connectionStatus" class="status offline">
+            ❌ Connecting to server...
+        </div>
+        
+        <div class="input-container">
+            <input 
+                type="text" 
+                id="usernameInput" 
+                class="username-input" 
+                placeholder="Enter Twitter/X username (without @)"
+                maxlength="50"
+            >
+            <button onclick="addUser()" class="submit-btn">🚀 Join the Wall</button>
+        </div>
+        
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        
+        <div class="hall-of-fame">
+            <h2 class="hall-title">🌟 Hall of Fame 🌟</h2>
+            <div id="userGrid" class="user-grid">
+                <div class="loading">Loading awesome people...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE = 'http://162.250.191.81:4000';
+        
+        let users = [];
+        let isConnected = false;
+        
+        // Check server connection
+        async function checkConnection() {
+            try {
+                console.log('Checking connection to:', API_BASE);
+                const response = await fetch(`${API_BASE}/`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Connection successful:', data);
+                    isConnected = true;
+                    updateConnectionStatus(true);
+                    loadUsers();
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error('Connection failed:', error);
+                isConnected = false;
+                updateConnectionStatus(false, error.message);
+            }
+        }
+        
+        function updateConnectionStatus(connected, errorMsg = '') {
+            const statusEl = document.getElementById('connectionStatus');
+            if (connected) {
+                statusEl.className = 'status online';
+                statusEl.innerHTML = '✅ Connected to server';
+                hideError();
+            } else {
+                statusEl.className = 'status offline';
+                statusEl.innerHTML = '❌ Server offline';
+                showError(`Connection failed: ${errorMsg}\n\nThis might be due to browser security restrictions. The server is running but your browser may be blocking HTTP requests from HTTPS pages.`);
+            }
+        }
+        
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+        
+        function hideError() {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.style.display = 'none';
+        }
+        
+        // Load users from server
+        async function loadUsers() {
+            if (!isConnected) return;
+            
+            try {
+                console.log('Loading users from:', `${API_BASE}/users`);
+                const response = await fetch(`${API_BASE}/users`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                if (response.ok) {
+                    users = await response.json();
+                    console.log('Loaded users:', users);
+                    displayUsers();
+                } else {
+                    throw new Error(`Failed to load users: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+                showError(`Failed to load users: ${error.message}`);
+                document.getElementById('userGrid').innerHTML = '<div class="loading">Failed to load users</div>';
+            }
+        }
+        
+        // Display users in the grid
+        function displayUsers() {
+            const userGrid = document.getElementById('userGrid');
+            
+            if (users.length === 0) {
+                userGrid.innerHTML = '<div class="loading">No legends yet. Be the first! 🚀</div>';
+                return;
+            }
+            
+            userGrid.innerHTML = users.map(username => {
+                // Get Twitter avatar URL (this works for most public profiles)
+                const avatarUrl = `https://unavatar.io/twitter/${username}`;
+                
+                return `
+                    <div class="user-card">
+                        <img 
+                            class="user-avatar" 
+                            src="${avatarUrl}"
+                            onerror="this.src='https://via.placeholder.com/50x50/667eea/white?text=${username.charAt(0).toUpperCase()}'"
+                            alt="${username}"
+                            loading="lazy"
+                        >
+                        <div class="user-name">@${username}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Add new user
+        async function addUser() {
+            const input = document.getElementById('usernameInput');
+            const username = input.value.trim().replace('@', '');
+            
+            if (!username) {
+                showError('Please enter a username!');
+                return;
+            }
+            
+            if (!isConnected) {
+                showError('Cannot add user: Server is offline');
+                return;
+            }
+            
+            if (username.length > 50) {
+                showError('Username is too long (max 50 characters)');
+                return;
+            }
+            
+            // Basic username validation
+            if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                showError('Username can only contain letters, numbers, and underscores');
+                return;
+            }
+            
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '🔄 Adding...';
+                
+                console.log('Adding user:', username);
+                const response = await fetch(`${API_BASE}/users`, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('User added successfully:', result);
+                    users = result.users || users;
+                    displayUsers();
+                    input.value = '';
+                    hideError();
+                    
+                    // Show success feedback
+                    submitBtn.innerHTML = '✅ Added!';
+                    setTimeout(() => {
+                        submitBtn.innerHTML = originalText;
+                    }, 2000);
+                } else {
+                    const error = await response.text();
+                    throw new Error(`Server error: ${response.status} - ${error}`);
+                }
+            } catch (error) {
+                console.error('Error adding user:', error);
+                showError(`Failed to add user: ${error.message}`);
+            } finally {
+                submitBtn.disabled = false;
+                if (submitBtn.innerHTML.includes('Adding')) {
+                    submitBtn.innerHTML = originalText;
+                }
+            }
+        }
+        
+        // Handle Enter key in input
+        document.getElementById('usernameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addUser();
             }
         });
         
-        console.log('Response status:', res.status);
-        if(res.ok){ 
-            const data = await res.json();
-            console.log('Response data:', data);
-            connectionStatus.innerHTML='<span class="text-green-400">✅ Connected</span>'; 
-            return true;
-        }
-        else throw new Error(`Server responded with ${res.status}`);
-    } catch(e){ 
-        console.error('Connection error details:', e);
+        // Music functionality
+        let audio = null;
+        let isPlaying = false;
         
-        // Show more specific error
-        if (e.name === 'TypeError' && e.message.includes('fetch')) {
-            connectionStatus.innerHTML=`<span class="text-red-400">❌ Network Error - Check CORS/HTTPS</span>`;
-        } else {
-            connectionStatus.innerHTML=`<span class="text-red-400">❌ ${e.message}</span>`; 
+        function toggleMusic() {
+            if (!audio) {
+                // Using a royalty-free background music URL
+                audio = new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.wav');
+                audio.loop = true;
+                audio.volume = 0.3;
+            }
+            
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+            } else {
+                audio.play().catch(e => console.log('Audio play failed:', e));
+                isPlaying = true;
+            }
         }
-        return false;
-    }
-}
-
-// Load users
-async function loadUsers(){
-    try {
-        const res = await fetch(`${API_BASE}/users`);
-        if(res.ok){
-            const users = await res.json();
-            hallOfFame.innerHTML='';
-            if(users.length===0) { userCount.textContent='No legends yet'; return; }
-            users.forEach((u,i)=>setTimeout(()=>addUserCard(u,true),i*100));
-            userCount.textContent=`${users.length} digital legends`;
-        }
-    } catch(e){ console.log(e);}
-}
-
-// Save user
-async function saveUser(username){
-    try {
-        const res = await fetch(`${API_BASE}/users`,{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({username})
-        });
-        return await res.json();
-    } catch(e){ console.log(e);}
-}
-
-// Add user card
-function addUserCard(username,animate=true){
-    const card = document.createElement('div');
-    card.className=`user-card bg-gradient-to-br from-purple-600/30 to-pink-600/30 backdrop-blur-sm rounded-2xl p-4 border border-purple-500/40 text-center ${animate?'pulse-ring':''}`;
-    
-    // Try multiple avatar sources
-    const avatarSources = [
-        `https://unavatar.io/twitter/${username}`,
-        `https://github.com/${username}.png`,
-        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`
-    ];
-    
-    let currentIndex = 0;
-    const tryNextAvatar = (img) => {
-        if (currentIndex < avatarSources.length - 1) {
-            currentIndex++;
-            img.src = avatarSources[currentIndex];
-        }
-    };
-    
-    card.innerHTML=`
-        <div class="mb-3 relative">
-            <img src="${avatarSources[0]}" onerror="tryNextAvatar(this)" class="w-16 h-16 rounded-full mx-auto border-3 border-purple-400 shadow-xl">
-        </div>
-        <h3 class="font-bold text-white">@${username}</h3>
-    `;
-    hallOfFame.appendChild(card);
-}
-
-// Submit
-submitBtn.addEventListener('click',async()=>{
-    const username = usernameInput.value.trim().replace('@','');
-    if(!username){ alert('Enter username'); return;}
-    submitBtn.disabled=true; submitBtn.textContent='Joining...';
-    await saveUser(username);
-    await loadUsers();
-    submitBtn.disabled=false; submitBtn.textContent='🚀 Join the Wall';
-    usernameInput.value='';
-});
-
-// Init
-async function init(){
-    await checkConnection();
-    await loadUsers();
-    bgMusic.volume=0.3;
-}
-init();
-</script>
-
+        
+        // Initialize
+        console.log('Initializing Plasma Hall of Fame...');
+        checkConnection();
+        
+        // Retry connection every 30 seconds if offline
+        setInterval(() => {
+            if (!isConnected) {
+                console.log('Retrying connection...');
+                checkConnection();
+            }
+        }, 30000);
+    </script>
 </body>
 </html>
