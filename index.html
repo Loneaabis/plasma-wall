@@ -250,11 +250,28 @@ const defaultUsers = [
     'proofofnathan', 'scene999'
 ];
 
-// Twitter profile pictures
-const twitterAvatars = {
-    'proofofnathan': 'https://pbs.twimg.com/profile_images/1234567890/avatar_400x400.jpg',
-    'scene999': 'https://pbs.twimg.com/profile_images/0987654321/avatar_400x400.jpg'
-};
+// Function to get Twitter profile picture
+async function getTwitterAvatar(username) {
+    try {
+        // Method 1: Try Twitter's direct profile image URL (most reliable)
+        const twitterImageUrl = `https://unavatar.io/twitter/${username}`;
+        
+        // Test if the image exists
+        const response = await fetch(twitterImageUrl, { method: 'HEAD' });
+        if (response.ok) {
+            return twitterImageUrl;
+        }
+        
+        // Method 2: Fallback to another service
+        const fallbackUrl = `https://avatars.dicebear.com/api/avataaars/${username}.svg`;
+        return fallbackUrl;
+        
+    } catch (error) {
+        console.log(`Failed to get avatar for ${username}:`, error);
+        // Return generated avatar as final fallback
+        return `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
+    }
+}
 
 // Check VPS connection
 async function checkConnection(){
@@ -289,7 +306,7 @@ async function checkConnection(){
 }
 
 // Add user card with avatar
-function addUserCard(username, animate=true, isDefault=false){
+async function addUserCard(username, animate=true, isDefault=false){
     console.log('Adding user card for:', username);
     
     const card = document.createElement('div');
@@ -299,8 +316,8 @@ function addUserCard(username, animate=true, isDefault=false){
     
     card.className = `${cardClass} ${animate ? 'pulse-ring' : ''}`;
     
-    // Try hardcoded avatar first, then fallback to generated
-    const avatarUrl = twitterAvatars[username.toLowerCase()] || `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
+    // Get real Twitter avatar
+    const avatarUrl = await getTwitterAvatar(username);
     
     const labelText = isDefault ? 'Plasma Legend' : 'Digital Warrior';
     const labelColor = isDefault ? 'text-emerald-300' : 'text-teal-300';
@@ -308,11 +325,9 @@ function addUserCard(username, animate=true, isDefault=false){
     card.innerHTML = `
         <div class="avatar-container mb-3 relative">
             <img src="${avatarUrl}" 
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" 
-                 class="w-16 h-16 rounded-full mx-auto border-2 ${isDefault ? 'border-emerald-400' : 'border-teal-400'} shadow-xl">
-            <div style="display:none;" class="w-16 h-16 rounded-full mx-auto border-2 ${isDefault ? 'border-emerald-400 bg-gradient-to-r from-emerald-500 to-green-500' : 'border-teal-400 bg-gradient-to-r from-teal-500 to-cyan-500'} shadow-xl flex items-center justify-center text-2xl font-bold">
-                ${username.charAt(0).toUpperCase()}
-            </div>
+                 onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=${username}'" 
+                 class="w-16 h-16 rounded-full mx-auto border-2 ${isDefault ? 'border-emerald-400' : 'border-teal-400'} shadow-xl object-cover"
+                 crossorigin="anonymous">
         </div>
         <h3 class="font-bold text-white">@${username}</h3>
         <div class="text-xs ${labelColor} mt-1">${labelText}</div>
@@ -322,15 +337,17 @@ function addUserCard(username, animate=true, isDefault=false){
 }
 
 // Show default users in their own section
-function showDefaultUsers() {
+async function showDefaultUsers() {
     console.log('Showing default users');
     defaultUsersElement.innerHTML = '';
-    defaultUsers.forEach((username, i) => {
-        setTimeout(() => {
-            const card = addUserCard(username, true, true);
+    
+    for (let i = 0; i < defaultUsers.length; i++) {
+        const username = defaultUsers[i];
+        setTimeout(async () => {
+            const card = await addUserCard(username, true, true);
             defaultUsersElement.appendChild(card);
         }, i * 200);
-    });
+    }
 }
 
 // Load users from server
@@ -359,12 +376,13 @@ async function loadUsers(){
             }
             
             // Show all server users in submissions section
-            users.forEach((username, i) => {
-                setTimeout(() => {
-                    const card = addUserCard(username, true, false);
+            for (let i = 0; i < users.length; i++) {
+                const username = users[i];
+                setTimeout(async () => {
+                    const card = await addUserCard(username, true, false);
                     hallOfFame.appendChild(card);
                 }, i * 150);
-            });
+            }
             userCount.textContent = `${users.length} submissions and growing!`;
         } else {
             throw new Error(`Failed to load users: ${res.status}`);
