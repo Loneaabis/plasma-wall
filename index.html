@@ -83,8 +83,8 @@
 
 <!-- Script -->
 <script>
-// Direct connection - should work now with proper CORS
-const API_BASE = 'http://162.250.191.81:4000';
+// Use a different CORS proxy that works better
+const API_BASE = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://162.250.191.81:4000');
 const usernameInput = document.getElementById('usernameInput');
 const submitBtn = document.getElementById('submitBtn');
 const hallOfFame = document.getElementById('hallOfFame');
