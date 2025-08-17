@@ -76,102 +76,54 @@
     inset: 0;
     background: conic-gradient(
         from 0deg,
-        transparent 0deg,
-        transparent 10deg,
-        white 10deg,
-        white 15deg,
+        #ffffff 0deg,
+        #ffffff 15deg,
         transparent 15deg,
-        transparent 25deg,
-        white 25deg,
-        white 30deg,
         transparent 30deg,
-        transparent 40deg,
-        white 40deg,
-        white 45deg,
+        #ffffff 30deg,
+        #ffffff 45deg,
         transparent 45deg,
-        transparent 55deg,
-        white 55deg,
-        white 60deg,
         transparent 60deg,
-        transparent 70deg,
-        white 70deg,
-        white 75deg,
+        #ffffff 60deg,
+        #ffffff 75deg,
         transparent 75deg,
-        transparent 85deg,
-        white 85deg,
-        white 90deg,
         transparent 90deg,
-        transparent 100deg,
-        white 100deg,
-        white 105deg,
+        #ffffff 90deg,
+        #ffffff 105deg,
         transparent 105deg,
-        transparent 115deg,
-        white 115deg,
-        white 120deg,
         transparent 120deg,
-        transparent 130deg,
-        white 130deg,
-        white 135deg,
+        #ffffff 120deg,
+        #ffffff 135deg,
         transparent 135deg,
-        transparent 145deg,
-        white 145deg,
-        white 150deg,
         transparent 150deg,
-        transparent 160deg,
-        white 160deg,
-        white 165deg,
+        #ffffff 150deg,
+        #ffffff 165deg,
         transparent 165deg,
-        transparent 175deg,
-        white 175deg,
-        white 180deg,
         transparent 180deg,
-        transparent 190deg,
-        white 190deg,
-        white 195deg,
+        #ffffff 180deg,
+        #ffffff 195deg,
         transparent 195deg,
-        transparent 205deg,
-        white 205deg,
-        white 210deg,
         transparent 210deg,
-        transparent 220deg,
-        white 220deg,
-        white 225deg,
+        #ffffff 210deg,
+        #ffffff 225deg,
         transparent 225deg,
-        transparent 235deg,
-        white 235deg,
-        white 240deg,
         transparent 240deg,
-        transparent 250deg,
-        white 250deg,
-        white 255deg,
+        #ffffff 240deg,
+        #ffffff 255deg,
         transparent 255deg,
-        transparent 265deg,
-        white 265deg,
-        white 270deg,
         transparent 270deg,
-        transparent 280deg,
-        white 280deg,
-        white 285deg,
+        #ffffff 270deg,
+        #ffffff 285deg,
         transparent 285deg,
-        transparent 295deg,
-        white 295deg,
-        white 300deg,
         transparent 300deg,
-        transparent 310deg,
-        white 310deg,
-        white 315deg,
+        #ffffff 300deg,
+        #ffffff 315deg,
         transparent 315deg,
-        transparent 325deg,
-        white 325deg,
-        white 330deg,
         transparent 330deg,
-        transparent 340deg,
-        white 340deg,
-        white 345deg,
+        #ffffff 330deg,
+        #ffffff 345deg,
         transparent 345deg,
-        transparent 355deg,
-        white 355deg,
-        white 360deg
+        transparent 360deg
     );
     border-radius: 50%;
     animation: spinLoader 4s linear infinite;
@@ -185,7 +137,7 @@
     left: 50%;
     width: 120px;
     height: 120px;
-    background: radial-gradient(circle, #064e3b, #065f46);
+    background: #064e3b;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     z-index: 1;
@@ -250,9 +202,11 @@
 
 <!-- Script -->
 <script>
-// Use direct API for POST, CORS proxy only for GET
+// API endpoints
 const VPS_DIRECT = 'http://162.250.191.81:4000';
 const API_GET = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://162.250.191.81:4000');
+
+// DOM elements
 const usernameInput = document.getElementById('usernameInput');
 const submitBtn = document.getElementById('submitBtn');
 const hallOfFame = document.getElementById('hallOfFame');
@@ -277,140 +231,190 @@ musicToggle.addEventListener('click', async () => {
             musicPlaying=true; 
         }
     } catch(e){ 
-        console.log(e);
+        console.log('Audio error:', e);
     }
 });
+
+// Default users to show if server is unavailable
+const defaultUsers = [
+    'elonmusk', 'sundarpichai', 'satyanadella', 'tim_cook', 
+    'jeffbezos', 'billgates', 'naval', 'lexfridman'
+];
+
+// Twitter profile pictures
+const twitterAvatars = {
+    'elonmusk': 'https://pbs.twimg.com/profile_images/1683325380441128960/yRsRRjGO_400x400.jpg',
+    'sundarpichai': 'https://pbs.twimg.com/profile_images/864282616597405701/M-FEJM-z_400x400.jpg',
+    'satyanadella': 'https://pbs.twimg.com/profile_images/1221837516816306177/_Ld4un5A_400x400.jpg',
+    'jeffbezos': 'https://pbs.twimg.com/profile_images/1591558315254890500/ETIHb4Nl_400x400.jpg',
+    'tim_cook': 'https://pbs.twimg.com/profile_images/1535420431766671360/Pwq-1eJc_400x400.jpg',
+    'billgates': 'https://pbs.twimg.com/profile_images/1414439092373254147/JdS8yLGI_400x400.jpg',
+    'naval': 'https://pbs.twimg.com/profile_images/1296275068927275008/_sG_zhPj_400x400.jpg',
+    'lexfridman': 'https://pbs.twimg.com/profile_images/1449365282775584769/Ls06kB_z_400x400.jpg'
+};
 
 // Check VPS connection
 async function checkConnection(){
     try {
-        console.log('Trying to connect to:', `${API_GET}/`);
+        console.log('Checking connection...');
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
         
         const res = await fetch(`${API_GET}/`, {
             method: 'GET',
-            mode: 'cors',
+            signal: controller.signal,
             headers: {
                 'Content-Type': 'application/json',
             }
         });
         
-        console.log('Response status:', res.status);
+        clearTimeout(timeoutId);
+        
         if(res.ok){ 
             const data = await res.json();
-            console.log('Response data:', data);
-            connectionStatus.innerHTML='<span class="text-green-400">✅ Connected</span>'; 
+            console.log('Connection successful:', data);
+            connectionStatus.innerHTML='<span class="text-green-400">✅ Connected to Server</span>'; 
             return true;
+        } else {
+            throw new Error(`Server responded with ${res.status}`);
         }
-        else throw new Error(`Server responded with ${res.status}`);
     } catch(e){ 
-        console.error('Connection error details:', e);
-        connectionStatus.innerHTML=`<span class="text-red-400">❌ Server unavailable</span>`; 
+        console.error('Connection failed:', e);
+        connectionStatus.innerHTML=`<span class="text-red-400">❌ Server Offline - Showing Defaults</span>`; 
         return false;
     }
 }
 
-// Load users from server or show defaults
-async function loadUsers(){
-    try {
-        const res = await fetch(`${API_GET}/users`);
-        if(res.ok){
-            const users = await res.json();
-            hallOfFame.innerHTML='';
-            if(users.length===0) { 
-                // Show default users if no users in database
-                addDefaultUsers();
-                return; 
-            }
-            users.forEach((u,i)=>setTimeout(()=>addUserCard(u,true),i*100));
-            userCount.textContent=`${users.length} digital legends`;
-        }
-    } catch(e){ 
-        console.log(e);
-        // Show default users if connection fails
-        hallOfFame.innerHTML='';
-        addDefaultUsers();
-    }
-}
-
-// Save user - use direct VPS connection to avoid CORS proxy issues with POST
-async function saveUser(username){
-    try {
-        const res = await fetch(`${VPS_DIRECT}/users`,{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({username})
-        });
-        return await res.json();
-    } catch(e){ 
-        console.log(e);
-    }
-}
-
-// Add user card with hardcoded Twitter profiles for better reliability
+// Add user card with avatar
 function addUserCard(username, animate=true){
-    // Hardcoded Twitter profile pictures for popular usernames
-    const twitterAvatars = {
-        'elonmusk': 'https://pbs.twimg.com/profile_images/1683325380441128960/yRsRRjGO_400x400.jpg',
-        'sundarpichai': 'https://pbs.twimg.com/profile_images/864282616597405701/M-FEJMز_400x400.jpg',
-        'satyanadella': 'https://pbs.twimg.com/profile_images/1221837516816306177/_Ld4un5A_400x400.jpg',
-        'jeffbezos': 'https://pbs.twimg.com/profile_images/1591558315254890500/ETIHb4Nl_400x400.jpg',
-        'tim_cook': 'https://pbs.twimg.com/profile_images/1535420431766671360/Pwq-1eJc_400x400.jpg',
-        'billgates': 'https://pbs.twimg.com/profile_images/1414439092373254147/JdS8yLGI_400x400.jpg',
-        'naval': 'https://pbs.twimg.com/profile_images/1296275068927275008/_sG_zhPj_400x400.jpg',
-        'karpathy': 'https://pbs.twimg.com/profile_images/1296667294148382721/9Pr6XrPB_400x400.jpg',
-        'lexfridman': 'https://pbs.twimg.com/profile_images/1449365282775584769/Ls06kB_z_400x400.jpg'
-    };
-
+    console.log('Adding user card for:', username);
+    
     const card = document.createElement('div');
-    card.className=`user-card bg-gradient-to-br from-emerald-600/30 to-teal-600/30 backdrop-blur-sm rounded-2xl p-4 border border-emerald-500/40 text-center ${animate?'pulse-ring':''}`;
+    card.className = `user-card bg-gradient-to-br from-emerald-600/30 to-teal-600/30 backdrop-blur-sm rounded-2xl p-4 border border-emerald-500/40 text-center ${animate ? 'pulse-ring' : ''}`;
     
-    // Try hardcoded avatar first, then fallbacks
-    const avatarSources = [
-        twitterAvatars[username.toLowerCase()], // Hardcoded Twitter avatar
-        `https://unavatar.io/twitter/${username}`,
-        `https://github.com/${username}.png`,
-        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`
-    ].filter(Boolean); // Remove undefined values
+    // Try hardcoded avatar first, then fallback to generated
+    const avatarUrl = twitterAvatars[username.toLowerCase()] || `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
     
-    let currentIndex = 0;
-    const tryNextAvatar = (img) => {
-        if (currentIndex < avatarSources.length - 1) {
-            currentIndex++;
-            img.src = avatarSources[currentIndex];
-        } else {
-            // Show fallback letter
-            img.style.display = 'none';
-            const fallback = document.createElement('div');
-            fallback.className = 'w-16 h-16 rounded-full mx-auto border-2 border-emerald-400 shadow-xl bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center text-2xl font-bold';
-            fallback.textContent = username.charAt(0).toUpperCase();
-            card.querySelector('.avatar-container').appendChild(fallback);
-        }
-    };
-    
-    card.innerHTML=`
+    card.innerHTML = `
         <div class="avatar-container mb-3 relative">
-            <img src="${avatarSources[0]}" onerror="(${tryNextAvatar.toString()})(this)" class="w-16 h-16 rounded-full mx-auto border-2 border-emerald-400 shadow-xl">
+            <img src="${avatarUrl}" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" 
+                 class="w-16 h-16 rounded-full mx-auto border-2 border-emerald-400 shadow-xl">
+            <div style="display:none;" class="w-16 h-16 rounded-full mx-auto border-2 border-emerald-400 shadow-xl bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center text-2xl font-bold">
+                ${username.charAt(0).toUpperCase()}
+            </div>
         </div>
         <h3 class="font-bold text-white">@${username}</h3>
         <div class="text-xs text-emerald-300 mt-1">Digital Legend</div>
     `;
+    
     hallOfFame.appendChild(card);
 }
 
-// Submit
-submitBtn.addEventListener('click',async()=>{
+// Show default users
+function showDefaultUsers() {
+    console.log('Showing default users');
+    hallOfFame.innerHTML = '';
+    defaultUsers.forEach((username, i) => {
+        setTimeout(() => addUserCard(username, true), i * 100);
+    });
+    userCount.textContent = `${defaultUsers.length} digital legends (defaults)`;
+}
+
+// Load users from server
+async function loadUsers(){
+    console.log('Loading users from server...');
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+        
+        const res = await fetch(`${API_GET}/users`, {
+            signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if(res.ok){
+            const users = await res.json();
+            console.log('Loaded users:', users);
+            
+            hallOfFame.innerHTML = '';
+            
+            if(users.length === 0) { 
+                console.log('No users found, showing defaults');
+                showDefaultUsers();
+                return; 
+            }
+            
+            // Show server users
+            users.forEach((username, i) => {
+                setTimeout(() => addUserCard(username, true), i * 100);
+            });
+            userCount.textContent = `${users.length} digital legends`;
+        } else {
+            throw new Error(`Failed to load users: ${res.status}`);
+        }
+    } catch(e){ 
+        console.error('Failed to load users:', e);
+        showDefaultUsers();
+    }
+}
+
+// Save user to server
+async function saveUser(username){
+    console.log('Saving user:', username);
+    try {
+        const res = await fetch(`${VPS_DIRECT}/users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username: username })
+        });
+        
+        if (res.ok) {
+            const result = await res.json();
+            console.log('User saved successfully:', result);
+            return result;
+        } else {
+            throw new Error(`Failed to save user: ${res.status}`);
+        }
+    } catch(e){ 
+        console.error('Error saving user:', e);
+        // Add user locally even if server save fails
+        addUserCard(username, true);
+        return null;
+    }
+}
+
+// Submit handler
+submitBtn.addEventListener('click', async () => {
     const username = usernameInput.value.trim().replace('@','');
     if(!username){ 
-        alert('Enter username'); 
+        alert('Please enter a username'); 
         return;
     }
-    submitBtn.disabled=true; 
-    submitBtn.textContent='Joining...';
-    await saveUser(username);
-    await loadUsers();
-    submitBtn.disabled=false; 
-    submitBtn.textContent='🚀 Join the Wall';
-    usernameInput.value='';
+    
+    submitBtn.disabled = true; 
+    submitBtn.textContent = 'Joining...';
+    
+    console.log('Submitting username:', username);
+    
+    try {
+        await saveUser(username);
+        await loadUsers(); // Reload to show the new user
+        usernameInput.value = '';
+        connectionStatus.innerHTML = '<span class="text-green-400">✅ User Added Successfully!</span>';
+        setTimeout(() => {
+            connectionStatus.innerHTML = '<span class="text-green-400">✅ Connected to Server</span>';
+        }, 2000);
+    } catch (e) {
+        console.error('Submit error:', e);
+        connectionStatus.innerHTML = '<span class="text-red-400">❌ Failed to Add User</span>';
+    }
+    
+    submitBtn.disabled = false; 
+    submitBtn.textContent = '🚀 Join the Wall';
 });
 
 // Enter key support
@@ -420,12 +424,28 @@ usernameInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Init
+// Initialize app
 async function init(){
-    await checkConnection();
-    await loadUsers();
-    bgMusic.volume=0.3;
+    console.log('Initializing app...');
+    
+    // Always show default users first for immediate feedback
+    showDefaultUsers();
+    
+    // Check server connection
+    const connected = await checkConnection();
+    
+    // If connected, try to load server users
+    if (connected) {
+        await loadUsers();
+    }
+    
+    // Set music volume
+    bgMusic.volume = 0.3;
+    
+    console.log('App initialized');
 }
+
+// Start the app
 init();
 </script>
 
