@@ -3,43 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plasma Wall - Join the Matrix</title>
+<title>Plasma Wall - Enhanced</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen text-white overflow-hidden relative" style="background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 70%), linear-gradient(45deg, #001122, #000511, #001122);">
+<body class="min-h-screen text-white overflow-hidden relative" style="background: linear-gradient(135deg, #1a3b2e, #0f2922, #1a3b2e);">
 
-<!-- Enhanced Cosmic Background -->
+<!-- Interstellar Background -->
 <div class="absolute inset-0 overflow-hidden">
-    <!-- Animated stars field -->
-    <div class="stars absolute inset-0"></div>
-    <div class="stars2 absolute inset-0"></div>
-    <div class="stars3 absolute inset-0"></div>
+    <!-- Star field layers -->
+    <div class="stars-far absolute inset-0"></div>
+    <div class="stars-mid absolute inset-0"></div>
+    <div class="stars-near absolute inset-0"></div>
     
-    <!-- Central cosmic portal -->
-    <div class="cosmic-portal absolute inset-0 flex items-center justify-center">
-        <div class="portal-ring-1"></div>
-        <div class="portal-ring-2"></div>
-        <div class="portal-ring-3"></div>
-        <div class="portal-core"></div>
+    <!-- Main spinning circle -->
+    <div class="spinning-portal absolute inset-0 flex items-center justify-center">
+        <div class="interstellar-ring"></div>
     </div>
-    
-    <!-- Floating cosmic particles -->
-    <div class="cosmic-particles absolute inset-0">
-        <div class="particle p1"></div>
-        <div class="particle p2"></div>
-        <div class="particle p3"></div>
-        <div class="particle p4"></div>
-        <div class="particle p5"></div>
-        <div class="particle p6"></div>
-        <div class="particle p7"></div>
-        <div class="particle p8"></div>
-    </div>
-    
-    <!-- Nebula clouds -->
-    <div class="nebula absolute inset-0"></div>
-    
-    <!-- Scanning grid -->
-    <div class="cosmic-grid absolute inset-0"></div>
+    <!-- Enhanced floating particles -->
+    <div class="space-particles absolute inset-0"></div>
+    <!-- Cosmic dust and nebula effects -->
+    <div class="cosmic-dust absolute inset-0"></div>
+    <div class="nebula-effect absolute inset-0"></div>
 </div>
 
 <!-- Audio -->
@@ -49,606 +33,470 @@
     <source src="./music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Futuristic Header -->
-<header class="relative z-10 text-center py-8">
-    <h1 class="text-6xl font-bold text-white mb-2 cosmic-glow animate-cosmic-pulse">
-        PLASMA NEXUS
+<!-- Header -->
+<header class="relative z-10 text-center py-6">
+    <h1 class="text-5xl font-bold text-white mb-4 glow-text">
+        Join the Plasma Wall
     </h1>
-    <p class="text-xl text-cyan-300 font-medium interstellar-text">
-        Connect to the Cosmic Neural Network
-    </p>
-    <div class="mt-3 text-sm text-blue-400 pulse-fade" id="liveCounter">
-        Scanning quantum signatures across the universe...
-    </div>
+    <p class="text-green-300 text-lg">Submit your X/Twitter handle and become part of the cosmic community</p>
 </header>
 
-<!-- Enhanced Input Section -->
-<div class="relative z-10 flex flex-col items-center justify-center px-4 mb-8">
-    <div class="input-cosmic flex items-center gap-4 max-w-5xl w-full">
-        <div class="input-wrapper flex-1 relative">
-            <input 
-                type="text" 
-                id="usernameInput" 
-                placeholder="Enter cosmic handle..." 
-                class="w-full px-8 py-5 rounded-2xl text-white bg-black/40 border-2 border-cyan-500/50 focus:outline-none focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/30 text-lg backdrop-blur-xl cosmic-input transition-all duration-300"
-            >
-            <div class="input-aurora absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300"></div>
-        </div>
-        <button 
-            id="submitBtn" 
-            class="px-10 py-5 bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 hover:from-cyan-500 hover:via-blue-500 hover:to-purple-500 rounded-2xl font-bold text-lg cosmic-button transform hover:scale-105 transition-all duration-300 shadow-2xl"
-        >
-            <span class="relative z-10">TRANSMIT</span>
-        </button>
-    </div>
-    
-    <div class="flex gap-4 mt-6">
-        <button 
-            id="musicToggle" 
-            class="px-8 py-3 bg-gradient-to-r from-indigo-800 to-purple-700 hover:from-indigo-700 hover:to-purple-600 rounded-xl font-medium transition-all duration-300 cosmic-button-small"
-        >
-            🎵 Activate Cosmic Audio
-        </button>
-        <button 
-            id="syncBtn" 
-            class="px-8 py-3 bg-gradient-to-r from-blue-800 to-cyan-700 hover:from-blue-700 hover:to-cyan-600 rounded-xl font-medium transition-all duration-300 cosmic-button-small"
-        >
-            🔄 Sync Network
-        </button>
-        <button 
-            id="searchBtn" 
-            class="px-8 py-3 bg-gradient-to-r from-purple-800 to-pink-700 hover:from-purple-700 hover:to-pink-600 rounded-xl font-medium transition-all duration-300 cosmic-button-small"
-        >
-            🔍 Search User
-        </button>
-    </div>
-    
-    <div id="connectionStatus" class="mt-4 text-center text-cyan-300 status-text">
-        Initializing cosmic connection...
+<!-- Stats Section -->
+<div class="relative z-10 flex justify-center mb-6">
+    <div class="bg-black/50 backdrop-blur-md rounded-2xl px-6 py-3 border border-green-500/30">
+        <div id="userCount" class="text-green-200 font-semibold text-lg">Loading community...</div>
     </div>
 </div>
 
-<!-- Enhanced Plasma Wall Container -->
-<div class="relative z-10 px-4 pb-8">
-    <div class="plasma-container bg-black/30 backdrop-blur-2xl rounded-3xl p-8 border-2 border-cyan-500/20 max-w-8xl mx-auto overflow-hidden shadow-2xl cosmic-container">
-        <div id="userCount" class="text-center text-cyan-200 mb-8 text-xl font-semibold cosmic-text">
-            Scanning neural patterns across the cosmos...
-        </div>
+<!-- Input Section -->
+<div class="relative z-10 flex flex-col items-center justify-center px-4 mb-8">
+    <div class="flex items-center gap-4 max-w-4xl w-full">
+        <input 
+            type="text" 
+            id="usernameInput" 
+            placeholder="@yourusername or yourusername" 
+            class="flex-1 px-6 py-4 rounded-full text-gray-900 bg-white/95 focus:outline-none focus:ring-4 focus:ring-green-400/50 text-lg backdrop-blur-sm shadow-2xl transition-all duration-300 hover:shadow-green-400/20"
+        >
+        <button 
+            id="submitBtn" 
+            class="px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-full font-bold transition-all duration-300 text-lg shadow-2xl hover:shadow-green-400/20 transform hover:scale-105"
+        >
+            Join Plasma
+        </button>
+    </div>
+    
+    <div class="flex gap-4 mt-4">
+        <button 
+            id="musicToggle" 
+            class="px-6 py-3 bg-gradient-to-r from-green-800 to-green-900 hover:from-green-900 hover:to-green-950 rounded-full font-medium transition-all duration-300 shadow-xl transform hover:scale-105"
+        >
+            🎵 Play Cosmic Music
+        </button>
         
-        <!-- Enhanced Moving Wall -->
-        <div class="plasma-wall-container relative h-[500px] overflow-hidden rounded-3xl border border-cyan-500/10 cosmic-wall-bg">
-            <div id="movingWall" class="plasma-wall absolute top-0 left-0 flex items-center gap-8 py-8"></div>
-            
-            <!-- Wall overlay effects -->
-            <div class="wall-overlay absolute inset-0 pointer-events-none">
-                <div class="cosmic-scan-line absolute w-full h-2 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-70"></div>
-                <div class="energy-waves absolute inset-0"></div>
-            </div>
+        <button 
+            id="refreshBtn" 
+            class="px-6 py-3 bg-gradient-to-r from-blue-800 to-blue-900 hover:from-blue-900 hover:to-blue-950 rounded-full font-medium transition-all duration-300 shadow-xl transform hover:scale-105"
+        >
+            🔄 Refresh Wall
+        </button>
+    </div>
+    
+    <div id="connectionStatus" class="mt-4 text-center text-green-300 font-medium">Connecting to the plasma network...</div>
+</div>
+
+<!-- Moving Wall Container -->
+<div class="relative z-10 px-4 pb-8">
+    <div class="bg-black/40 backdrop-blur-md rounded-3xl p-8 border border-green-500/30 max-w-7xl mx-auto overflow-hidden shadow-2xl">        
+        <!-- Moving Wall -->
+        <div class="moving-wall-container relative h-96 overflow-hidden">
+            <div id="movingWall" class="moving-wall absolute top-0 left-0 flex flex-wrap gap-4 animate-move"></div>
         </div>
         
         <div class="flex justify-between items-center mt-6 text-sm">
-            <div class="text-cyan-400 cosmic-signature">
-                Cosmic Network: ACTIVE • Quantum Entangled
-            </div>
-            <div class="text-cyan-400">
-                Created by: aabis • Interstellar Edition
-            </div>
+            <div class="text-green-400 font-semibold">✨ Built by @aabis</div>
+            <div id="lastUpdated" class="text-green-400/70">Last updated: Never</div>
         </div>
     </div>
 </div>
 
-<!-- Enhanced Interstellar Styles -->
+<!-- Styles -->
 <style>
-/* Cosmic Color Palette */
-:root {
-    --cosmic-cyan: #00d4ff;
-    --cosmic-blue: #0080ff;
-    --cosmic-purple: #8000ff;
-    --cosmic-pink: #ff00aa;
-    --deep-space: #000511;
-    --nebula-blue: #001a33;
+/* Enhanced glow effects */
+.glow-text {
+    text-shadow: 0 0 10px rgba(34, 197, 94, 0.5), 0 0 20px rgba(34, 197, 94, 0.3);
 }
 
-/* Animated Stars Field */
-.stars {
-    width: 2px;
-    height: 2px;
-    background: transparent;
-    box-shadow: 
-        1780px 1216px #fff, 1819px 1080px #fff, 1408px 506px #fff, 1825px 1503px #fff,
-        413px 1652px #fff, 1433px 1910px #fff, 1925px 1270px #fff, 654px 1493px #fff,
-        1868px 1892px #fff, 144px 1033px #fff, 1306px 1222px #fff, 1885px 448px #fff,
-        1394px 1889px #fff, 366px 931px #fff, 1779px 1292px #fff, 1949px 1674px #fff,
-        1039px 766px #fff, 161px 1830px #fff, 1410px 1736px #fff, 1280px 15px #fff,
-        1076px 1732px #fff, 1529px 1679px #fff, 1412px 1170px #fff, 1180px 1344px #fff,
-        392px 1561px #fff, 1346px 1655px #fff, 1056px 1607px #fff, 663px 1496px #fff,
-        1353px 1604px #fff, 147px 1838px #fff, 1022px 1110px #fff, 1969px 1050px #fff,
-        1437px 1303px #fff, 1699px 474px #fff, 1694px 1463px #fff, 1088px 1593px #fff,
-        1034px 1883px #fff, 1474px 1925px #fff, 1688px 1824px #fff, 1688px 1824px #fff;
-    animation: animStar 50s linear infinite;
-}
-
-.stars2 {
-    width: 3px;
-    height: 3px;
-    background: transparent;
-    box-shadow: 
-        679px 1240px var(--cosmic-cyan), 1342px 717px var(--cosmic-cyan), 1958px 1674px var(--cosmic-cyan),
-        1273px 1762px var(--cosmic-cyan), 1917px 1246px var(--cosmic-cyan), 1235px 1430px var(--cosmic-cyan),
-        1732px 1793px var(--cosmic-cyan), 1534px 1079px var(--cosmic-cyan), 974px 1775px var(--cosmic-cyan),
-        1717px 1671px var(--cosmic-cyan), 1853px 1232px var(--cosmic-cyan), 262px 1206px var(--cosmic-cyan),
-        1739px 1445px var(--cosmic-cyan), 1031px 1176px var(--cosmic-cyan), 1810px 922px var(--cosmic-cyan),
-        1988px 1852px var(--cosmic-cyan), 904px 1480px var(--cosmic-cyan), 259px 1067px var(--cosmic-cyan),
-        814px 362px var(--cosmic-cyan), 1183px 1574px var(--cosmic-cyan), 1686px 671px var(--cosmic-cyan);
-    animation: animStar 100s linear infinite;
-}
-
-.stars3 {
-    width: 4px;
-    height: 4px;
-    background: transparent;
-    box-shadow: 
-        1949px 943px var(--cosmic-blue), 1128px 1467px var(--cosmic-blue), 1881px 1123px var(--cosmic-blue),
-        924px 1198px var(--cosmic-blue), 1617px 1590px var(--cosmic-blue), 1720px 428px var(--cosmic-blue),
-        1696px 1508px var(--cosmic-blue), 1331px 1293px var(--cosmic-blue), 1045px 1491px var(--cosmic-blue),
-        1084px 1034px var(--cosmic-blue), 1597px 1408px var(--cosmic-blue), 1893px 1867px var(--cosmic-blue);
-    animation: animStar 150s linear infinite;
-}
-
-@keyframes animStar {
-    from { transform: translateY(0px); }
-    to { transform: translateY(-2000px); }
-}
-
-/* Cosmic Portal */
-.cosmic-portal {
-    pointer-events: none;
-}
-
-.portal-ring-1 {
-    width: 800px;
-    height: 800px;
-    position: absolute;
-    border: 3px solid transparent;
-    border-radius: 50%;
-    background: conic-gradient(
-        from 0deg,
-        transparent 0deg,
-        var(--cosmic-cyan) 2deg,
-        transparent 5deg,
-        transparent 90deg,
-        var(--cosmic-blue) 92deg,
-        transparent 95deg,
-        transparent 270deg,
-        var(--cosmic-purple) 272deg,
-        transparent 275deg
-    );
-    animation: portalSpin1 20s linear infinite;
+/* Enhanced interstellar star field */
+.stars-far {
+    background-image: 
+        radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 40px 70px, rgba(34, 197, 94, 0.4), transparent),
+        radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(34, 197, 94, 0.3), transparent),
+        radial-gradient(1px 1px at 160px 30px, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 200px 60px, rgba(34, 197, 94, 0.2), transparent),
+        radial-gradient(1px 1px at 240px 90px, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 280px 10px, rgba(34, 197, 94, 0.4), transparent),
+        radial-gradient(1px 1px at 320px 50px, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 360px 80px, rgba(34, 197, 94, 0.3), transparent);
+    background-repeat: repeat;
+    background-size: 400px 300px;
+    animation: starsRotate 200s linear infinite;
     opacity: 0.6;
-    filter: blur(1px);
 }
 
-.portal-ring-2 {
-    width: 500px;
-    height: 500px;
-    position: absolute;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    background: conic-gradient(
-        from 180deg,
-        transparent 0deg,
-        var(--cosmic-blue) 10deg,
-        transparent 20deg,
-        var(--cosmic-purple) 180deg,
-        transparent 190deg,
-        var(--cosmic-pink) 350deg,
-        transparent 360deg
-    );
-    animation: portalSpin2 15s linear infinite reverse;
+.stars-mid {
+    background-image: 
+        radial-gradient(2px 2px at 60px 90px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 120px 30px, rgba(34, 197, 94, 0.6), transparent),
+        radial-gradient(2px 2px at 180px 70px, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 240px 100px, rgba(34, 197, 94, 0.5), transparent),
+        radial-gradient(2px 2px at 300px 20px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 360px 60px, rgba(34, 197, 94, 0.4), transparent),
+        radial-gradient(2px 2px at 420px 110px, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 480px 40px, rgba(34, 197, 94, 0.7), transparent);
+    background-repeat: repeat;
+    background-size: 600px 400px;
+    animation: starsRotate 150s linear infinite reverse;
+    opacity: 0.7;
+}
+
+.stars-near {
+    background-image: 
+        radial-gradient(3px 3px at 100px 50px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(2px 2px at 200px 120px, rgba(34, 197, 94, 0.9), transparent),
+        radial-gradient(3px 3px at 300px 80px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(2px 2px at 400px 20px, rgba(34, 197, 94, 0.8), transparent),
+        radial-gradient(4px 4px at 500px 100px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(2px 2px at 600px 60px, rgba(34, 197, 94, 0.7), transparent);
+    background-repeat: repeat;
+    background-size: 700px 500px;
+    animation: starsRotate 100s linear infinite;
     opacity: 0.8;
 }
 
-.portal-ring-3 {
-    width: 300px;
-    height: 300px;
+@keyframes starsRotate {
+    from { 
+        transform: rotate(0deg) translateX(0) translateY(0);
+    }
+    to { 
+        transform: rotate(360deg) translateX(-50px) translateY(-30px);
+    }
+}
+
+/* Twinkling effect */
+.stars-near::after {
+    content: '';
     position: absolute;
-    border: 2px solid rgba(0, 212, 255, 0.3);
-    border-radius: 50%;
-    animation: portalSpin3 10s linear infinite;
-    box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+    inset: 0;
+    background-image: 
+        radial-gradient(2px 2px at 150px 75px, rgba(255,255,255,0.9), transparent),
+        radial-gradient(3px 3px at 350px 125px, rgba(34, 197, 94,0.9), transparent),
+        radial-gradient(2px 2px at 550px 25px, rgba(255,255,255,0.8), transparent);
+    background-repeat: repeat;
+    background-size: 700px 500px;
+    animation: twinkle 4s ease-in-out infinite alternate;
 }
 
-.portal-core {
-    width: 100px;
-    height: 100px;
-    position: absolute;
-    background: radial-gradient(circle, var(--cosmic-cyan), var(--cosmic-blue), transparent);
-    border-radius: 50%;
-    animation: portalPulse 3s ease-in-out infinite;
-    filter: blur(2px);
+@keyframes twinkle {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
 }
 
-@keyframes portalSpin1 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes portalSpin2 { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-@keyframes portalSpin3 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes portalPulse {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.5); opacity: 1; }
-}
-
-/* Cosmic Particles */
-.cosmic-particles {
-    pointer-events: none;
-}
-
-.particle {
-    position: absolute;
-    background: radial-gradient(circle, var(--cosmic-cyan), transparent);
-    border-radius: 50%;
-    animation: particleDrift 20s ease-in-out infinite;
-}
-
-.p1 { width: 4px; height: 4px; top: 10%; left: 10%; animation-delay: 0s; }
-.p2 { width: 6px; height: 6px; top: 20%; right: 15%; animation-delay: -2s; }
-.p3 { width: 3px; height: 3px; bottom: 30%; left: 25%; animation-delay: -4s; }
-.p4 { width: 5px; height: 5px; top: 70%; right: 20%; animation-delay: -6s; }
-.p5 { width: 4px; height: 4px; bottom: 20%; right: 30%; animation-delay: -8s; }
-.p6 { width: 7px; height: 7px; top: 50%; left: 5%; animation-delay: -10s; }
-.p7 { width: 3px; height: 3px; top: 30%; left: 70%; animation-delay: -12s; }
-.p8 { width: 5px; height: 5px; bottom: 40%; left: 80%; animation-delay: -14s; }
-
-@keyframes particleDrift {
-    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
-    25% { transform: translate(50px, -100px) scale(1.5); opacity: 1; }
-    50% { transform: translate(-30px, -200px) scale(0.8); opacity: 0.5; }
-    75% { transform: translate(-80px, 50px) scale(1.2); opacity: 0.9; }
-}
-
-/* Nebula Effect */
-.nebula {
-    background: 
-        radial-gradient(ellipse at 20% 30%, rgba(0, 212, 255, 0.1) 0%, transparent 70%),
-        radial-gradient(ellipse at 80% 70%, rgba(128, 0, 255, 0.08) 0%, transparent 70%),
-        radial-gradient(ellipse at 50% 50%, rgba(0, 128, 255, 0.06) 0%, transparent 80%),
-        radial-gradient(ellipse at 30% 80%, rgba(255, 0, 170, 0.05) 0%, transparent 60%);
-    animation: nebulaFlow 30s ease-in-out infinite;
+/* Nebula effect */
+.nebula-effect {
+    background: radial-gradient(
+        ellipse at 20% 50%, 
+        rgba(34, 197, 94, 0.1) 0%, 
+        transparent 50%
+    ),
+    radial-gradient(
+        ellipse at 80% 20%, 
+        rgba(16, 163, 74, 0.08) 0%, 
+        transparent 50%
+    ),
+    radial-gradient(
+        ellipse at 40% 80%, 
+        rgba(21, 128, 61, 0.12) 0%, 
+        transparent 50%
+    );
+    animation: nebulaFlow 60s ease-in-out infinite alternate;
 }
 
 @keyframes nebulaFlow {
-    0%, 100% { opacity: 0.6; transform: scale(1) rotate(0deg); }
-    50% { opacity: 1; transform: scale(1.1) rotate(2deg); }
-}
-
-/* Cosmic Grid */
-.cosmic-grid {
-    background-image: 
-        linear-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 212, 255, 0.05) 1px, transparent 1px);
-    background-size: 100px 100px;
-    animation: gridDrift 40s linear infinite;
-    opacity: 0.3;
-}
-
-@keyframes gridDrift {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(100px, 100px); }
-}
-
-/* Enhanced Typography */
-.cosmic-glow {
-    text-shadow: 
-        0 0 10px var(--cosmic-cyan),
-        0 0 20px var(--cosmic-cyan),
-        0 0 30px var(--cosmic-blue),
-        0 0 40px var(--cosmic-blue);
-}
-
-@keyframes cosmic-pulse {
-    0%, 100% { 
-        text-shadow: 
-            0 0 10px var(--cosmic-cyan),
-            0 0 20px var(--cosmic-cyan),
-            0 0 30px var(--cosmic-blue);
+    0% { 
+        transform: scale(1) rotate(0deg);
+        opacity: 0.3;
     }
-    50% { 
-        text-shadow: 
-            0 0 20px var(--cosmic-cyan),
-            0 0 30px var(--cosmic-cyan),
-            0 0 40px var(--cosmic-blue),
-            0 0 50px var(--cosmic-purple);
+    50% {
+        transform: scale(1.1) rotate(2deg);
+        opacity: 0.5;
+    }
+    100% { 
+        transform: scale(1) rotate(-1deg);
+        opacity: 0.3;
     }
 }
 
-.animate-cosmic-pulse {
-    animation: cosmic-pulse 3s ease-in-out infinite;
+/* Enhanced interstellar spinning ring */
+.spinning-portal {
+    pointer-events: none;
 }
 
-.interstellar-text {
-    font-family: 'Courier New', monospace;
-    text-shadow: 0 0 10px var(--cosmic-cyan);
-    letter-spacing: 2px;
-}
-
-/* Enhanced Input Styling */
-.cosmic-input {
-    background: linear-gradient(135deg, rgba(0, 5, 17, 0.8), rgba(0, 26, 51, 0.6));
-    box-shadow: 
-        inset 0 0 30px rgba(0, 212, 255, 0.1),
-        0 0 30px rgba(0, 212, 255, 0.1);
-    font-family: 'Courier New', monospace;
-    letter-spacing: 1px;
-}
-
-.cosmic-input:focus + .input-aurora {
-    opacity: 1;
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(128, 0, 255, 0.1));
-}
-
-.cosmic-button {
-    background: linear-gradient(135deg, var(--cosmic-cyan), var(--cosmic-blue), var(--cosmic-purple));
-    box-shadow: 
-        0 0 30px rgba(0, 212, 255, 0.4),
-        inset 0 0 30px rgba(255, 255, 255, 0.1);
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+.interstellar-ring {
+    width: 500px;
+    height: 500px;
     position: relative;
+    animation: spinPortal 30s linear infinite;
+    opacity: 0.4;
+}
+
+.interstellar-ring::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        #22c55e 8deg,
+        #16a34a 15deg,
+        transparent 25deg,
+        transparent 35deg,
+        #15803d 45deg,
+        #22c55e 52deg,
+        transparent 65deg,
+        transparent 75deg,
+        #16a34a 85deg,
+        transparent 95deg,
+        transparent 105deg,
+        #22c55e 115deg,
+        transparent 125deg,
+        transparent 135deg,
+        #15803d 145deg,
+        #16a34a 155deg,
+        transparent 165deg,
+        transparent 175deg,
+        #22c55e 185deg,
+        transparent 195deg,
+        transparent 205deg,
+        #16a34a 215deg,
+        transparent 225deg,
+        transparent 235deg,
+        #15803d 245deg,
+        transparent 255deg,
+        transparent 265deg,
+        #22c55e 275deg,
+        transparent 285deg,
+        transparent 295deg,
+        #16a34a 305deg,
+        #15803d 315deg,
+        transparent 325deg,
+        transparent 335deg,
+        #22c55e 345deg,
+        transparent 355deg,
+        transparent 360deg
+    );
+    border-radius: 50%;
+    mask: radial-gradient(circle, transparent 25%, black 26%, black 75%, transparent 76%);
+    -webkit-mask: radial-gradient(circle, transparent 25%, black 26%, black 75%, transparent 76%);
+    filter: blur(1px);
+}
+
+@keyframes spinPortal {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Enhanced space particles */
+.space-particles {
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #22c55e, transparent),
+        radial-gradient(1px 1px at 150px 80px, rgba(34, 197, 94, 0.8), transparent),
+        radial-gradient(1px 1px at 300px 120px, #16a34a, transparent),
+        radial-gradient(2px 2px at 450px 50px, rgba(21, 128, 61, 0.6), transparent),
+        radial-gradient(1px 1px at 600px 200px, #22c55e, transparent),
+        radial-gradient(1px 1px at 750px 100px, rgba(34, 197, 94, 0.7), transparent);
+    background-repeat: repeat;
+    background-size: 800px 300px, 600px 400px, 700px 350px, 500px 250px, 900px 320px, 400px 280px;
+    animation: particleFloat 40s linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes particleFloat {
+    0% { transform: translateX(0) translateY(0) rotate(0deg); }
+    25% { transform: translateX(-60px) translateY(-40px) rotate(90deg); }
+    50% { transform: translateX(-120px) translateY(30px) rotate(180deg); }
+    75% { transform: translateX(-40px) translateY(-60px) rotate(270deg); }
+    100% { transform: translateX(0) translateY(0) rotate(360deg); }
+}
+
+/* Cosmic dust effect */
+.cosmic-dust {
+    background-image: 
+        radial-gradient(1px 1px at 100px 100px, rgba(34, 197, 94, 0.3), transparent),
+        radial-gradient(1px 1px at 200px 200px, rgba(16, 163, 74, 0.2), transparent),
+        radial-gradient(1px 1px at 300px 50px, rgba(21, 128, 61, 0.4), transparent),
+        radial-gradient(1px 1px at 400px 150px, rgba(34, 197, 94, 0.2), transparent),
+        radial-gradient(1px 1px at 500px 250px, rgba(16, 163, 74, 0.3), transparent);
+    background-repeat: repeat;
+    background-size: 600px 300px, 400px 500px, 800px 200px, 300px 400px, 700px 350px;
+    animation: dustFloat 60s linear infinite;
+    opacity: 0.5;
+}
+
+@keyframes dustFloat {
+    0% { transform: translateX(0) translateY(0); }
+    33% { transform: translateX(-30px) translateY(-20px); }
+    66% { transform: translateX(-60px) translateY(15px); }
+    100% { transform: translateX(0) translateY(0); }
+}
+
+/* Enhanced moving wall */
+.moving-wall-container {
+    mask: linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%);
+    -webkit-mask: linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%);
+    border-radius: 20px;
     overflow: hidden;
 }
 
-.cosmic-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    animation: cosmicShine 4s ease-in-out infinite;
-}
-
-@keyframes cosmicShine {
-    0% { left: -100%; }
-    100% { left: 100%; }
-}
-
-/* Enhanced Wall Container */
-.cosmic-container {
-    animation: containerMaterialize 2s ease-out;
-    box-shadow: 
-        0 0 80px rgba(0, 212, 255, 0.15),
-        inset 0 0 50px rgba(0, 212, 255, 0.05);
-}
-
-@keyframes containerMaterialize {
-    from { transform: translateY(100px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-.cosmic-wall-bg {
-    background: 
-        linear-gradient(135deg, rgba(0, 5, 17, 0.4), rgba(0, 212, 255, 0.02)),
-        radial-gradient(ellipse at center, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
-}
-
-/* Enhanced Plasma Wall */
-.plasma-wall {
+.moving-wall {
     width: max-content;
-    animation: cosmicFlow 80s linear infinite;
-    padding: 30px 0;
+    animation: slideWall 80s linear infinite;
+    display: flex;
+    align-items: center;
 }
 
-@keyframes cosmicFlow {
+@keyframes slideWall {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
 }
 
-/* Cosmic Scan Line */
-.cosmic-scan-line {
-    animation: cosmicScan 4s ease-in-out infinite;
-    background: linear-gradient(90deg, 
-        transparent, 
-        var(--cosmic-cyan), 
-        var(--cosmic-blue), 
-        var(--cosmic-cyan), 
-        transparent
-    );
-}
-
-@keyframes cosmicScan {
-    0%, 100% { top: 0; opacity: 0.7; }
-    50% { top: 95%; opacity: 0.3; }
-}
-
-/* Energy Waves */
-.energy-waves::before,
-.energy-waves::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--cosmic-blue), transparent);
-    animation: waveFlow 6s ease-in-out infinite;
-}
-
-.energy-waves::before {
-    top: 25%;
-    animation-delay: 0s;
-}
-
-.energy-waves::after {
-    top: 75%;
-    animation-delay: -3s;
-}
-
-@keyframes waveFlow {
-    0%, 100% { opacity: 0; transform: scaleX(0); }
-    50% { opacity: 1; transform: scaleX(1); }
-}
-
-/* Enhanced Avatar Cards */
-.avatar-card {
+.user-card {
     flex-shrink: 0;
-    width: 160px;
-    height: 160px;
+    width: 140px;
+    height: 140px;
     position: relative;
-    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    animation: cardBeam 1s ease-out;
-    filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.4));
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    margin: 10px;
 }
 
-@keyframes cardBeam {
-    from { 
-        transform: scale(0.1) translateY(-200px); 
-        opacity: 0;
-        filter: blur(20px);
-    }
-    to { 
-        transform: scale(1) translateY(0); 
-        opacity: 1;
-        filter: blur(0px);
-    }
+.user-card:hover {
+    transform: scale(1.2) translateY(-10px) rotateZ(5deg);
+    z-index: 10;
 }
 
-.avatar-card:hover {
-    transform: scale(1.2) translateY(-20px);
-    z-index: 20;
-    filter: drop-shadow(0 0 40px rgba(0, 212, 255, 0.8));
-}
-
-.avatar-img {
+.profile-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 25px;
-    border: 3px solid var(--cosmic-cyan);
+    border-radius: 16px;
+    border: 4px solid rgba(34, 197, 94, 0.9);
     box-shadow: 
-        0 0 40px rgba(0, 212, 255, 0.5),
-        inset 0 0 30px rgba(0, 212, 255, 0.1);
-    transition: all 0.5s ease;
-    background: linear-gradient(135deg, var(--cosmic-blue), var(--cosmic-purple));
+        0 0 25px rgba(34, 197, 94, 0.5),
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s ease;
 }
 
-.avatar-card:hover .avatar-img {
-    border-color: var(--cosmic-purple);
+.user-card:hover .profile-img {
+    border-color: #22c55e;
     box-shadow: 
-        0 0 60px rgba(128, 0, 255, 0.8),
-        inset 0 0 40px rgba(128, 0, 255, 0.2);
-    filter: brightness(1.3) saturate(1.2);
+        0 0 40px rgba(34, 197, 94, 0.8),
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.handle-display {
+.username-overlay {
     position: absolute;
-    bottom: -15px;
+    bottom: -8px;
     left: 0;
     right: 0;
-    background: linear-gradient(135deg, rgba(0, 5, 17, 0.95), rgba(0, 212, 255, 0.15));
-    color: var(--cosmic-cyan);
+    background: linear-gradient(135deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 100%);
+    color: #22c55e;
     text-align: center;
-    padding: 10px 6px;
-    font-size: 14px;
+    padding: 6px 4px;
+    font-size: 12px;
     font-weight: bold;
-    font-family: 'Courier New', monospace;
-    border-radius: 0 0 25px 25px;
-    border: 3px solid var(--cosmic-cyan);
+    border-radius: 0 0 16px 16px;
+    border: 2px solid rgba(34, 197, 94, 0.6);
     border-top: none;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(10px);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     transition: all 0.4s ease;
-    text-shadow: 0 0 8px rgba(0, 212, 255, 0.8);
-    letter-spacing: 1px;
 }
 
-.avatar-card:hover .handle-display {
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.9), rgba(128, 0, 255, 0.8));
-    color: var(--deep-space);
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.6);
+.user-card:hover .username-overlay {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.9) 0%, rgba(16, 163, 74, 0.9) 100%);
+    color: white;
+    border-color: #22c55e;
+    transform: translateY(-2px);
 }
 
-/* Enhanced Loading States */
-.loading-cosmic {
-    background: linear-gradient(
-        45deg, 
-        rgba(0, 5, 17, 0.9) 25%, 
-        rgba(0, 212, 255, 0.3) 50%, 
-        rgba(128, 0, 255, 0.2) 75%,
-        rgba(0, 5, 17, 0.9) 100%
-    );
-    background-size: 400% 400%;
-    animation: cosmicShimmer 3s ease-in-out infinite;
-    border-radius: 25px;
-    border: 3px solid var(--cosmic-cyan);
+.loading-placeholder {
+    background: linear-gradient(90deg, 
+        rgba(31, 41, 55, 0.8) 25%, 
+        rgba(55, 65, 81, 0.9) 50%, 
+        rgba(31, 41, 55, 0.8) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+    border-radius: 16px;
+    border: 4px solid rgba(34, 197, 94, 0.3);
     position: relative;
-    overflow: hidden;
 }
 
-.loading-cosmic::before {
-    content: '✦';
+.loading-placeholder::after {
+    content: '⚡';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 40px;
-    color: var(--cosmic-cyan);
-    animation: cosmicSpin 2s linear infinite;
-    text-shadow: 0 0 20px var(--cosmic-cyan);
+    font-size: 24px;
+    color: rgba(34, 197, 94, 0.8);
+    animation: pulse 1.5s infinite;
 }
 
-@keyframes cosmicShimmer {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
-@keyframes cosmicSpin {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
 }
 
-.error-cosmic {
-    background: linear-gradient(135deg, var(--cosmic-cyan), var(--cosmic-blue), var(--cosmic-purple));
+.error-avatar {
+    background: linear-gradient(135deg, 
+        #16a34a 0%, 
+        #15803d 50%, 
+        #166534 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--deep-space);
-    font-size: 36px;
+    color: white;
+    font-size: 32px;
     font-weight: bold;
-    border-radius: 25px;
-    border: 3px solid var(--cosmic-cyan);
-    animation: errorBeacon 3s ease-in-out infinite;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    border-radius: 16px;
+    border: 4px solid rgba(34, 197, 94, 0.9);
+    box-shadow: 
+        0 0 25px rgba(34, 197, 94, 0.5),
+        0 8px 32px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
 }
 
-@keyframes errorBeacon {
-    0%, 100% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5); }
-    50% { box-shadow: 0 0 80px rgba(0, 212, 255, 1); }
+.error-avatar::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shine 3s infinite;
 }
 
-/* Status and Counter Styling */
-.status-text, .cosmic-text, .cosmic-signature {
-    font-family: 'Courier New', monospace;
-    text-shadow: 0 0 10px var(--cosmic-cyan);
-    letter-spacing: 1px;
+@keyframes shine {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .input-cosmic {
-        flex-direction: column;
-        gap: 20px;
-    }
-    
-    .avatar-card {
-        width: 140px;
-        height: 140px;
-    }
-    
-    .portal-ring-1 { width: 500px; height: 500px; }
-    .portal-ring-2 { width: 350px; height: 350px; }
-    .portal-ring-3 { width: 200px; height: 200px; }
+/* Success animation */
+@keyframes successPulse {
+    0% { transform: scale(1); box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); }
+    50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(34, 197, 94, 0.8); }
+    100% { transform: scale(1); box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); }
+}
+
+.success-added {
+    animation: successPulse 0.6s ease-in-out;
 }
 </style>
 
-<!-- Enhanced JavaScript -->
+<!-- Script -->
 <script>
 // Enhanced Configuration
 const CONFIG = {
@@ -656,76 +504,94 @@ const CONFIG = {
     PROXY_URLS: [
         'https://api.allorigins.win/raw?url=',
         'https://cors-anywhere.herokuapp.com/',
-        'https://thingproxy.freeboard.io/fetch/'
+        'https://corsproxy.io/?'
     ],
-    TIMEOUT: 5000,
-    MAX_RETRIES: 2,
-    RETRY_DELAY: 1500,
-    AVATAR_TIMEOUT: 2000
+    TIMEOUT: 10000,
+    MAX_RETRIES: 3,
+    RETRY_DELAY: 1000
 };
 
-const STORAGE_KEY = 'cosmic_wall_users';
-const LAST_SYNC_KEY = 'cosmic_wall_last_sync';
+// Storage key for localStorage
+const STORAGE_KEY = 'plasma_wall_users_v2';
+const METADATA_KEY = 'plasma_wall_metadata';
 
 // DOM elements
 const usernameInput = document.getElementById('usernameInput');
 const submitBtn = document.getElementById('submitBtn');
-const syncBtn = document.getElementById('syncBtn');
-const searchBtn = document.getElementById('searchBtn');
+const refreshBtn = document.getElementById('refreshBtn');
 const movingWall = document.getElementById('movingWall');
 const bgMusic = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
 const connectionStatus = document.getElementById('connectionStatus');
 const userCount = document.getElementById('userCount');
-const liveCounter = document.getElementById('liveCounter');
+const lastUpdated = document.getElementById('lastUpdated');
 
 let musicPlaying = false;
-let syncInProgress = false;
 
-// Enhanced default users with better mix
-const DEFAULT_USERS = [
-    'proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax',
-    'primay_eth', 'kolyposts', 'Buja_Ques', 'CATTtwit', 
-    'The9bo', 'cryptobaikan', 'ImFaziiii', 'pauliepunt', 
-    'happysubstack', '0xlinkevm', 'lucidxpl', 'cblison',
-    'elonmusk', 'naval', 'balajis', 'vitalikbuterin'
-];
+// Default users (always show these 4)
+const DEFAULT_USERS = ['proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax'];
 
+// All users array
 let allUsers = [...DEFAULT_USERS];
-let searchedUsers = [];
 
-// Enhanced localStorage functions
+// Utility functions
+function getCurrentTime() {
+    return new Date().toLocaleString();
+}
+
+function updateLastUpdatedTime() {
+    lastUpdated.textContent = `Last updated: ${getCurrentTime()}`;
+}
+
+// Enhanced localStorage functions with metadata
 function saveUsersToStorage() {
     try {
-        const userData = {
-            users: allUsers.filter(user => !DEFAULT_USERS.includes(user)),
-            searched: searchedUsers,
-            timestamp: Date.now(),
-            version: '3.0'
+        const usersToSave = allUsers.filter(user => !DEFAULT_USERS.includes(user));
+        const metadata = {
+            savedAt: new Date().toISOString(),
+            totalUsers: allUsers.length,
+            version: '2.0'
         };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
-        localStorage.setItem(LAST_SYNC_KEY, Date.now().toString());
-        console.log('🌌 Cosmic data saved:', userData.users.length + userData.searched.length, 'consciousness signatures');
-        return true;
+        
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(usersToSave));
+        localStorage.setItem(METADATA_KEY, JSON.stringify(metadata));
+        
+        console.log('💾 Saved to localStorage:', {
+            users: usersToSave.length,
+            total: allUsers.length,
+            time: getCurrentTime()
+        });
     } catch (e) {
-        console.error('❌ Cosmic storage failed:', e);
-        return false;
+        console.error('❌ Failed to save to localStorage:', e);
     }
 }
 
 function loadUsersFromStorage() {
     try {
         const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            const userData = JSON.parse(saved);
-            const savedUsers = userData.users || [];
-            searchedUsers = userData.searched || [];
-            console.log('📦 Cosmic data loaded:', savedUsers.length + searchedUsers.length, 'signatures');
-            allUsers = [...new Set([...DEFAULT_USERS, ...savedUsers, ...searchedUsers])];
+        const metadata = localStorage.getItem(METADATA_KEY);
+        
+        if (saved && metadata) {
+            const savedUsers = JSON.parse(saved);
+            const meta = JSON.parse(metadata);
+            
+            console.log('📦 Loaded from localStorage:', {
+                users: savedUsers.length,
+                savedAt: meta.savedAt,
+                version: meta.version
+            });
+            
+            allUsers = [...DEFAULT_USERS, ...savedUsers];
+            
+            if (meta.savedAt) {
+                const savedDate = new Date(meta.savedAt);
+                lastUpdated.textContent = `Last updated: ${savedDate.toLocaleString()}`;
+            }
+            
             return savedUsers;
         }
     } catch (e) {
-        console.error('❌ Cosmic load failed:', e);
+        console.error('❌ Failed to load from localStorage:', e);
     }
     return [];
 }
@@ -735,420 +601,508 @@ musicToggle.addEventListener('click', async () => {
     try {
         if (musicPlaying) { 
             bgMusic.pause(); 
-            musicToggle.textContent = '🎵 Activate Cosmic Audio'; 
+            musicToggle.innerHTML = '🎵 Play Cosmic Music'; 
             musicPlaying = false; 
-            console.log('🔇 Cosmic audio deactivated');
+            console.log('🔇 Music paused');
         } else { 
-            bgMusic.volume = 0.4;
+            bgMusic.volume = 0.3;
             await bgMusic.play(); 
-            musicToggle.textContent = '🔇 Deactivate Cosmic Audio'; 
+            musicToggle.innerHTML = '🔇 Pause Music'; 
             musicPlaying = true; 
-            console.log('🎵 Cosmic audio activated');
+            console.log('🎵 Music playing');
+            
+            // Add visual feedback
+            musicToggle.classList.add('success-added');
+            setTimeout(() => musicToggle.classList.remove('success-added'), 600);
         }
     } catch(e) { 
-        console.error('❌ Cosmic audio error:', e);
-        updateStatus('⚠️ Cosmic audio offline - check audio files', 'warning');
+        console.error('❌ Audio error:', e);
+        connectionStatus.innerHTML = '⚠️ Music files not found - add interstellar.mp3 to your folder';
+        setTimeout(() => {
+            connectionStatus.innerHTML = 'Ready to submit';
+        }, 4000);
     }
 });
 
-// Force sync functionality
-syncBtn.addEventListener('click', async () => {
-    if (syncInProgress) return;
-    
-    syncInProgress = true;
-    syncBtn.disabled = true;
-    syncBtn.textContent = '🔄 Syncing...';
-    
-    updateStatus('🔄 Synchronizing with cosmic network...', 'info');
-    
-    const success = await loadFromBackend(true);
-    
-    setTimeout(() => {
-        syncBtn.disabled = false;
-        syncBtn.textContent = '🔄 Sync Network';
-        syncInProgress = false;
-        
-        if (success) {
-            updateStatus('✅ Cosmic sync complete - network updated', 'success');
-        } else {
-            updateStatus('⚠️ Sync incomplete - operating in local mode', 'warning');
-        }
-    }, 2000);
-});
-
-// Enhanced user search functionality
-searchBtn.addEventListener('click', async () => {
-    const username = usernameInput.value.trim().replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
-    
-    if (!username || username.length < 2) {
-        alert('⚠️ Enter a valid username to search');
-        return;
-    }
-    
-    if (allUsers.includes(username)) {
-        alert('🌟 User already exists in the cosmic network!');
-        return;
-    }
-    
-    searchBtn.disabled = true;
-    searchBtn.textContent = '🔍 Searching...';
-    updateStatus('🔍 Scanning cosmic web for user existence...', 'info');
-    
-    try {
-        // Check if user exists by trying to load their profile
-        const userExists = await checkUserExists(username);
-        
-        if (userExists) {
-            // Add to searched users list and update wall
-            searchedUsers.push(username);
-            allUsers.push(username);
-            saveUsersToStorage();
-            displayPlasmaWall();
-            updateStatus(`✅ User @${username} found and added to cosmic network!`, 'success');
-            usernameInput.value = '';
-        } else {
-            updateStatus(`❌ User @${username} not found in the cosmic web`, 'error');
-        }
-    } catch (error) {
-        console.error('Search error:', error);
-        updateStatus('⚠️ Search failed - cosmic interference detected', 'warning');
-    }
-    
-    setTimeout(() => {
-        searchBtn.disabled = false;
-        searchBtn.textContent = '🔍 Search User';
-    }, 2000);
-});
-
-// Check if user exists by attempting to load their avatar
-async function checkUserExists(username) {
-    console.log(`🔍 Searching cosmic web for: ${username}`);
-    
-    // High-priority sources for user existence check
-    const checkSources = [
-        `https://unavatar.io/twitter/${username}?fallback=false`,
-        `https://unavatar.io/x/${username}?fallback=false`,
-        `https://github.com/${username}.png?size=40`,
-        `https://unavatar.io/${username}?fallback=false`
-    ];
-    
-    for (const source of checkSources) {
-        try {
-            const response = await fetch(source, { 
-                method: 'HEAD',
-                signal: AbortSignal.timeout(3000)
-            });
-            
-            if (response.ok && response.headers.get('content-type')?.startsWith('image/')) {
-                console.log(`✅ User ${username} found via ${source.includes('twitter') || source.includes('/x/') ? 'X/Twitter' : source.includes('github') ? 'GitHub' : 'Web'}`);
-                return true;
-            }
-        } catch (error) {
-            console.log(`❌ Check failed for ${username} on ${source.split('/')[2]}`);
-        }
-    }
-    
-    return false;
-}
-
-// Enhanced status update function
-function updateStatus(message, type = 'info') {
-    connectionStatus.textContent = message;
-    connectionStatus.className = `mt-4 text-center status-text ${
-        type === 'success' ? 'text-cyan-300' :
-        type === 'warning' ? 'text-yellow-400' :
-        type === 'error' ? 'text-red-400' :
-        'text-cyan-300'
-    }`;
-    
-    setTimeout(() => {
-        if (connectionStatus.textContent === message) {
-            connectionStatus.textContent = 'Cosmic network ready for transmission';
-            connectionStatus.className = 'mt-4 text-center status-text text-cyan-300';
-        }
-    }, 5000);
-}
-
-// Ultra-enhanced avatar loading system optimized for speed
-function createAvatarCard(username) {
-    console.log(`🖼️ Materializing cosmic avatar for: ${username}`);
+// Enhanced avatar loading with comprehensive sources and better fallback
+function createUserCard(username, isNewUser = false) {
+    console.log(`🖼️ Creating card for: ${username}${isNewUser ? ' (new user)' : ''}`);
     
     const card = document.createElement('div');
-    card.className = 'avatar-card';
+    card.className = 'user-card';
+    if (isNewUser) {
+        card.classList.add('success-added');
+    }
     
     const img = document.createElement('img');
-    img.className = 'avatar-img loading-cosmic';
+    img.className = 'profile-img loading-placeholder';
     img.alt = username;
     
     const overlay = document.createElement('div');
-    overlay.className = 'handle-display';
+    overlay.className = 'username-overlay';
     overlay.textContent = `@${username}`;
     
     card.appendChild(img);
     card.appendChild(overlay);
     
-    // Optimized avatar sources - prioritizing fast-loading and reliable sources
+    // Comprehensive avatar sources in order of reliability
     const avatarSources = [
-        // HIGHEST PRIORITY: Fast and reliable sources
-        `https://unavatar.io/twitter/${username}?fallback=false`,
-        `https://unavatar.io/x/${username}?fallback=false`,
-        `https://github.com/${username}.png?size=160`,
+        // Primary Twitter/X sources (most reliable)
+        `https://unavatar.io/twitter/${username}?fallback=false&size=140`,
+        `https://unavatar.io/x/${username}?fallback=false&size=140`,
         
-        // HIGH PRIORITY: Good fallbacks
-        `https://unavatar.io/${username}?fallback=false`,
-        `https://unavatar.io/instagram/${username}?fallback=false`,
+        // Alternative Twitter API sources
+        `https://avatars.io/twitter/${username}?size=large`,
+        `https://api.twitter.com/1.1/users/profile_image?screen_name=${username}&size=bigger`,
         
-        // GENERATED AVATARS: Fast loading, always work
-        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=160&backgroundColor=00d4ff,0080ff,8000ff&randomizeIds=true`,
-        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=160&backgroundColor=00d4ff,0080ff,8000ff&randomizeIds=true`,
-        `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&size=160&backgroundColor=00d4ff,0080ff,8000ff&randomizeIds=true`,
+        // GitHub (many users have same handle)
+        `https://avatars.githubusercontent.com/${username}?size=140`,
+        `https://github.com/${username}.png?size=140`,
         
-        // COSMIC THEMED: Robot and abstract
-        `https://robohash.org/${username}?size=160x160&set=set1&bgset=bg2&hues=cyan`,
-        `https://source.boringavatars.com/beam/160/${username}?colors=00d4ff,0080ff,8000ff,ff00aa,001a33`,
+        // Multi-platform sources
+        `https://unavatar.io/${username}?size=140`,
+        `https://avatar.vercel.sh/${username}?size=140`,
         
-        // LETTER AVATARS: Always reliable
-        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=00d4ff&color=000511&size=160&bold=true&rounded=true&font-size=0.6`
+        // Generated avatars with better designs
+        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=140&backgroundColor=16a34a,22c55e&radius=20`,
+        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=140&backgroundColor=16a34a&radius=20`,
+        `https://api.dicebear.com/7.x/big-smile/svg?seed=${username}&size=140&backgroundColor=16a34a`,
+        `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}&size=140&backgroundColor=22c55e`,
+        
+        // Robohash variants
+        `https://robohash.org/${username}?size=140x140&set=set4&bgset=bg1`,
+        `https://robohash.org/${username}?size=140x140&set=set1&bgset=bg2`,
+        
+        // Final fallbacks
+        `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=16a34a&color=fff&size=140&bold=true&rounded=true&font-size=0.4`,
+        `https://via.placeholder.com/140/16a34a/ffffff?text=${encodeURIComponent(username.charAt(0).toUpperCase())}`
     ];
     
     let sourceIndex = 0;
-    let loadStartTime = Date.now();
+    let attempts = 0;
+    const maxAttempts = avatarSources.length;
     
-    const tryLoadAvatar = () => {
-        if (sourceIndex >= avatarSources.length) {
-            console.log(`❌ All sources failed for ${username}, creating cosmic fallback`);
-            createFallbackAvatar();
+    const tryNextSource = () => {
+        if (attempts >= maxAttempts) {
+            // All sources failed - create enhanced letter avatar
+            console.log(`❌ All ${maxAttempts} sources failed for ${username}, using letter avatar`);
+            card.removeChild(img);
+            
+            const letterDiv = document.createElement('div');
+            letterDiv.className = 'error-avatar';
+            letterDiv.style.width = '100%';
+            letterDiv.style.height = '100%';
+            
+            // Use first letter or first two letters for short usernames
+            const displayText = username.length <= 3 ? 
+                username.toUpperCase() : 
+                username.charAt(0).toUpperCase();
+            
+            letterDiv.textContent = displayText;
+            card.insertBefore(letterDiv, overlay);
             return;
         }
         
         const currentSource = avatarSources[sourceIndex];
-        const sourceType = getSourceType(currentSource);
+        console.log(`  📡 Trying source ${attempts + 1}/${maxAttempts} for ${username}: ${currentSource.split('?')[0]}`);
         
-        console.log(`  📡 Cosmic scan ${sourceIndex + 1}/${avatarSources.length} for ${username}: ${sourceType}`);
-        
-        // Faster timeout for better UX
+        // Set up timeout for this attempt
         const timeout = setTimeout(() => {
-            console.log(`  ⏰ Timeout for ${username}`);
-            sourceIndex++;
-            tryLoadAvatar();
-        }, CONFIG.AVATAR_TIMEOUT);
-        
-        const onSuccess = () => {
-            clearTimeout(timeout);
-            const loadTime = Date.now() - loadStartTime;
-            img.classList.remove('loading-cosmic');
-            console.log(`  ✅ AVATAR LOADED: ${username} via ${sourceType} (${loadTime}ms)`);
-            
-            // Cosmic success animation
-            card.style.animation = 'cardBeam 0.8s ease-out';
-        };
-        
-        const onError = () => {
-            clearTimeout(timeout);
-            console.log(`  ❌ Failed: ${sourceType} for ${username}`);
-            sourceIndex++;
-            tryLoadAvatar();
-        };
+            console.log(`  ⏰ Timeout for ${username} source ${attempts + 1}`);
+            attempts++;
+            sourceIndex = (sourceIndex + 1) % avatarSources.length;
+            tryNextSource();
+        }, 6000); // Increased timeout for better loading
         
         img.onload = () => {
-            if (img.naturalWidth > 5 && img.naturalHeight > 5) {
-                onSuccess();
+            clearTimeout(timeout);
+            // Check if image actually loaded (not a 1x1 pixel)
+            if (img.naturalWidth > 1 && img.naturalHeight > 1) {
+                img.classList.remove('loading-placeholder');
+                console.log(`  ✅ Avatar loaded for ${username} from source ${attempts + 1}`);
             } else {
-                onError();
+                console.log(`  ❌ Invalid image for ${username} from source ${attempts + 1}`);
+                attempts++;
+                sourceIndex = (sourceIndex + 1) % avatarSources.length;
+                tryNextSource();
             }
         };
         
-        img.onerror = onError;
+        img.onerror = () => {
+            clearTimeout(timeout);
+            console.log(`  ❌ Source ${attempts + 1} failed for ${username}`);
+            attempts++;
+            sourceIndex = (sourceIndex + 1) % avatarSources.length;
+            tryNextSource();
+        };
+        
         img.src = currentSource;
     };
     
-    const createFallbackAvatar = () => {
-        card.removeChild(img);
-        const fallbackDiv = document.createElement('div');
-        fallbackDiv.className = 'error-cosmic';
-        fallbackDiv.style.width = '100%';
-        fallbackDiv.style.height = '100%';
-        fallbackDiv.textContent = username.charAt(0).toUpperCase();
-        card.insertBefore(fallbackDiv, overlay);
-    };
+    // Add click functionality to user cards
+    card.addEventListener('click', () => {
+        window.open(`https://twitter.com/${username}`, '_blank');
+    });
     
-    const getSourceType = (source) => {
-        if (source.includes('twitter') || source.includes('/x/')) return 'X/Twitter';
-        if (source.includes('github')) return 'GitHub';
-        if (source.includes('dicebear')) return 'Generated';
-        if (source.includes('robohash')) return 'Robot';
-        if (source.includes('boring')) return 'Abstract';
-        if (source.includes('ui-avatars')) return 'Letter';
-        return 'Web';
-    };
-    
-    tryLoadAvatar();
+    tryNextSource();
     return card;
 }
 
-// Enhanced display function with cosmic animations
-function displayPlasmaWall() {
-    console.log('🌌 Materializing cosmic wall with', allUsers.length, 'consciousness entities');
+// Enhanced display function with better performance
+function displayMovingWall(highlightNewUser = null) {
+    console.log('🎯 Displaying moving wall with users:', allUsers.length);
     
+    // Clear wall
     movingWall.innerHTML = '';
     
-    // Create cards with staggered cosmic timing
-    allUsers.forEach((username, index) => {
-        setTimeout(() => {
-            const card = createAvatarCard(username);
-            card.style.animationDelay = `${index * 0.05}s`;
-            movingWall.appendChild(card);
-        }, index * 50);
+    // Create cards for all users (single pass)
+    const fragment = document.createDocumentFragment();
+    
+    allUsers.forEach(username => {
+        const isNewUser = username === highlightNewUser;
+        const card = createUserCard(username, isNewUser);
+        fragment.appendChild(card);
     });
     
     // Duplicate for seamless loop
-    setTimeout(() => {
-        allUsers.forEach((username, index) => {
-            setTimeout(() => {
-                const card = createAvatarCard(username);
-                card.style.animationDelay = `${(allUsers.length + index) * 0.05}s`;
-                movingWall.appendChild(card);
-            }, index * 40);
-        });
-    }, allUsers.length * 50 + 500);
+    allUsers.forEach(username => {
+        const card = createUserCard(username);
+        fragment.appendChild(card);
+    });
     
-    // Update cosmic counters
-    userCount.textContent = `${allUsers.length} Cosmic Entities Connected`;
-    liveCounter.textContent = `Cosmic Network: ${allUsers.length} consciousness signatures detected across space-time`;
+    movingWall.appendChild(fragment);
+    
+    // Update user count with more details
+    userCount.innerHTML = `
+        🌟 ${allUsers.length} members in the Plasma Wall 
+        <span class="text-green-500">• ${allUsers.length - DEFAULT_USERS.length} community members</span>
+    `;
+    
+    updateLastUpdatedTime();
 }
 
-// Enhanced backend communication
+// Enhanced backend save with multiple retry strategies
 async function saveToBackend(username) {
-    console.log('🚀 Initiating cosmic transmission for:', username);
+    console.log('💾 Attempting to save to backend:', username);
     
     for (let retry = 0; retry < CONFIG.MAX_RETRIES; retry++) {
+        console.log(`🔄 Attempt ${retry + 1}/${CONFIG.MAX_RETRIES}`);
+        
+        const methods = [
+            // Method 1: Direct connection
+            async () => {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
+                
+                try {
+                    const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ username }),
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (response.ok) {
+                        console.log('✅ Saved via direct connection');
+                        return true;
+                    }
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                } catch (error) {
+                    clearTimeout(timeoutId);
+                    throw error;
+                }
+            },
+            
+            // Method 2: Multiple proxy attempts
+            ...CONFIG.PROXY_URLS.map(proxyUrl => async () => {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
+                
+                try {
+                    const fullUrl = `${proxyUrl}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
+                    const response = await fetch(fullUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username }),
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (response.ok) {
+                        console.log(`✅ Saved via proxy: ${proxyUrl}`);
+                        return true;
+                    }
+                    throw new Error(`Proxy ${response.status}: ${response.statusText}`);
+                } catch (error) {
+                    clearTimeout(timeoutId);
+                    throw error;
+                }
+            })
+        ];
+        
+        // Try each method for this retry
+        for (let i = 0; i < methods.length; i++) {
+            try {
+                console.log(`  🔄 Trying save method ${i + 1}/${methods.length} (attempt ${retry + 1})`);
+                const result = await methods[i]();
+                if (result) return true;
+            } catch (error) {
+                console.log(`  ❌ Save method ${i + 1} failed:`, error.message);
+            }
+        }
+        
+        // Wait before retry
+        if (retry < CONFIG.MAX_RETRIES - 1) {
+            console.log(`⏳ Waiting ${CONFIG.RETRY_DELAY}ms before retry...`);
+            await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
+        }
+    }
+    
+    console.error('❌ All backend save attempts failed');
+    return false;
+}
+
+// Enhanced load from backend with better error handling
+async function loadFromBackend() {
+    console.log('📡 Loading users from backend...');
+    
+    const loadMethods = [
+        { name: 'direct', url: `${CONFIG.SERVER_URL}/users` },
+        ...CONFIG.PROXY_URLS.map(proxy => ({
+            name: `proxy-${proxy.split('/')[2]}`,
+            url: `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`
+        }))
+    ];
+    
+    for (const method of loadMethods) {
         try {
-            const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({ username }),
-                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+            console.log(`  🔄 Trying to load via ${method.name}...`);
+            
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
+            
+            const response = await fetch(method.url, {
+                signal: controller.signal,
+                headers: { 'Accept': 'application/json' }
             });
             
+            clearTimeout(timeoutId);
+            
             if (response.ok) {
-                console.log('✅ Cosmic transmission successful');
+                const serverUsers = await response.json();
+                console.log('✅ Loaded from backend:', serverUsers);
+                
+                // Load saved users from localStorage
+                const savedUsers = loadUsersFromStorage();
+                
+                // Combine all users (defaults + server + localStorage, no duplicates)
+                allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...savedUsers])];
+                
+                connectionStatus.innerHTML = '✅ Connected to plasma network';
+                updateLastUpdatedTime();
                 return true;
             }
         } catch (error) {
-            console.log(`❌ Transmission attempt ${retry + 1} failed:`, error.message);
-            if (retry < CONFIG.MAX_RETRIES - 1) {
-                await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
-            }
+            console.log(`  ❌ Load method ${method.name} failed:`, error.message);
         }
     }
     
-    return false;
-}
-
-async function loadFromBackend(forceSync = false) {
-    console.log('📡 Scanning cosmic network...', forceSync ? '(FORCED)' : '');
+    console.log('⚠️ Backend unavailable, using localStorage');
     
-    try {
-        const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
-            method: 'GET',
-            headers: { 'Cache-Control': forceSync ? 'no-cache' : 'max-age=300' },
-            signal: AbortSignal.timeout(CONFIG.TIMEOUT)
-        });
-        
-        if (response.ok) {
-            const serverUsers = await response.json();
-            console.log('✅ Cosmic network data received:', serverUsers.length, 'entities');
-            
-            const localUsers = loadUsersFromStorage();
-            const allServerUsers = Array.isArray(serverUsers) ? serverUsers : [];
-            allUsers = [...new Set([...DEFAULT_USERS, ...allServerUsers, ...localUsers, ...searchedUsers])];
-            
-            updateStatus('✅ Cosmic network synchronized', 'success');
-            return true;
-        }
-    } catch (error) {
-        console.log('❌ Cosmic network scan failed:', error.message);
-    }
-    
+    // Load from localStorage only
     loadUsersFromStorage();
-    updateStatus('⚠️ Operating in local mode - cosmic network offline', 'warning');
+    connectionStatus.innerHTML = '⚠️ Offline mode - using saved data';
     return false;
 }
 
-// Enhanced user submission
+// Enhanced submit user with better validation and feedback
 async function submitUser(username) {
     const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
     
+    // Enhanced validation
     if (!cleanUsername || cleanUsername.length < 2) {
-        alert('⚠️ Cosmic signature invalid - minimum 2 characters required');
+        alert('Please enter a valid username (at least 2 characters, letters/numbers/underscores only)');
         return;
     }
     
-    if (cleanUsername.length > 30) {
-        alert('⚠️ Cosmic signature too long - maximum 30 characters');
+    if (cleanUsername.length > 15) {
+        alert('Username too long (maximum 15 characters)');
         return;
     }
     
     if (allUsers.includes(cleanUsername)) {
-        alert('⚡ Consciousness already exists in the cosmic matrix!');
+        alert('This user is already in the Plasma Wall! 🌟');
+        // Highlight existing user briefly
+        const existingCards = document.querySelectorAll('.user-card');
+        existingCards.forEach(card => {
+            const overlay = card.querySelector('.username-overlay');
+            if (overlay && overlay.textContent === `@${cleanUsername}`) {
+                card.style.transform = 'scale(1.3) translateY(-15px)';
+                card.style.zIndex = '100';
+                setTimeout(() => {
+                    card.style.transform = '';
+                    card.style.zIndex = '';
+                }, 2000);
+            }
+        });
         return;
     }
     
-    console.log('🧬 Processing cosmic transmission:', cleanUsername);
+    console.log('🚀 Processing submission:', cleanUsername);
     
-    // Enhanced submit animation
+    // Disable submit with loading animation
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="relative z-10">✦ TRANSMITTING...</span>';
-    submitBtn.style.transform = 'scale(0.95)';
-    updateStatus('🧬 Transmitting consciousness to cosmic network...', 'info');
+    submitBtn.innerHTML = '⚡ Adding to Plasma...';
+    connectionStatus.innerHTML = '🌟 Adding user to the cosmic wall...';
     
-    // Immediate local transmission
+    // Add immediately to local array and save to localStorage
     allUsers.push(cleanUsername);
-    const saved = saveUsersToStorage();
+    saveUsersToStorage();
     
-    if (!saved) {
-        allUsers.pop();
-        updateStatus('❌ Local storage failure - transmission aborted', 'error');
-        resetSubmitButton();
-        return;
-    }
+    // Update wall immediately with highlight for new user
+    displayMovingWall(cleanUsername);
     
-    displayPlasmaWall();
+    // Try to save to backend in background
+    const saved = await saveToBackend(cleanUsername);
     
-    // Background cosmic sync
-    const backendSaved = await saveToBackend(cleanUsername);
-    
-    if (backendSaved) {
-        updateStatus('✅ Consciousness successfully transmitted and synchronized!', 'success');
+    if (saved) {
+        connectionStatus.innerHTML = '✅ Added to Plasma Wall and synced to network! 🚀';
     } else {
-        updateStatus('✅ Consciousness transmitted locally - will sync when cosmic network returns', 'warning');
+        connectionStatus.innerHTML = '✅ Added to Plasma Wall (saved locally, will sync when network is back) 💫';
     }
     
-    // Clear input with cosmic animation
-    usernameInput.style.transform = 'scale(0.95)';
-    setTimeout(() => {
-        usernameInput.value = '';
-        usernameInput.style.transform = 'scale(1)';
-    }, 200);
+    // Clear input with success animation
+    usernameInput.value = '';
+    usernameInput.style.transform = 'scale(1.05)';
+    usernameInput.style.borderColor = '#22c55e';
     
-    setTimeout(resetSubmitButton, 3000);
-    console.log('✨ Cosmic transmission complete - consciousness integrated');
+    setTimeout(() => {
+        usernameInput.style.transform = '';
+        usernameInput.style.borderColor = '';
+    }, 300);
+    
+    // Reset button and status with delay
+    setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Join Plasma';
+        connectionStatus.innerHTML = saved ? 
+            '✅ Connected to plasma network' : 
+            '⚠️ Offline mode - using saved data';
+    }, 3000);
+    
+    console.log('✨ User successfully added to Plasma Wall');
+    
+    // Celebration effect
+    createCelebrationEffect();
 }
 
-function resetSubmitButton() {
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = '<span class="relative z-10">TRANSMIT</span>';
-    submitBtn.style.transform = 'scale(1)';
+// Add celebration effect for successful submissions
+function createCelebrationEffect() {
+    const colors = ['#22c55e', '#16a34a', '#15803d'];
+    const particles = 20;
+    
+    for (let i = 0; i < particles; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: ${colors[Math.floor(Math.random() * colors.length)]};
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            animation: celebrate 1.5s ease-out forwards;
+        `;
+        
+        // Random direction
+        const angle = (Math.PI * 2 * i) / particles;
+        const velocity = 50 + Math.random() * 50;
+        const x = Math.cos(angle) * velocity;
+        const y = Math.sin(angle) * velocity;
+        
+        particle.style.setProperty('--x', `${x}px`);
+        particle.style.setProperty('--y', `${y}px`);
+        
+        document.body.appendChild(particle);
+        
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+            }
+        }, 1500);
+    }
 }
 
-// Event listeners
+// Add celebration animation CSS
+const celebrationStyle = document.createElement('style');
+celebrationStyle.textContent = `
+    @keyframes celebrate {
+        0% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(celebrationStyle);
+
+// Refresh functionality
+refreshBtn.addEventListener('click', async () => {
+    refreshBtn.disabled = true;
+    refreshBtn.innerHTML = '🔄 Refreshing...';
+    connectionStatus.innerHTML = '🔄 Refreshing plasma network...';
+    
+    // Add loading animation to button
+    refreshBtn.classList.add('success-added');
+    
+    try {
+        const loaded = await loadFromBackend();
+        displayMovingWall();
+        
+        if (loaded) {
+            connectionStatus.innerHTML = '✅ Plasma Wall refreshed successfully!';
+        } else {
+            connectionStatus.innerHTML = '⚠️ Network unavailable - showing cached data';
+        }
+    } catch (error) {
+        console.error('❌ Refresh failed:', error);
+        connectionStatus.innerHTML = '❌ Refresh failed - using cached data';
+    }
+    
+    setTimeout(() => {
+        refreshBtn.disabled = false;
+        refreshBtn.innerHTML = '🔄 Refresh Wall';
+        refreshBtn.classList.remove('success-added');
+        
+        if (connectionStatus.textContent.includes('Refreshing') || 
+            connectionStatus.textContent.includes('refreshed')) {
+            connectionStatus.innerHTML = '✅ Connected to plasma network';
+        }
+    }, 2000);
+});
+
+// Event listeners with enhanced functionality
 submitBtn.addEventListener('click', () => {
     const username = usernameInput.value.trim();
-    if (username && !submitBtn.disabled) {
+    if (username) {
         submitUser(username);
+    } else {
+        usernameInput.focus();
+        usernameInput.style.borderColor = '#ef4444';
+        setTimeout(() => {
+            usernameInput.style.borderColor = '';
+        }, 1000);
     }
 });
 
@@ -1156,77 +1110,127 @@ usernameInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && !submitBtn.disabled) {
         const username = usernameInput.value.trim();
         if (username) {
-            // Check if Shift is held to search instead of submit
-            if (e.shiftKey) {
-                searchBtn.click();
-            } else {
-                submitUser(username);
-            }
+            submitUser(username);
         }
     }
 });
 
-// Enhanced input effects
-usernameInput.addEventListener('focus', () => {
-    usernameInput.nextElementSibling.style.opacity = '1';
+// Enhanced input validation feedback
+usernameInput.addEventListener('input', (e) => {
+    const value = e.target.value;
+    const cleanValue = value.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
+    
+    if (value !== cleanValue) {
+        e.target.value = cleanValue.startsWith('@') ? cleanValue : (cleanValue ? `${cleanValue}` : '');
+    }
+    
+    // Real-time validation feedback
+    if (cleanValue.length > 0 && cleanValue.length < 2) {
+        e.target.style.borderColor = '#f59e0b';
+    } else if (cleanValue.length > 15) {
+        e.target.style.borderColor = '#ef4444';
+    } else if (allUsers.includes(cleanValue)) {
+        e.target.style.borderColor = '#f59e0b';
+    } else if (cleanValue.length >= 2) {
+        e.target.style.borderColor = '#22c55e';
+    } else {
+        e.target.style.borderColor = '';
+    }
 });
 
-usernameInput.addEventListener('blur', () => {
-    usernameInput.nextElementSibling.style.opacity = '0';
-});
+// Auto-sync functionality (check for updates periodically)
+let autoSyncInterval;
 
-// Real-time cosmic counter updates
-setInterval(() => {
-    const timestamp = new Date().toLocaleTimeString();
-    liveCounter.textContent = `Cosmic Network: ${allUsers.length} active signatures [${timestamp}] • Spanning infinite dimensions`;
-}, 20000);
-
-// Enhanced initialization
-async function initializeCosmicMatrix() {
-    console.log('🌌 INITIALIZING COSMIC PLASMA NEXUS...');
-    console.log('🎵 Cosmic audio files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
-    console.log('👥 Default cosmic signatures:', DEFAULT_USERS.length);
-    console.log('💾 Quantum storage protocol: ACTIVE');
-    console.log('🔍 User search system: ENABLED');
-    console.log('🔄 Enhanced avatar matrix: OPTIMIZED');
-    
-    updateStatus('🌌 Cosmic nexus initialization in progress...', 'info');
-    
-    // Initialize cosmic network
-    const networkOnline = await loadFromBackend();
-    
-    // Display the plasma wall
-    displayPlasmaWall();
-    
-    console.log('✨ COSMIC PLASMA NEXUS ONLINE');
-    console.log(`🧬 Total consciousness signatures: ${allUsers.length}`);
-    console.log(`📡 Network status: ${networkOnline ? 'ONLINE' : 'OFFLINE'}`);
-    console.log('🔍 User search: Press Shift+Enter to search instead of add');
-    
-    setTimeout(() => {
-        if (connectionStatus.textContent.includes('initialization')) {
-            updateStatus('⚡ Cosmic nexus ready for consciousness transmission', 'success');
+function startAutoSync() {
+    autoSyncInterval = setInterval(async () => {
+        console.log('🔄 Auto-sync check...');
+        try {
+            const wasConnected = connectionStatus.textContent.includes('Connected');
+            const loaded = await loadFromBackend();
+            
+            if (loaded && !wasConnected) {
+                displayMovingWall();
+                console.log('✅ Reconnected to backend');
+            }
+        } catch (error) {
+            console.log('⚠️ Auto-sync check failed:', error.message);
         }
-    }, 2000);
+    }, 30000); // Check every 30 seconds
 }
 
-// Auto-sync with performance optimization
-setInterval(async () => {
-    if (!syncInProgress && document.visibilityState === 'visible') {
-        console.log('🔄 Auto-sync initiated...');
-        await loadFromBackend();
-        displayPlasmaWall();
+function stopAutoSync() {
+    if (autoSyncInterval) {
+        clearInterval(autoSyncInterval);
     }
-}, 300000);
+}
 
-// Visibility change optimization
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-        console.log('👁️ Tab visible - cosmic nexus active');
-    } else {
-        console.log('🌙 Tab hidden - cosmic nexus standby mode');
+// Enhanced initialization with better error handling and loading states
+async function init() {
+    console.log('🚀 Initializing Enhanced Plasma Wall...');
+    console.log('🎵 Looking for music files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
+    console.log('👥 Default users:', DEFAULT_USERS);
+    console.log('💾 Using enhanced localStorage with metadata');
+    console.log('🔄 Auto-sync enabled (30s intervals)');
+    
+    connectionStatus.innerHTML = '🌟 Initializing plasma network...';
+    
+    // Show loading state
+    userCount.innerHTML = '⚡ Loading cosmic community...';
+    movingWall.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #22c55e; font-size: 2rem;">🌌 Loading Plasma Wall...</div>';
+    
+    try {
+        // Load users (backend + localStorage)
+        const backendConnected = await loadFromBackend();
+        
+        // Display the moving wall
+        displayMovingWall();
+        
+        // Start auto-sync if connected
+        if (backendConnected) {
+            startAutoSync();
+        }
+        
+        console.log('✨ Enhanced Plasma Wall ready!');
+        console.log(`👥 Total users in wall: ${allUsers.length}`);
+        console.log(`🌐 Backend connected: ${backendConnected ? 'Yes' : 'No'}`);
+        
+    } catch (error) {
+        console.error('❌ Initialization error:', error);
+        connectionStatus.innerHTML = '❌ Initialization failed - using offline mode';
+        
+        // Fallback to defaults
+        allUsers = [...DEFAULT_USERS];
+        displayMovingWall();
+    }
+    
+    // Final status update
+    setTimeout(() => {
+        if (connectionStatus.textContent.includes('Initializing')) {
+            connectionStatus.innerHTML = '✅ Ready to join the plasma network';
+        }
+    }, 1000);
+}
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    stopAutoSync();
+    if (musicPlaying) {
+        bgMusic.pause();
     }
 });
 
-// Initialize the enhanced cosmic matrix
-initializeCosmicMatrix();
+// Handle visibility change (pause music when tab not visible)
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden && musicPlaying) {
+        bgMusic.pause();
+        musicToggle.innerHTML = '🎵 Play Cosmic Music';
+        musicPlaying = false;
+    }
+});
+
+// Start the enhanced application
+init();
+</script>
+
+</body>
+</html>
