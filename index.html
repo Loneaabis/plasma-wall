@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plasma Wall</title>
+<title>Plasma Wall 🕊</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen text-white overflow-hidden relative" style="background: linear-gradient(135deg, #1a3b2e, #0f2922, #1a3b2e);">
@@ -29,6 +29,9 @@
 
 <!-- Header -->
 <header class="relative z-10 text-center py-6">
+    <div class="dove-animation">
+        <span class="dove">🕊</span>
+    </div>
     <h1 class="text-4xl font-bold text-white mb-4 glow-text animate-pulse-glow">
         Submit your X handle. Join Plasma Wall
     </h1>
@@ -56,7 +59,7 @@
     >
         🎵 Play Music
     </button>
-    <div id="connectionStatus" class="mt-4 text-center text-green-300 animate-fade-in">Ready to submit</div>
+    <div id="connectionStatus" class="mt-4 text-center text-green-300 animate-fade-in">Ready to submit 🕊</div>
 </div>
 
 <!-- Moving Wall Container -->
@@ -66,15 +69,43 @@
         
         <!-- Moving Wall -->
         <div class="moving-wall-container relative h-96 overflow-hidden">
-            <div id="movingWall" class="moving-wall absolute top-0 left-0 flex flex-wrap gap-4 animate-move"></div>
+            <div id="movingWall" class="moving-wall absolute top-0 left-0 flex flex-wrap gap-6 animate-move"></div>
         </div>
         
-        <div class="text-center mt-6 text-sm text-green-400 animate-fade-in">Built by @seumcoded</div>
+        <div class="text-center mt-6 text-sm text-green-400 animate-fade-in">Built by @aabis 🕊</div>
     </div>
 </div>
 
 <!-- Styles -->
 <style>
+/* Dove animation */
+.dove-animation {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.dove {
+    font-size: 36px;
+    display: inline-block;
+    animation: doveFly 6s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+@keyframes doveFly {
+    0%, 100% { 
+        transform: translateY(0) translateX(0) rotate(0deg); 
+    }
+    25% { 
+        transform: translateY(-10px) translateX(15px) rotate(-5deg); 
+    }
+    50% { 
+        transform: translateY(-5px) translateX(-15px) rotate(5deg); 
+    }
+    75% { 
+        transform: translateY(-12px) translateX(10px) rotate(-3deg); 
+    }
+}
+
 /* Enhanced animations */
 @keyframes pulse-glow {
     0%, 100% { text-shadow: 0 0 5px #22c55e, 0 0 10px #22c55e, 0 0 15px #22c55e; }
@@ -236,6 +267,7 @@
     to { transform: translateX(-50%); }
 }
 
+/* ENHANCED USER CARDS WITH INTERSTELLAR EFFECTS */
 .user-card {
     flex-shrink: 0;
     width: 120px;
@@ -264,19 +296,74 @@
     filter: drop-shadow(0 10px 30px rgba(34, 197, 94, 0.5));
 }
 
+/* Interstellar rotating frame */
+.interstellar-frame {
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: conic-gradient(
+        from 0deg,
+        transparent,
+        #22c55e,
+        transparent,
+        #16a34a,
+        transparent
+    );
+    animation: interstellarRotate 2s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.user-card:hover .interstellar-frame {
+    opacity: 1;
+}
+
+@keyframes interstellarRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.profile-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 2;
+}
+
 .profile-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 15px;
+    border-radius: 50%;
     border: 3px solid rgba(34, 197, 94, 0.8);
     box-shadow: 0 0 25px rgba(34, 197, 94, 0.5);
     transition: all 0.3s ease;
+    background: #1a3b2e;
 }
 
 .user-card:hover .profile-img {
     border-color: #22c55e;
     box-shadow: 0 0 35px rgba(34, 197, 94, 0.8);
+    transform: scale(1.05);
+}
+
+/* Dove indicator on cards */
+.dove-indicator {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 16px;
+    z-index: 3;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+    animation: dovePulse 2s ease-in-out infinite;
+}
+
+@keyframes dovePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
 }
 
 .username-overlay {
@@ -293,6 +380,7 @@
     border-radius: 0 0 15px 15px;
     border: 1px solid rgba(34, 197, 94, 0.5);
     transition: all 0.3s ease;
+    z-index: 3;
 }
 
 .user-card:hover .username-overlay {
@@ -304,7 +392,7 @@
     background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
     background-size: 200% 100%;
     animation: shimmer 1.2s infinite;
-    border-radius: 15px;
+    border-radius: 50%;
     border: 3px solid rgba(34, 197, 94, 0.5);
 }
 
@@ -321,15 +409,18 @@
     color: white;
     font-size: 28px;
     font-weight: bold;
-    border-radius: 15px;
+    border-radius: 50%;
     border: 3px solid rgba(34, 197, 94, 0.8);
     box-shadow: 0 0 25px rgba(34, 197, 94, 0.5);
     transition: all 0.3s ease;
+    width: 100%;
+    height: 100%;
 }
 
 .user-card:hover .error-avatar {
     background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
     box-shadow: 0 0 35px rgba(34, 197, 94, 0.8);
+    transform: scale(1.05);
 }
 
 /* Loading states */
@@ -341,6 +432,17 @@
     0%, 100% { opacity: 0.6; }
     50% { opacity: 1; }
 }
+
+/* Loading ring */
+.loading-ring {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top: 2px solid #22c55e;
+    animation: interstellarRotate 1s linear infinite;
+    z-index: 4;
+}
 </style>
 
 <!-- Script -->
@@ -349,7 +451,7 @@
 const CONFIG = {
     SERVER_URL: 'http://162.250.191.81:4000',
     PROXY_URL: 'https://api.allorigins.win/raw?url=',
-    TIMEOUT: 6000
+    TIMEOUT: 8000
 };
 
 // Storage key for localStorage
@@ -366,7 +468,7 @@ const userCount = document.getElementById('userCount');
 
 let musicPlaying = false;
 
-// Enhanced default users list (including your new ones)
+// Enhanced default users list
 const DEFAULT_USERS = [
     'proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax',
     'primay_eth', 'kolyposts', 'Buja_Ques', 'CATTtwit', 
@@ -421,124 +523,140 @@ musicToggle.addEventListener('click', async () => {
         console.error('❌ Audio error:', e);
         connectionStatus.textContent = '⚠️ Music file not found - make sure interstellar.mp3 is in same folder';
         setTimeout(() => {
-            connectionStatus.textContent = 'Ready to submit';
+            connectionStatus.textContent = 'Ready to submit 🕊';
         }, 3000);
     }
 });
 
-// Significantly improved avatar loading with better sources and caching
+// FIXED AND ENHANCED AVATAR LOADING
 function createUserCard(username) {
     console.log(`🖼️ Creating card for: ${username}`);
     
     const card = document.createElement('div');
     card.className = 'user-card card-loading';
     
+    // Interstellar rotating frame
+    const frame = document.createElement('div');
+    frame.className = 'interstellar-frame';
+    
+    // Profile container
+    const container = document.createElement('div');
+    container.className = 'profile-container';
+    
+    // Loading ring
+    const loadingRing = document.createElement('div');
+    loadingRing.className = 'loading-ring';
+    
     const img = document.createElement('img');
     img.className = 'profile-img loading-placeholder';
     img.alt = username;
+    
+    // Dove indicator
+    const dove = document.createElement('span');
+    dove.className = 'dove-indicator';
+    dove.textContent = '🕊';
     
     const overlay = document.createElement('div');
     overlay.className = 'username-overlay';
     overlay.textContent = `@${username}`;
     
-    card.appendChild(img);
+    container.appendChild(img);
+    card.appendChild(frame);
+    card.appendChild(loadingRing);
+    card.appendChild(container);
+    card.appendChild(dove);
     card.appendChild(overlay);
     
-    // More comprehensive avatar sources with better reliability
+    // IMPROVED avatar sources - ordered by reliability
     const avatarSources = [
-        // Primary Twitter/X sources (most reliable)
-        `https://unavatar.io/twitter/${username}?fallback=false`,
-        `https://unavatar.io/x/${username}?fallback=false`,
+        // Twitter/X specific (using CDN that works)
+        `https://unavatar.io/twitter/${username}`,
+        `https://unavatar.io/x/${username}`,
         
-        // Alternative Twitter sources
-        `https://avatars.io/twitter/${username}`,
-        `https://pbs.twimg.com/profile_images/${username}`,
+        // GitHub (many devs use same handle)
+        `https://github.com/${username}.png?size=200`,
         
-        // GitHub (many users have same handle)
-        `https://avatars.githubusercontent.com/${username}?size=120`,
-        `https://github.com/${username}.png?size=120`,
+        // DiceBear API (very reliable, generates based on username)
+        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&backgroundColor=22c55e,16a34a`,
+        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&backgroundColor=22c55e`,
+        `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&backgroundColor=16a34a`,
+        `https://api.dicebear.com/7.x/identicon/svg?seed=${username}&backgroundColor=15803d`,
         
-        // Gravatar (email-based but sometimes works with usernames)
-        `https://www.gravatar.com/avatar/${btoa(username)}?s=120&d=404`,
+        // RoboHash (reliable fallback)
+        `https://robohash.org/${username}?size=200x200&set=set4&bgset=bg1`,
+        `https://robohash.org/${username}?size=200x200&set=set1`,
         
-        // More reliable fallback avatar services
-        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=120&backgroundColor=22c55e`,
-        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=120&backgroundColor=16a34a`,
-        `https://api.dicebear.com/7.x/lorelei/svg?seed=${username}&size=120&backgroundColor=15803d`,
+        // UI Avatars (text-based, always works)
+        `https://ui-avatars.com/api/?name=${username}&background=22c55e&color=fff&size=200&bold=true`,
         
-        // Robohash variants
-        `https://robohash.org/${username}?size=120x120&set=set4`,
-        `https://robohash.org/${username}?size=120x120&set=set1`,
+        // Boring Avatars
+        `https://source.boringavatars.com/beam/200/${username}?colors=22c55e,16a34a,15803d`,
         
-        // UI Avatars with better styling
-        `https://ui-avatars.com/api/?name=${username}&background=22c55e&color=ffffff&size=120&bold=true&rounded=true&font-size=0.4`,
-        
-        // Final placeholder
-        `https://via.placeholder.com/120/16a34a/ffffff?text=${username.charAt(0).toUpperCase()}`
+        // Placeholder as final fallback
+        `https://via.placeholder.com/200/22c55e/ffffff?text=${username.charAt(0).toUpperCase()}`
     ];
     
     let sourceIndex = 0;
-    let attempts = 0;
-    const maxAttempts = avatarSources.length;
+    let loadStartTime = Date.now();
     
-    const tryNextSource = () => {
-        if (attempts >= maxAttempts) {
-            // All sources failed - create animated letter avatar
-            console.log(`❌ All ${maxAttempts} sources failed for ${username}, creating letter avatar`);
-            card.removeChild(img);
+    const tryLoadAvatar = () => {
+        if (sourceIndex >= avatarSources.length) {
+            // All failed - create letter avatar
+            console.log(`❌ All sources failed for ${username}, creating letter avatar`);
+            container.removeChild(img);
+            card.removeChild(loadingRing);
             const letterDiv = document.createElement('div');
             letterDiv.className = 'error-avatar';
-            letterDiv.style.width = '100%';
-            letterDiv.style.height = '100%';
             letterDiv.textContent = username.charAt(0).toUpperCase();
-            card.insertBefore(letterDiv, overlay);
+            container.appendChild(letterDiv);
             card.classList.remove('card-loading');
             return;
         }
         
         const currentSource = avatarSources[sourceIndex];
-        console.log(`  📡 Trying source ${attempts + 1}/${maxAttempts} for ${username}: ${currentSource.split('?')[0]}`);
+        console.log(`  📡 Trying source ${sourceIndex + 1}/${avatarSources.length}: ${currentSource.split('?')[0].substring(0, 50)}...`);
         
-        // Shorter timeout for faster loading
+        // Create new image element for each attempt
+        const testImg = new Image();
+        
         const timeout = setTimeout(() => {
-            console.log(`  ⏰ Timeout for ${username} source ${attempts + 1}`);
-            attempts++;
-            sourceIndex = (sourceIndex + 1) % avatarSources.length;
-            tryNextSource();
-        }, 3000);
+            console.log(`  ⏰ Timeout for source ${sourceIndex + 1}`);
+            sourceIndex++;
+            tryLoadAvatar();
+        }, 5000); // 5 second timeout per source
         
-        img.onload = () => {
+        testImg.onload = function() {
             clearTimeout(timeout);
-            // Check if image actually loaded (not a broken image)
-            if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+            if (this.naturalWidth > 0 && this.naturalHeight > 0) {
+                // Success!
+                img.src = currentSource;
                 img.classList.remove('loading-placeholder');
                 card.classList.remove('card-loading');
-                console.log(`  ✅ Avatar loaded for ${username} from source ${attempts + 1}`);
+                card.removeChild(loadingRing);
+                const loadTime = Date.now() - loadStartTime;
+                console.log(`  ✅ Avatar loaded for ${username} (${loadTime}ms)`);
             } else {
-                console.log(`  ❌ Invalid image for ${username} from source ${attempts + 1}`);
-                attempts++;
-                sourceIndex = (sourceIndex + 1) % avatarSources.length;
-                tryNextSource();
+                // Invalid image
+                console.log(`  ❌ Invalid image dimensions`);
+                sourceIndex++;
+                tryLoadAvatar();
             }
         };
         
-        img.onerror = () => {
+        testImg.onerror = function() {
             clearTimeout(timeout);
-            console.log(`  ❌ Source ${attempts + 1} failed for ${username}`);
-            attempts++;
-            sourceIndex = (sourceIndex + 1) % avatarSources.length;
-            tryNextSource();
+            console.log(`  ❌ Failed to load source ${sourceIndex + 1}`);
+            sourceIndex++;
+            tryLoadAvatar();
         };
         
-        // Add cache busting for some sources to improve reliability
-        const cacheBustedSrc = currentSource.includes('?') 
-            ? `${currentSource}&cb=${Date.now()}` 
-            : `${currentSource}?cb=${Date.now()}`;
-        
-        img.src = attempts < 2 ? currentSource : cacheBustedSrc;
+        // Start loading
+        testImg.src = currentSource;
     };
     
-    tryNextSource();
+    // Start loading process
+    setTimeout(() => tryLoadAvatar(), 10);
+    
     return card;
 }
 
@@ -557,17 +675,17 @@ function displayMovingWall() {
         }, index * 100); // Stagger by 100ms
     });
     
-    // Duplicate for seamless loop (also staggered)
+    // Duplicate for seamless loop
     setTimeout(() => {
         allUsers.forEach((username, index) => {
             setTimeout(() => {
                 const card = createUserCard(username);
                 movingWall.appendChild(card);
-            }, index * 50); // Faster staggering for duplicates
+            }, index * 50);
         });
     }, allUsers.length * 100 + 500);
     
-    userCount.textContent = `${allUsers.length} members in the Plasma Wall`;
+    userCount.textContent = `${allUsers.length} members in the Plasma Wall 🕊`;
 }
 
 // Enhanced backend save with retry logic
@@ -653,7 +771,7 @@ async function loadFromBackend() {
                 // Combine all users (defaults + server + localStorage, no duplicates)
                 allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...savedUsers])];
                 
-                connectionStatus.textContent = '✅ Connected to server';
+                connectionStatus.textContent = '✅ Connected to server 🕊';
                 return true;
             }
         } catch (error) {
@@ -665,7 +783,7 @@ async function loadFromBackend() {
     
     // Load from localStorage only
     loadUsersFromStorage();
-    connectionStatus.textContent = '⚠️ Offline mode - using saved data';
+    connectionStatus.textContent = '⚠️ Offline mode - using saved data 🕊';
     return false;
 }
 
@@ -674,104 +792,4 @@ async function submitUser(username) {
     const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
     
     if (!cleanUsername || cleanUsername.length < 2) {
-        alert('Please enter a valid username (at least 2 characters)');
-        return;
-    }
-    
-    if (allUsers.includes(cleanUsername)) {
-        alert('This user is already in the Plasma Wall!');
-        return;
-    }
-    
-    console.log('🚀 Processing submission:', cleanUsername);
-    
-    // Enhanced submit button animation
-    submitBtn.disabled = true;
-    submitBtn.style.transform = 'scale(0.95)';
-    submitBtn.textContent = 'Adding to Plasma...';
-    connectionStatus.textContent = '✨ Adding user to the wall...';
-    
-    // Add immediately to local array and save to localStorage
-    allUsers.push(cleanUsername);
-    saveUsersToStorage();
-    
-    // Update wall immediately
-    displayMovingWall();
-    
-    // Try to save to backend in background
-    const saved = await saveToBackend(cleanUsername);
-    
-    if (saved) {
-        connectionStatus.textContent = '✅ Added to Plasma Wall and synced to server!';
-    } else {
-        connectionStatus.textContent = '✅ Added to Plasma Wall (saved locally, will sync when server is back)';
-    }
-    
-    // Clear input with animation
-    usernameInput.style.transform = 'scale(0.95)';
-    setTimeout(() => {
-        usernameInput.value = '';
-        usernameInput.style.transform = 'scale(1)';
-    }, 200);
-    
-    // Reset button and status with animation
-    setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.style.transform = 'scale(1)';
-        submitBtn.textContent = 'Submit';
-        connectionStatus.textContent = saved ? '✅ Connected to server' : '⚠️ Offline mode - using saved data';
-    }, 3000);
-    
-    console.log('✨ User successfully added to Plasma Wall');
-}
-
-// Event listeners
-submitBtn.addEventListener('click', () => {
-    const username = usernameInput.value.trim();
-    if (username) {
-        submitUser(username);
-    }
-});
-
-usernameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !submitBtn.disabled) {
-        const username = usernameInput.value.trim();
-        if (username) {
-            submitUser(username);
-        }
-    }
-});
-
-// Initialize application
-async function init() {
-    console.log('🚀 Initializing Enhanced Plasma Wall...');
-    console.log('🎵 Looking for music files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
-    console.log('👥 Default users:', DEFAULT_USERS);
-    console.log('💾 Using localStorage for persistence');
-    console.log('✨ Enhanced animations and avatar loading active');
-    
-    connectionStatus.textContent = 'Initializing Plasma Wall...';
-    
-    // Load users (backend + localStorage)
-    await loadFromBackend();
-    
-    // Display the moving wall
-    displayMovingWall();
-    
-    console.log('✨ Enhanced Plasma Wall ready!');
-    console.log(`👥 Total users in wall: ${allUsers.length}`);
-    
-    // Final status update
-    setTimeout(() => {
-        if (connectionStatus.textContent.includes('Initializing')) {
-            connectionStatus.textContent = 'Ready to submit';
-        }
-    }, 1000);
-}
-
-// Start the application
-init();
-</script>
-
-</body>
-</html>
+        alert('Please enter a valid username (at least 2
