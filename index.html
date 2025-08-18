@@ -6,35 +6,40 @@
 <title>Plasma Wall - Join the Matrix</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen text-white overflow-hidden relative" style="background: linear-gradient(135deg, #0a0a0a, #1a3b2e, #0f2922, #1a3b2e, #0a0a0a);">
+<body class="min-h-screen text-white overflow-hidden relative" style="background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 70%), linear-gradient(45deg, #001122, #000511, #001122);">
 
 <!-- Enhanced Cosmic Background -->
 <div class="absolute inset-0 overflow-hidden">
-    <!-- Main spinning portal with multiple rings -->
-    <div class="spinning-portal absolute inset-0 flex items-center justify-center">
-        <div class="interstellar-ring-outer"></div>
-        <div class="interstellar-ring-main"></div>
-        <div class="interstellar-ring-inner"></div>
+    <!-- Animated stars field -->
+    <div class="stars absolute inset-0"></div>
+    <div class="stars2 absolute inset-0"></div>
+    <div class="stars3 absolute inset-0"></div>
+    
+    <!-- Central cosmic portal -->
+    <div class="cosmic-portal absolute inset-0 flex items-center justify-center">
+        <div class="portal-ring-1"></div>
+        <div class="portal-ring-2"></div>
+        <div class="portal-ring-3"></div>
+        <div class="portal-core"></div>
     </div>
     
-    <!-- Dynamic energy particles -->
-    <div class="energy-field absolute inset-0"></div>
-    
-    <!-- Floating plasma orbs -->
-    <div class="plasma-orbs absolute inset-0">
-        <div class="plasma-orb orb-1"></div>
-        <div class="plasma-orb orb-2"></div>
-        <div class="plasma-orb orb-3"></div>
-        <div class="plasma-orb orb-4"></div>
-        <div class="plasma-orb orb-5"></div>
-        <div class="plasma-orb orb-6"></div>
+    <!-- Floating cosmic particles -->
+    <div class="cosmic-particles absolute inset-0">
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
+        <div class="particle p5"></div>
+        <div class="particle p6"></div>
+        <div class="particle p7"></div>
+        <div class="particle p8"></div>
     </div>
     
-    <!-- Moving matrix grid -->
-    <div class="matrix-grid absolute inset-0"></div>
+    <!-- Nebula clouds -->
+    <div class="nebula absolute inset-0"></div>
     
-    <!-- Scanning lines -->
-    <div class="scan-lines absolute inset-0"></div>
+    <!-- Scanning grid -->
+    <div class="cosmic-grid absolute inset-0"></div>
 </div>
 
 <!-- Audio -->
@@ -46,556 +51,600 @@
 
 <!-- Futuristic Header -->
 <header class="relative z-10 text-center py-8">
-    <h1 class="text-5xl font-bold text-white mb-2 cyber-glow animate-cyber-pulse">
-        PLASMA WALL
+    <h1 class="text-6xl font-bold text-white mb-2 cosmic-glow animate-cosmic-pulse">
+        PLASMA NEXUS
     </h1>
-    <p class="text-xl text-green-300 font-medium matrix-text">
-        Submit your X handle. Join the Matrix
+    <p class="text-xl text-cyan-300 font-medium interstellar-text">
+        Connect to the Cosmic Neural Network
     </p>
-    <div class="mt-2 text-sm text-green-400 pulse-fade" id="liveCounter">
-        Loading quantum signatures...
+    <div class="mt-3 text-sm text-blue-400 pulse-fade" id="liveCounter">
+        Scanning quantum signatures across the universe...
     </div>
 </header>
 
 <!-- Enhanced Input Section -->
 <div class="relative z-10 flex flex-col items-center justify-center px-4 mb-8">
-    <div class="input-matrix flex items-center gap-4 max-w-5xl w-full">
+    <div class="input-cosmic flex items-center gap-4 max-w-5xl w-full">
         <div class="input-wrapper flex-1 relative">
             <input 
                 type="text" 
                 id="usernameInput" 
-                placeholder="Enter neural handle..." 
-                class="w-full px-8 py-5 rounded-2xl text-white bg-black/60 border-2 border-green-500/50 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/30 text-lg backdrop-blur-lg cyber-input transition-all duration-300"
+                placeholder="Enter cosmic handle..." 
+                class="w-full px-8 py-5 rounded-2xl text-white bg-black/40 border-2 border-cyan-500/50 focus:outline-none focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/30 text-lg backdrop-blur-xl cosmic-input transition-all duration-300"
             >
-            <div class="input-glow absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300"></div>
+            <div class="input-aurora absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300"></div>
         </div>
         <button 
             id="submitBtn" 
-            class="px-10 py-5 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 rounded-2xl font-bold text-lg cyber-button transform hover:scale-105 transition-all duration-300 shadow-lg"
+            class="px-10 py-5 bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 hover:from-cyan-500 hover:via-blue-500 hover:to-purple-500 rounded-2xl font-bold text-lg cosmic-button transform hover:scale-105 transition-all duration-300 shadow-2xl"
         >
-            <span class="relative z-10">INJECT</span>
+            <span class="relative z-10">TRANSMIT</span>
         </button>
     </div>
     
     <div class="flex gap-4 mt-6">
         <button 
             id="musicToggle" 
-            class="px-8 py-3 bg-gradient-to-r from-green-800 to-green-700 hover:from-green-700 hover:to-green-600 rounded-xl font-medium transition-all duration-300 cyber-button-small"
+            class="px-8 py-3 bg-gradient-to-r from-indigo-800 to-purple-700 hover:from-indigo-700 hover:to-purple-600 rounded-xl font-medium transition-all duration-300 cosmic-button-small"
         >
-            🎵 Activate Audio Matrix
+            🎵 Activate Cosmic Audio
         </button>
         <button 
             id="syncBtn" 
-            class="px-8 py-3 bg-gradient-to-r from-blue-800 to-blue-700 hover:from-blue-700 hover:to-blue-600 rounded-xl font-medium transition-all duration-300 cyber-button-small"
+            class="px-8 py-3 bg-gradient-to-r from-blue-800 to-cyan-700 hover:from-blue-700 hover:to-cyan-600 rounded-xl font-medium transition-all duration-300 cosmic-button-small"
         >
-            🔄 Force Sync
+            🔄 Sync Network
+        </button>
+        <button 
+            id="searchBtn" 
+            class="px-8 py-3 bg-gradient-to-r from-purple-800 to-pink-700 hover:from-purple-700 hover:to-pink-600 rounded-xl font-medium transition-all duration-300 cosmic-button-small"
+        >
+            🔍 Search User
         </button>
     </div>
     
-    <div id="connectionStatus" class="mt-4 text-center text-green-300 status-text">
-        Initializing quantum connection...
+    <div id="connectionStatus" class="mt-4 text-center text-cyan-300 status-text">
+        Initializing cosmic connection...
     </div>
 </div>
 
 <!-- Enhanced Plasma Wall Container -->
 <div class="relative z-10 px-4 pb-8">
-    <div class="plasma-container bg-black/50 backdrop-blur-xl rounded-3xl p-8 border-2 border-green-500/30 max-w-8xl mx-auto overflow-hidden shadow-2xl">
-        <div id="userCount" class="text-center text-green-200 mb-8 text-xl font-semibold cyber-text">
-            Scanning neural patterns...
+    <div class="plasma-container bg-black/30 backdrop-blur-2xl rounded-3xl p-8 border-2 border-cyan-500/20 max-w-8xl mx-auto overflow-hidden shadow-2xl cosmic-container">
+        <div id="userCount" class="text-center text-cyan-200 mb-8 text-xl font-semibold cosmic-text">
+            Scanning neural patterns across the cosmos...
         </div>
         
         <!-- Enhanced Moving Wall -->
-        <div class="plasma-wall-container relative h-[450px] overflow-hidden rounded-2xl border border-green-500/20">
-            <div id="movingWall" class="plasma-wall absolute top-0 left-0 flex items-center gap-6 py-6"></div>
+        <div class="plasma-wall-container relative h-[500px] overflow-hidden rounded-3xl border border-cyan-500/10 cosmic-wall-bg">
+            <div id="movingWall" class="plasma-wall absolute top-0 left-0 flex items-center gap-8 py-8"></div>
             
             <!-- Wall overlay effects -->
             <div class="wall-overlay absolute inset-0 pointer-events-none">
-                <div class="scan-line absolute w-full h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent opacity-60"></div>
+                <div class="cosmic-scan-line absolute w-full h-2 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-70"></div>
+                <div class="energy-waves absolute inset-0"></div>
             </div>
         </div>
         
         <div class="flex justify-between items-center mt-6 text-sm">
-            <div class="text-green-400 matrix-signature">
-                Neural Network: ACTIVE
+            <div class="text-cyan-400 cosmic-signature">
+                Cosmic Network: ACTIVE • Quantum Entangled
             </div>
-            <div class="text-green-400">
-                Created by: aabis
+            <div class="text-cyan-400">
+                Created by: aabis • Interstellar Edition
             </div>
         </div>
     </div>
 </div>
 
-<!-- Enhanced Cyberpunk Styles -->
+<!-- Enhanced Interstellar Styles -->
 <style>
-/* Cyberpunk Color Palette */
+/* Cosmic Color Palette */
 :root {
-    --neon-green: #00ff41;
-    --dark-green: #22c55e;
-    --matrix-green: #16a34a;
-    --deep-green: #15803d;
-    --cyber-black: #0a0a0a;
+    --cosmic-cyan: #00d4ff;
+    --cosmic-blue: #0080ff;
+    --cosmic-purple: #8000ff;
+    --cosmic-pink: #ff00aa;
+    --deep-space: #000511;
+    --nebula-blue: #001a33;
 }
 
-/* Enhanced Background Effects */
-.spinning-portal {
+/* Animated Stars Field */
+.stars {
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    box-shadow: 
+        1780px 1216px #fff, 1819px 1080px #fff, 1408px 506px #fff, 1825px 1503px #fff,
+        413px 1652px #fff, 1433px 1910px #fff, 1925px 1270px #fff, 654px 1493px #fff,
+        1868px 1892px #fff, 144px 1033px #fff, 1306px 1222px #fff, 1885px 448px #fff,
+        1394px 1889px #fff, 366px 931px #fff, 1779px 1292px #fff, 1949px 1674px #fff,
+        1039px 766px #fff, 161px 1830px #fff, 1410px 1736px #fff, 1280px 15px #fff,
+        1076px 1732px #fff, 1529px 1679px #fff, 1412px 1170px #fff, 1180px 1344px #fff,
+        392px 1561px #fff, 1346px 1655px #fff, 1056px 1607px #fff, 663px 1496px #fff,
+        1353px 1604px #fff, 147px 1838px #fff, 1022px 1110px #fff, 1969px 1050px #fff,
+        1437px 1303px #fff, 1699px 474px #fff, 1694px 1463px #fff, 1088px 1593px #fff,
+        1034px 1883px #fff, 1474px 1925px #fff, 1688px 1824px #fff, 1688px 1824px #fff;
+    animation: animStar 50s linear infinite;
+}
+
+.stars2 {
+    width: 3px;
+    height: 3px;
+    background: transparent;
+    box-shadow: 
+        679px 1240px var(--cosmic-cyan), 1342px 717px var(--cosmic-cyan), 1958px 1674px var(--cosmic-cyan),
+        1273px 1762px var(--cosmic-cyan), 1917px 1246px var(--cosmic-cyan), 1235px 1430px var(--cosmic-cyan),
+        1732px 1793px var(--cosmic-cyan), 1534px 1079px var(--cosmic-cyan), 974px 1775px var(--cosmic-cyan),
+        1717px 1671px var(--cosmic-cyan), 1853px 1232px var(--cosmic-cyan), 262px 1206px var(--cosmic-cyan),
+        1739px 1445px var(--cosmic-cyan), 1031px 1176px var(--cosmic-cyan), 1810px 922px var(--cosmic-cyan),
+        1988px 1852px var(--cosmic-cyan), 904px 1480px var(--cosmic-cyan), 259px 1067px var(--cosmic-cyan),
+        814px 362px var(--cosmic-cyan), 1183px 1574px var(--cosmic-cyan), 1686px 671px var(--cosmic-cyan);
+    animation: animStar 100s linear infinite;
+}
+
+.stars3 {
+    width: 4px;
+    height: 4px;
+    background: transparent;
+    box-shadow: 
+        1949px 943px var(--cosmic-blue), 1128px 1467px var(--cosmic-blue), 1881px 1123px var(--cosmic-blue),
+        924px 1198px var(--cosmic-blue), 1617px 1590px var(--cosmic-blue), 1720px 428px var(--cosmic-blue),
+        1696px 1508px var(--cosmic-blue), 1331px 1293px var(--cosmic-blue), 1045px 1491px var(--cosmic-blue),
+        1084px 1034px var(--cosmic-blue), 1597px 1408px var(--cosmic-blue), 1893px 1867px var(--cosmic-blue);
+    animation: animStar 150s linear infinite;
+}
+
+@keyframes animStar {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-2000px); }
+}
+
+/* Cosmic Portal */
+.cosmic-portal {
     pointer-events: none;
 }
 
-.interstellar-ring-outer {
-    width: 600px;
-    height: 600px;
+.portal-ring-1 {
+    width: 800px;
+    height: 800px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     border: 3px solid transparent;
     border-radius: 50%;
     background: conic-gradient(
         from 0deg,
         transparent 0deg,
-        var(--neon-green) 5deg,
-        transparent 10deg,
-        transparent 85deg,
-        var(--dark-green) 90deg,
-        transparent 95deg
+        var(--cosmic-cyan) 2deg,
+        transparent 5deg,
+        transparent 90deg,
+        var(--cosmic-blue) 92deg,
+        transparent 95deg,
+        transparent 270deg,
+        var(--cosmic-purple) 272deg,
+        transparent 275deg
     );
-    animation: spinSlow 25s linear infinite;
-    opacity: 0.4;
-    mask: radial-gradient(circle, transparent 48%, white 50%, white 52%, transparent 54%);
+    animation: portalSpin1 20s linear infinite;
+    opacity: 0.6;
+    filter: blur(1px);
 }
 
-.interstellar-ring-main {
-    width: 400px;
-    height: 400px;
+.portal-ring-2 {
+    width: 500px;
+    height: 500px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     border: 2px solid transparent;
     border-radius: 50%;
     background: conic-gradient(
         from 180deg,
         transparent 0deg,
-        var(--dark-green) 15deg,
-        transparent 30deg,
-        var(--matrix-green) 180deg,
-        transparent 195deg,
-        transparent 330deg,
-        var(--neon-green) 345deg,
+        var(--cosmic-blue) 10deg,
+        transparent 20deg,
+        var(--cosmic-purple) 180deg,
+        transparent 190deg,
+        var(--cosmic-pink) 350deg,
         transparent 360deg
     );
-    animation: spinMedium 15s linear infinite;
-    opacity: 0.6;
-    mask: radial-gradient(circle, transparent 35%, white 37%, white 65%, transparent 67%);
+    animation: portalSpin2 15s linear infinite reverse;
+    opacity: 0.8;
 }
 
-.interstellar-ring-inner {
-    width: 200px;
-    height: 200px;
+.portal-ring-3 {
+    width: 300px;
+    height: 300px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 2px solid rgba(0, 255, 65, 0.5);
+    border: 2px solid rgba(0, 212, 255, 0.3);
     border-radius: 50%;
-    animation: spinFast 8s linear infinite reverse;
-    box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+    animation: portalSpin3 10s linear infinite;
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
 }
 
-@keyframes spinSlow { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-@keyframes spinMedium { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-@keyframes spinFast { from { transform: translate(-50%, -50%) rotate(360deg); } to { transform: translate(-50%, -50%) rotate(0deg); } }
-
-/* Dynamic Energy Field */
-.energy-field {
-    background: 
-        radial-gradient(circle at 20% 30%, rgba(0, 255, 65, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(34, 197, 94, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(22, 163, 74, 0.08) 0%, transparent 70%),
-        radial-gradient(circle at 30% 80%, rgba(0, 255, 65, 0.1) 0%, transparent 60%);
-    animation: energyPulse 12s ease-in-out infinite;
+.portal-core {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    background: radial-gradient(circle, var(--cosmic-cyan), var(--cosmic-blue), transparent);
+    border-radius: 50%;
+    animation: portalPulse 3s ease-in-out infinite;
+    filter: blur(2px);
 }
 
-@keyframes energyPulse {
-    0%, 100% { opacity: 0.7; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.05); }
+@keyframes portalSpin1 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes portalSpin2 { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+@keyframes portalSpin3 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes portalPulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.5); opacity: 1; }
 }
 
-/* Plasma Orbs */
-.plasma-orbs {
+/* Cosmic Particles */
+.cosmic-particles {
     pointer-events: none;
 }
 
-.plasma-orb {
+.particle {
     position: absolute;
+    background: radial-gradient(circle, var(--cosmic-cyan), transparent);
     border-radius: 50%;
-    background: radial-gradient(circle, var(--neon-green), rgba(0, 255, 65, 0.3), transparent);
-    filter: blur(1px);
-    animation: plasmaDrift 15s ease-in-out infinite;
+    animation: particleDrift 20s ease-in-out infinite;
 }
 
-.orb-1 { width: 25px; height: 25px; top: 15%; left: 10%; animation-delay: 0s; }
-.orb-2 { width: 20px; height: 20px; top: 25%; right: 15%; animation-delay: -3s; }
-.orb-3 { width: 30px; height: 30px; bottom: 25%; left: 20%; animation-delay: -6s; }
-.orb-4 { width: 18px; height: 18px; top: 60%; right: 25%; animation-delay: -9s; }
-.orb-5 { width: 22px; height: 22px; bottom: 40%; right: 10%; animation-delay: -12s; }
-.orb-6 { width: 28px; height: 28px; top: 40%; left: 5%; animation-delay: -15s; }
+.p1 { width: 4px; height: 4px; top: 10%; left: 10%; animation-delay: 0s; }
+.p2 { width: 6px; height: 6px; top: 20%; right: 15%; animation-delay: -2s; }
+.p3 { width: 3px; height: 3px; bottom: 30%; left: 25%; animation-delay: -4s; }
+.p4 { width: 5px; height: 5px; top: 70%; right: 20%; animation-delay: -6s; }
+.p5 { width: 4px; height: 4px; bottom: 20%; right: 30%; animation-delay: -8s; }
+.p6 { width: 7px; height: 7px; top: 50%; left: 5%; animation-delay: -10s; }
+.p7 { width: 3px; height: 3px; top: 30%; left: 70%; animation-delay: -12s; }
+.p8 { width: 5px; height: 5px; bottom: 40%; left: 80%; animation-delay: -14s; }
 
-@keyframes plasmaDrift {
-    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
-    25% { transform: translate(30px, -40px) scale(1.2); opacity: 0.9; }
-    50% { transform: translate(-20px, -80px) scale(0.8); opacity: 0.7; }
-    75% { transform: translate(-40px, 30px) scale(1.1); opacity: 1; }
+@keyframes particleDrift {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+    25% { transform: translate(50px, -100px) scale(1.5); opacity: 1; }
+    50% { transform: translate(-30px, -200px) scale(0.8); opacity: 0.5; }
+    75% { transform: translate(-80px, 50px) scale(1.2); opacity: 0.9; }
 }
 
-/* Matrix Grid */
-.matrix-grid {
+/* Nebula Effect */
+.nebula {
+    background: 
+        radial-gradient(ellipse at 20% 30%, rgba(0, 212, 255, 0.1) 0%, transparent 70%),
+        radial-gradient(ellipse at 80% 70%, rgba(128, 0, 255, 0.08) 0%, transparent 70%),
+        radial-gradient(ellipse at 50% 50%, rgba(0, 128, 255, 0.06) 0%, transparent 80%),
+        radial-gradient(ellipse at 30% 80%, rgba(255, 0, 170, 0.05) 0%, transparent 60%);
+    animation: nebulaFlow 30s ease-in-out infinite;
+}
+
+@keyframes nebulaFlow {
+    0%, 100% { opacity: 0.6; transform: scale(1) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.1) rotate(2deg); }
+}
+
+/* Cosmic Grid */
+.cosmic-grid {
     background-image: 
-        linear-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 255, 65, 0.1) 1px, transparent 1px);
-    background-size: 80px 80px;
-    animation: gridFlow 30s linear infinite;
-    opacity: 0.2;
+        linear-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.05) 1px, transparent 1px);
+    background-size: 100px 100px;
+    animation: gridDrift 40s linear infinite;
+    opacity: 0.3;
 }
 
-@keyframes gridFlow {
+@keyframes gridDrift {
     0% { transform: translate(0, 0); }
-    100% { transform: translate(80px, 80px); }
-}
-
-/* Scanning Lines */
-.scan-lines::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
-    animation: scanVertical 4s linear infinite;
-}
-
-@keyframes scanVertical {
-    0% { transform: translateY(-2px); opacity: 1; }
-    100% { transform: translateY(100vh); opacity: 0; }
+    100% { transform: translate(100px, 100px); }
 }
 
 /* Enhanced Typography */
-.cyber-glow {
+.cosmic-glow {
     text-shadow: 
-        0 0 5px var(--neon-green),
-        0 0 10px var(--neon-green),
-        0 0 15px var(--neon-green),
-        0 0 20px var(--dark-green);
+        0 0 10px var(--cosmic-cyan),
+        0 0 20px var(--cosmic-cyan),
+        0 0 30px var(--cosmic-blue),
+        0 0 40px var(--cosmic-blue);
 }
 
-@keyframes cyber-pulse {
+@keyframes cosmic-pulse {
     0%, 100% { 
         text-shadow: 
-            0 0 5px var(--neon-green),
-            0 0 10px var(--neon-green),
-            0 0 15px var(--neon-green);
+            0 0 10px var(--cosmic-cyan),
+            0 0 20px var(--cosmic-cyan),
+            0 0 30px var(--cosmic-blue);
     }
     50% { 
         text-shadow: 
-            0 0 10px var(--neon-green),
-            0 0 20px var(--neon-green),
-            0 0 30px var(--neon-green),
-            0 0 40px var(--dark-green);
+            0 0 20px var(--cosmic-cyan),
+            0 0 30px var(--cosmic-cyan),
+            0 0 40px var(--cosmic-blue),
+            0 0 50px var(--cosmic-purple);
     }
 }
 
-.animate-cyber-pulse {
-    animation: cyber-pulse 2s ease-in-out infinite;
+.animate-cosmic-pulse {
+    animation: cosmic-pulse 3s ease-in-out infinite;
 }
 
-.matrix-text {
+.interstellar-text {
     font-family: 'Courier New', monospace;
-    text-shadow: 0 0 8px var(--dark-green);
-}
-
-.pulse-fade {
-    animation: pulseFade 3s ease-in-out infinite;
-}
-
-@keyframes pulseFade {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
+    text-shadow: 0 0 10px var(--cosmic-cyan);
+    letter-spacing: 2px;
 }
 
 /* Enhanced Input Styling */
-.input-matrix {
-    animation: slideInMatrix 1s ease-out;
-}
-
-@keyframes slideInMatrix {
-    from { transform: translateY(-30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-.cyber-input {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(10, 10, 10, 0.9));
+.cosmic-input {
+    background: linear-gradient(135deg, rgba(0, 5, 17, 0.8), rgba(0, 26, 51, 0.6));
     box-shadow: 
-        inset 0 0 20px rgba(0, 255, 65, 0.1),
-        0 0 20px rgba(0, 255, 65, 0.1);
+        inset 0 0 30px rgba(0, 212, 255, 0.1),
+        0 0 30px rgba(0, 212, 255, 0.1);
     font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
 }
 
-.cyber-input:focus + .input-glow {
+.cosmic-input:focus + .input-aurora {
     opacity: 1;
-    background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), transparent);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(128, 0, 255, 0.1));
 }
 
-.cyber-button {
-    background: linear-gradient(135deg, var(--dark-green), var(--matrix-green));
+.cosmic-button {
+    background: linear-gradient(135deg, var(--cosmic-cyan), var(--cosmic-blue), var(--cosmic-purple));
     box-shadow: 
-        0 0 20px rgba(0, 255, 65, 0.3),
-        inset 0 0 20px rgba(0, 255, 65, 0.1);
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+        0 0 30px rgba(0, 212, 255, 0.4),
+        inset 0 0 30px rgba(255, 255, 255, 0.1);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     position: relative;
     overflow: hidden;
 }
 
-.cyber-button::before {
+.cosmic-button::before {
     content: '';
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    animation: buttonShine 3s ease-in-out infinite;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: cosmicShine 4s ease-in-out infinite;
 }
 
-@keyframes buttonShine {
+@keyframes cosmicShine {
     0% { left: -100%; }
     100% { left: 100%; }
 }
 
-.cyber-button-small {
-    background: linear-gradient(135deg, var(--deep-green), var(--matrix-green));
-    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
-    font-size: 14px;
-}
-
 /* Enhanced Wall Container */
-.plasma-container {
-    animation: containerRise 1.5s ease-out;
+.cosmic-container {
+    animation: containerMaterialize 2s ease-out;
     box-shadow: 
-        0 0 50px rgba(0, 255, 65, 0.1),
-        inset 0 0 30px rgba(0, 255, 65, 0.05);
+        0 0 80px rgba(0, 212, 255, 0.15),
+        inset 0 0 50px rgba(0, 212, 255, 0.05);
 }
 
-@keyframes containerRise {
-    from { transform: translateY(50px); opacity: 0; }
+@keyframes containerMaterialize {
+    from { transform: translateY(100px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
 
-/* Enhanced Plasma Wall */
-.plasma-wall-container {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 255, 65, 0.02));
-    mask: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
-    -webkit-mask: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+.cosmic-wall-bg {
+    background: 
+        linear-gradient(135deg, rgba(0, 5, 17, 0.4), rgba(0, 212, 255, 0.02)),
+        radial-gradient(ellipse at center, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
 }
 
+/* Enhanced Plasma Wall */
 .plasma-wall {
     width: max-content;
-    animation: plasmaFlow 60s linear infinite;
-    padding: 20px 0;
+    animation: cosmicFlow 80s linear infinite;
+    padding: 30px 0;
 }
 
-@keyframes plasmaFlow {
+@keyframes cosmicFlow {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
 }
 
-/* Wall Overlay Effects */
-.scan-line {
-    animation: wallScan 3s ease-in-out infinite;
+/* Cosmic Scan Line */
+.cosmic-scan-line {
+    animation: cosmicScan 4s ease-in-out infinite;
+    background: linear-gradient(90deg, 
+        transparent, 
+        var(--cosmic-cyan), 
+        var(--cosmic-blue), 
+        var(--cosmic-cyan), 
+        transparent
+    );
 }
 
-@keyframes wallScan {
-    0%, 100% { top: 0; opacity: 0.8; }
-    50% { top: 90%; opacity: 0.3; }
+@keyframes cosmicScan {
+    0%, 100% { top: 0; opacity: 0.7; }
+    50% { top: 95%; opacity: 0.3; }
+}
+
+/* Energy Waves */
+.energy-waves::before,
+.energy-waves::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cosmic-blue), transparent);
+    animation: waveFlow 6s ease-in-out infinite;
+}
+
+.energy-waves::before {
+    top: 25%;
+    animation-delay: 0s;
+}
+
+.energy-waves::after {
+    top: 75%;
+    animation-delay: -3s;
+}
+
+@keyframes waveFlow {
+    0%, 100% { opacity: 0; transform: scaleX(0); }
+    50% { opacity: 1; transform: scaleX(1); }
 }
 
 /* Enhanced Avatar Cards */
 .avatar-card {
     flex-shrink: 0;
-    width: 140px;
-    height: 140px;
+    width: 160px;
+    height: 160px;
     position: relative;
-    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    animation: cardMaterialize 0.8s ease-out;
-    filter: drop-shadow(0 0 10px rgba(0, 255, 65, 0.3));
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation: cardBeam 1s ease-out;
+    filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.4));
 }
 
-@keyframes cardMaterialize {
+@keyframes cardBeam {
     from { 
-        transform: scale(0.3) rotate(15deg); 
+        transform: scale(0.1) translateY(-200px); 
         opacity: 0;
-        filter: blur(10px);
+        filter: blur(20px);
     }
     to { 
-        transform: scale(1) rotate(0deg); 
+        transform: scale(1) translateY(0); 
         opacity: 1;
         filter: blur(0px);
     }
 }
 
 .avatar-card:hover {
-    transform: scale(1.15) translateY(-15px) rotate(3deg);
+    transform: scale(1.2) translateY(-20px);
     z-index: 20;
-    filter: drop-shadow(0 0 25px rgba(0, 255, 65, 0.6));
+    filter: drop-shadow(0 0 40px rgba(0, 212, 255, 0.8));
 }
 
 .avatar-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 20px;
-    border: 3px solid var(--dark-green);
+    border-radius: 25px;
+    border: 3px solid var(--cosmic-cyan);
     box-shadow: 
-        0 0 30px rgba(0, 255, 65, 0.4),
-        inset 0 0 20px rgba(0, 255, 65, 0.1);
-    transition: all 0.4s ease;
-    background: linear-gradient(135deg, var(--deep-green), var(--matrix-green));
+        0 0 40px rgba(0, 212, 255, 0.5),
+        inset 0 0 30px rgba(0, 212, 255, 0.1);
+    transition: all 0.5s ease;
+    background: linear-gradient(135deg, var(--cosmic-blue), var(--cosmic-purple));
 }
 
 .avatar-card:hover .avatar-img {
-    border-color: var(--neon-green);
+    border-color: var(--cosmic-purple);
     box-shadow: 
-        0 0 40px rgba(0, 255, 65, 0.7),
-        inset 0 0 30px rgba(0, 255, 65, 0.2);
-    filter: brightness(1.2) contrast(1.1);
+        0 0 60px rgba(128, 0, 255, 0.8),
+        inset 0 0 40px rgba(128, 0, 255, 0.2);
+    filter: brightness(1.3) saturate(1.2);
 }
 
 .handle-display {
     position: absolute;
-    bottom: -12px;
+    bottom: -15px;
     left: 0;
     right: 0;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 255, 65, 0.1));
-    color: var(--neon-green);
+    background: linear-gradient(135deg, rgba(0, 5, 17, 0.95), rgba(0, 212, 255, 0.15));
+    color: var(--cosmic-cyan);
     text-align: center;
-    padding: 8px 4px;
-    font-size: 13px;
+    padding: 10px 6px;
+    font-size: 14px;
     font-weight: bold;
     font-family: 'Courier New', monospace;
-    border-radius: 0 0 20px 20px;
-    border: 2px solid var(--dark-green);
+    border-radius: 0 0 25px 25px;
+    border: 3px solid var(--cosmic-cyan);
     border-top: none;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    text-shadow: 0 0 5px rgba(0, 255, 65, 0.8);
+    backdrop-filter: blur(15px);
+    transition: all 0.4s ease;
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.8);
+    letter-spacing: 1px;
 }
 
 .avatar-card:hover .handle-display {
-    background: linear-gradient(135deg, rgba(0, 255, 65, 0.9), rgba(34, 197, 94, 0.8));
-    color: var(--cyber-black);
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-    transform: translateY(-4px);
-    box-shadow: 0 4px 15px rgba(0, 255, 65, 0.5);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.9), rgba(128, 0, 255, 0.8));
+    color: var(--deep-space);
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.6);
 }
 
-/* Loading States */
-.loading-matrix {
+/* Enhanced Loading States */
+.loading-cosmic {
     background: linear-gradient(
         45deg, 
-        rgba(0, 0, 0, 0.8) 25%, 
-        rgba(0, 255, 65, 0.2) 50%, 
-        rgba(0, 0, 0, 0.8) 75%
+        rgba(0, 5, 17, 0.9) 25%, 
+        rgba(0, 212, 255, 0.3) 50%, 
+        rgba(128, 0, 255, 0.2) 75%,
+        rgba(0, 5, 17, 0.9) 100%
     );
     background-size: 400% 400%;
-    animation: matrixShimmer 2s ease-in-out infinite;
-    border-radius: 20px;
-    border: 3px solid var(--dark-green);
+    animation: cosmicShimmer 3s ease-in-out infinite;
+    border-radius: 25px;
+    border: 3px solid var(--cosmic-cyan);
     position: relative;
     overflow: hidden;
 }
 
-.loading-matrix::before {
-    content: '⟡';
+.loading-cosmic::before {
+    content: '✦';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 32px;
-    color: var(--neon-green);
-    animation: loadingSpin 1.5s linear infinite;
+    font-size: 40px;
+    color: var(--cosmic-cyan);
+    animation: cosmicSpin 2s linear infinite;
+    text-shadow: 0 0 20px var(--cosmic-cyan);
 }
 
-@keyframes matrixShimmer {
+@keyframes cosmicShimmer {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
 }
 
-@keyframes loadingSpin {
+@keyframes cosmicSpin {
     from { transform: translate(-50%, -50%) rotate(0deg); }
     to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-.error-matrix {
-    background: linear-gradient(135deg, var(--matrix-green), var(--deep-green), var(--neon-green));
+.error-cosmic {
+    background: linear-gradient(135deg, var(--cosmic-cyan), var(--cosmic-blue), var(--cosmic-purple));
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--cyber-black);
-    font-size: 32px;
+    color: var(--deep-space);
+    font-size: 36px;
     font-weight: bold;
-    border-radius: 20px;
-    border: 3px solid var(--dark-green);
-    animation: errorPulse 2s ease-in-out infinite;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    border-radius: 25px;
+    border: 3px solid var(--cosmic-cyan);
+    animation: errorBeacon 3s ease-in-out infinite;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
 
-@keyframes errorPulse {
-    0%, 100% { box-shadow: 0 0 30px rgba(0, 255, 65, 0.4); }
-    50% { box-shadow: 0 0 50px rgba(0, 255, 65, 0.8); }
+@keyframes errorBeacon {
+    0%, 100% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5); }
+    50% { box-shadow: 0 0 80px rgba(0, 212, 255, 1); }
 }
 
 /* Status and Counter Styling */
-.status-text {
+.status-text, .cosmic-text, .cosmic-signature {
     font-family: 'Courier New', monospace;
-    text-shadow: 0 0 8px var(--dark-green);
-}
-
-.cyber-text {
-    font-family: 'Courier New', monospace;
-    text-shadow: 0 0 10px var(--neon-green);
-}
-
-.matrix-signature {
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    opacity: 0.8;
+    text-shadow: 0 0 10px var(--cosmic-cyan);
+    letter-spacing: 1px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .input-matrix {
+    .input-cosmic {
         flex-direction: column;
-        gap: 16px;
-    }
-    
-    .input-wrapper {
-        width: 100%;
+        gap: 20px;
     }
     
     .avatar-card {
-        width: 120px;
-        height: 120px;
+        width: 140px;
+        height: 140px;
     }
     
-    .interstellar-ring-outer {
-        width: 400px;
-        height: 400px;
-    }
-    
-    .interstellar-ring-main {
-        width: 300px;
-        height: 300px;
-    }
+    .portal-ring-1 { width: 500px; height: 500px; }
+    .portal-ring-2 { width: 350px; height: 350px; }
+    .portal-ring-3 { width: 200px; height: 200px; }
 }
 </style>
 
@@ -609,18 +658,20 @@ const CONFIG = {
         'https://cors-anywhere.herokuapp.com/',
         'https://thingproxy.freeboard.io/fetch/'
     ],
-    TIMEOUT: 8000,
-    MAX_RETRIES: 3,
-    RETRY_DELAY: 2000
+    TIMEOUT: 5000,
+    MAX_RETRIES: 2,
+    RETRY_DELAY: 1500,
+    AVATAR_TIMEOUT: 2000
 };
 
-const STORAGE_KEY = 'plasma_wall_quantum_users';
-const LAST_SYNC_KEY = 'plasma_wall_last_sync';
+const STORAGE_KEY = 'cosmic_wall_users';
+const LAST_SYNC_KEY = 'cosmic_wall_last_sync';
 
 // DOM elements
 const usernameInput = document.getElementById('usernameInput');
 const submitBtn = document.getElementById('submitBtn');
 const syncBtn = document.getElementById('syncBtn');
+const searchBtn = document.getElementById('searchBtn');
 const movingWall = document.getElementById('movingWall');
 const bgMusic = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
@@ -631,30 +682,33 @@ const liveCounter = document.getElementById('liveCounter');
 let musicPlaying = false;
 let syncInProgress = false;
 
-// Enhanced default users including your requested ones + the new users
+// Enhanced default users with better mix
 const DEFAULT_USERS = [
     'proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax',
     'primay_eth', 'kolyposts', 'Buja_Ques', 'CATTtwit', 
     'The9bo', 'cryptobaikan', 'ImFaziiii', 'pauliepunt', 
-    'happysubstack', '0xlinkevm', 'lucidxpl', 'cblison'
+    'happysubstack', '0xlinkevm', 'lucidxpl', 'cblison',
+    'elonmusk', 'naval', 'balajis', 'vitalikbuterin'
 ];
 
 let allUsers = [...DEFAULT_USERS];
+let searchedUsers = [];
 
-// Enhanced localStorage functions with versioning
+// Enhanced localStorage functions
 function saveUsersToStorage() {
     try {
         const userData = {
             users: allUsers.filter(user => !DEFAULT_USERS.includes(user)),
+            searched: searchedUsers,
             timestamp: Date.now(),
-            version: '2.0'
+            version: '3.0'
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
         localStorage.setItem(LAST_SYNC_KEY, Date.now().toString());
-        console.log('💾 Quantum data saved:', userData.users.length, 'neural signatures');
+        console.log('🌌 Cosmic data saved:', userData.users.length + userData.searched.length, 'consciousness signatures');
         return true;
     } catch (e) {
-        console.error('❌ Quantum storage failed:', e);
+        console.error('❌ Cosmic storage failed:', e);
         return false;
     }
 }
@@ -664,13 +718,14 @@ function loadUsersFromStorage() {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
             const userData = JSON.parse(saved);
-            const savedUsers = userData.users || userData; // Backward compatibility
-            console.log('📦 Quantum data loaded:', savedUsers.length, 'neural signatures');
-            allUsers = [...new Set([...DEFAULT_USERS, ...savedUsers])];
+            const savedUsers = userData.users || [];
+            searchedUsers = userData.searched || [];
+            console.log('📦 Cosmic data loaded:', savedUsers.length + searchedUsers.length, 'signatures');
+            allUsers = [...new Set([...DEFAULT_USERS, ...savedUsers, ...searchedUsers])];
             return savedUsers;
         }
     } catch (e) {
-        console.error('❌ Quantum load failed:', e);
+        console.error('❌ Cosmic load failed:', e);
     }
     return [];
 }
@@ -680,19 +735,19 @@ musicToggle.addEventListener('click', async () => {
     try {
         if (musicPlaying) { 
             bgMusic.pause(); 
-            musicToggle.textContent = '🎵 Activate Audio Matrix'; 
+            musicToggle.textContent = '🎵 Activate Cosmic Audio'; 
             musicPlaying = false; 
-            console.log('🔇 Audio matrix deactivated');
+            console.log('🔇 Cosmic audio deactivated');
         } else { 
-            bgMusic.volume = 0.5;
+            bgMusic.volume = 0.4;
             await bgMusic.play(); 
-            musicToggle.textContent = '🔇 Deactivate Audio Matrix'; 
+            musicToggle.textContent = '🔇 Deactivate Cosmic Audio'; 
             musicPlaying = true; 
-            console.log('🎵 Audio matrix activated');
+            console.log('🎵 Cosmic audio activated');
         }
     } catch(e) { 
-        console.error('❌ Audio matrix error:', e);
-        updateStatus('⚠️ Audio matrix offline - check music files', 'warning');
+        console.error('❌ Cosmic audio error:', e);
+        updateStatus('⚠️ Cosmic audio offline - check audio files', 'warning');
     }
 });
 
@@ -704,50 +759,125 @@ syncBtn.addEventListener('click', async () => {
     syncBtn.disabled = true;
     syncBtn.textContent = '🔄 Syncing...';
     
-    updateStatus('🔄 Force synchronizing with quantum network...', 'info');
+    updateStatus('🔄 Synchronizing with cosmic network...', 'info');
     
     const success = await loadFromBackend(true);
     
     setTimeout(() => {
         syncBtn.disabled = false;
-        syncBtn.textContent = '🔄 Force Sync';
+        syncBtn.textContent = '🔄 Sync Network';
         syncInProgress = false;
         
         if (success) {
-            updateStatus('✅ Quantum sync complete - neural network updated', 'success');
+            updateStatus('✅ Cosmic sync complete - network updated', 'success');
         } else {
             updateStatus('⚠️ Sync incomplete - operating in local mode', 'warning');
         }
     }, 2000);
 });
 
+// Enhanced user search functionality
+searchBtn.addEventListener('click', async () => {
+    const username = usernameInput.value.trim().replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
+    
+    if (!username || username.length < 2) {
+        alert('⚠️ Enter a valid username to search');
+        return;
+    }
+    
+    if (allUsers.includes(username)) {
+        alert('🌟 User already exists in the cosmic network!');
+        return;
+    }
+    
+    searchBtn.disabled = true;
+    searchBtn.textContent = '🔍 Searching...';
+    updateStatus('🔍 Scanning cosmic web for user existence...', 'info');
+    
+    try {
+        // Check if user exists by trying to load their profile
+        const userExists = await checkUserExists(username);
+        
+        if (userExists) {
+            // Add to searched users list and update wall
+            searchedUsers.push(username);
+            allUsers.push(username);
+            saveUsersToStorage();
+            displayPlasmaWall();
+            updateStatus(`✅ User @${username} found and added to cosmic network!`, 'success');
+            usernameInput.value = '';
+        } else {
+            updateStatus(`❌ User @${username} not found in the cosmic web`, 'error');
+        }
+    } catch (error) {
+        console.error('Search error:', error);
+        updateStatus('⚠️ Search failed - cosmic interference detected', 'warning');
+    }
+    
+    setTimeout(() => {
+        searchBtn.disabled = false;
+        searchBtn.textContent = '🔍 Search User';
+    }, 2000);
+});
+
+// Check if user exists by attempting to load their avatar
+async function checkUserExists(username) {
+    console.log(`🔍 Searching cosmic web for: ${username}`);
+    
+    // High-priority sources for user existence check
+    const checkSources = [
+        `https://unavatar.io/twitter/${username}?fallback=false`,
+        `https://unavatar.io/x/${username}?fallback=false`,
+        `https://github.com/${username}.png?size=40`,
+        `https://unavatar.io/${username}?fallback=false`
+    ];
+    
+    for (const source of checkSources) {
+        try {
+            const response = await fetch(source, { 
+                method: 'HEAD',
+                signal: AbortSignal.timeout(3000)
+            });
+            
+            if (response.ok && response.headers.get('content-type')?.startsWith('image/')) {
+                console.log(`✅ User ${username} found via ${source.includes('twitter') || source.includes('/x/') ? 'X/Twitter' : source.includes('github') ? 'GitHub' : 'Web'}`);
+                return true;
+            }
+        } catch (error) {
+            console.log(`❌ Check failed for ${username} on ${source.split('/')[2]}`);
+        }
+    }
+    
+    return false;
+}
+
 // Enhanced status update function
 function updateStatus(message, type = 'info') {
     connectionStatus.textContent = message;
     connectionStatus.className = `mt-4 text-center status-text ${
-        type === 'success' ? 'text-green-300' :
+        type === 'success' ? 'text-cyan-300' :
         type === 'warning' ? 'text-yellow-400' :
         type === 'error' ? 'text-red-400' :
-        'text-green-300'
+        'text-cyan-300'
     }`;
     
     setTimeout(() => {
         if (connectionStatus.textContent === message) {
-            connectionStatus.textContent = 'Quantum network ready for injection';
-            connectionStatus.className = 'mt-4 text-center status-text text-green-300';
+            connectionStatus.textContent = 'Cosmic network ready for transmission';
+            connectionStatus.className = 'mt-4 text-center status-text text-cyan-300';
         }
     }, 5000);
 }
 
-// Ultra-enhanced avatar loading system with better Twitter/X focus
+// Ultra-enhanced avatar loading system optimized for speed
 function createAvatarCard(username) {
-    console.log(`🖼️ Materializing neural avatar for: ${username}`);
+    console.log(`🖼️ Materializing cosmic avatar for: ${username}`);
     
     const card = document.createElement('div');
     card.className = 'avatar-card';
     
     const img = document.createElement('img');
-    img.className = 'avatar-img loading-matrix';
+    img.className = 'avatar-img loading-cosmic';
     img.alt = username;
     
     const overlay = document.createElement('div');
@@ -757,359 +887,264 @@ function createAvatarCard(username) {
     card.appendChild(img);
     card.appendChild(overlay);
     
-    // Enhanced avatar source matrix with priority for Twitter/X profiles
+    // Optimized avatar sources - prioritizing fast-loading and reliable sources
     const avatarSources = [
-        // HIGH PRIORITY: Twitter/X focused sources (most likely to work for X handles)
+        // HIGHEST PRIORITY: Fast and reliable sources
         `https://unavatar.io/twitter/${username}?fallback=false`,
         `https://unavatar.io/x/${username}?fallback=false`,
-        `https://pbs.twimg.com/profile_images/1/${username}/400x400.jpg`, // Twitter CDN attempt
+        `https://github.com/${username}.png?size=160`,
         
-        // Twitter-specific avatar services
-        `https://avatars.io/twitter/${username}?size=140`,
-        `https://twitter-avatar.vercel.app/${username}`,
-        
-        // Cross-platform services (good for users with same handle across platforms)
+        // HIGH PRIORITY: Good fallbacks
         `https://unavatar.io/${username}?fallback=false`,
-        `https://github.com/${username}.png?size=140`,
-        `https://avatars.githubusercontent.com/${username}?size=140`,
-        
-        // Social platform alternatives
         `https://unavatar.io/instagram/${username}?fallback=false`,
-        `https://unavatar.io/discord/${username}?fallback=false`,
         
-        // Enhanced generated avatars with cyberpunk green theme
-        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a&flip=true&randomizeIds=true`,
-        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a&accessories=prescription02,prescription01,sunglasses,wayfarers&accessoriesColor=black,blue01,blue02,blue03&clotheColor=black,blue01,blue02,blue03,gray01,gray02&eyeType=default,happy,hearts,side,squint,surprised,wink,winkWacky&facialHairColor=auburn,black,blonde,brown,pastel,platinum,red&facialHairType=default,mustachemagnum,moustachefancy,blank&hairColor=auburn,black,blonde,brown,pastel,platinum,red&hatColor=black,blue01,blue02,blue03,gray01,gray02,heather,pastel,pink,red&mouthType=default,eating,grimace,sad,screamopen,serious,smile,tongue,twinkle&skinColor=tanned,yellow,pale,light,brown,darkbrown,black&topType=longhaircurly,longhaircurvy,longhairdreads,longhairfrida,longhairnottoobig,longhairmiawalace,longhairoddlysized,longhairstyles,shorthairbuzz,shorthairimpostor,shorthairleftpart,shorthairraised,shorthairrightpart,shorthairscandar,shorthairsides,shorthairtop,nohair,hat,winterhat03,winterhat04,turban,shortflat,shortround,shorthairshaggymullet&randomizeIds=true`,
-        `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a&randomizeIds=true`,
-        `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a,15803d&randomizeIds=true`,
-        `https://api.dicebear.com/7.x/identicon/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a,15803d&randomizeIds=true`,
+        // GENERATED AVATARS: Fast loading, always work
+        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=160&backgroundColor=00d4ff,0080ff,8000ff&randomizeIds=true`,
+        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=160&backgroundColor=00d4ff,0080ff,8000ff&randomizeIds=true`,
+        `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&size=160&backgroundColor=00d4ff,0080ff,8000ff&randomizeIds=true`,
         
-        // Cyberpunk-themed robot avatars
-        `https://robohash.org/${username}?size=140x140&set=set1&bgset=bg2&hues=green`,
-        `https://robohash.org/${username}?size=140x140&set=set2&bgset=bg1&hues=green`,
-        `https://robohash.org/${username}?size=140x140&set=set3&bgset=bg2&hues=green`,
+        // COSMIC THEMED: Robot and abstract
+        `https://robohash.org/${username}?size=160x160&set=set1&bgset=bg2&hues=cyan`,
+        `https://source.boringavatars.com/beam/160/${username}?colors=00d4ff,0080ff,8000ff,ff00aa,001a33`,
         
-        // Matrix-colored boring avatars
-        `https://source.boringavatars.com/beam/140/${username}?colors=00ff41,22c55e,16a34a,15803d,047857`,
-        `https://source.boringavatars.com/marble/140/${username}?colors=00ff41,22c55e,16a34a,15803d,047857`,
-        `https://source.boringavatars.com/pixel/140/${username}?colors=00ff41,22c55e,16a34a,15803d,047857`,
-        `https://source.boringavatars.com/sunset/140/${username}?colors=00ff41,22c55e,16a34a,15803d,047857`,
-        
-        // UI Avatars with matrix styling
-        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=00ff41&color=000000&size=140&bold=true&rounded=true&font-size=0.6`,
-        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=22c55e&color=ffffff&size=140&bold=true&rounded=true&font-size=0.6`,
-        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=16a34a&color=ffffff&size=140&bold=true&rounded=true&font-size=0.6`,
-        
-        // Gravatar variants with username hash
-        `https://www.gravatar.com/avatar/${btoa(username + 'matrix').slice(0, 32)}?s=140&d=identicon&r=pg`,
-        `https://www.gravatar.com/avatar/${btoa(username + 'cyber').slice(0, 32)}?s=140&d=retro&r=pg`,
-        `https://www.gravatar.com/avatar/${btoa(username + 'neural').slice(0, 32)}?s=140&d=wavatar&r=pg`,
-        
-        // Enhanced multiavatar
-        `https://api.multiavatar.com/${username}.svg`,
-        
-        // Fallback placeholders
-        `https://via.placeholder.com/140x140/00ff41/000000?text=${username.charAt(0).toUpperCase()}`,
-        `https://dummyimage.com/140x140/22c55e/ffffff&text=${username.charAt(0).toUpperCase()}`
+        // LETTER AVATARS: Always reliable
+        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=00d4ff&color=000511&size=160&bold=true&rounded=true&font-size=0.6`
     ];
     
     let sourceIndex = 0;
-    let attempts = 0;
-    const maxAttempts = Math.min(avatarSources.length, 15); // Limit attempts for performance
     let loadStartTime = Date.now();
     
-    const tryNextSource = () => {
-        if (attempts >= maxAttempts) {
-            console.log(`❌ All ${attempts} avatar sources failed for ${username}, creating matrix fallback`);
-            card.removeChild(img);
-            const matrixDiv = document.createElement('div');
-            matrixDiv.className = 'error-matrix';
-            matrixDiv.style.width = '100%';
-            matrixDiv.style.height = '100%';
-            matrixDiv.textContent = username.charAt(0).toUpperCase();
-            card.insertBefore(matrixDiv, overlay);
+    const tryLoadAvatar = () => {
+        if (sourceIndex >= avatarSources.length) {
+            console.log(`❌ All sources failed for ${username}, creating cosmic fallback`);
+            createFallbackAvatar();
             return;
         }
         
         const currentSource = avatarSources[sourceIndex];
-        const sourceType = currentSource.includes('twitter') || currentSource.includes('/x/') ? 'X/Twitter' :
-                          currentSource.includes('github') ? 'GitHub' :
-                          currentSource.includes('dicebear') ? 'Generated' :
-                          currentSource.includes('robohash') ? 'Cyber' :
-                          currentSource.includes('ui-avatars') ? 'Letter' :
-                          currentSource.includes('boring') ? 'Abstract' : 'Other';
+        const sourceType = getSourceType(currentSource);
         
-        console.log(`  📡 Avatar scan ${attempts + 1}/${maxAttempts} for ${username}: ${sourceType}`);
+        console.log(`  📡 Cosmic scan ${sourceIndex + 1}/${avatarSources.length} for ${username}: ${sourceType}`);
         
-        // Shorter timeout for better UX (especially for high-priority Twitter sources)
-        const isHighPriority = attempts < 5; // First 5 sources are high priority
-        const timeoutDuration = isHighPriority ? 3000 : 5000;
-        
+        // Faster timeout for better UX
         const timeout = setTimeout(() => {
-            console.log(`  ⏰ Timeout for ${username} (${timeoutDuration}ms)`);
-            attempts++;
-            sourceIndex = (sourceIndex + 1) % avatarSources.length;
-            tryNextSource();
-        }, timeoutDuration);
+            console.log(`  ⏰ Timeout for ${username}`);
+            sourceIndex++;
+            tryLoadAvatar();
+        }, CONFIG.AVATAR_TIMEOUT);
         
         const onSuccess = () => {
             clearTimeout(timeout);
             const loadTime = Date.now() - loadStartTime;
-            img.classList.remove('loading-matrix');
-            console.log(`  ✅ AVATAR LOADED: ${username} via ${sourceType} (${loadTime}ms, attempt ${attempts + 1})`);
+            img.classList.remove('loading-cosmic');
+            console.log(`  ✅ AVATAR LOADED: ${username} via ${sourceType} (${loadTime}ms)`);
             
-            // Add success animation
-            card.style.animation = 'cardMaterialize 0.6s ease-out';
+            // Cosmic success animation
+            card.style.animation = 'cardBeam 0.8s ease-out';
         };
         
         const onError = () => {
             clearTimeout(timeout);
             console.log(`  ❌ Failed: ${sourceType} for ${username}`);
-            attempts++;
-            sourceIndex = (sourceIndex + 1) % avatarSources.length;
-            tryNextSource();
+            sourceIndex++;
+            tryLoadAvatar();
         };
         
-        // Enhanced image loading with better validation
         img.onload = () => {
-            // Validate image dimensions and ensure it's not a 1x1 tracking pixel or broken image
-            if (img.naturalWidth > 10 && img.naturalHeight > 10 && 
-                img.naturalWidth !== 1 && img.naturalHeight !== 1) {
+            if (img.naturalWidth > 5 && img.naturalHeight > 5) {
                 onSuccess();
             } else {
-                console.log(`  ⚠️ Invalid image for ${username}: ${img.naturalWidth}x${img.naturalHeight}`);
                 onError();
             }
         };
         
         img.onerror = onError;
-        
-        // Set source with cache busting for problematic services
-        const shouldCacheBust = attempts > 3;
-        const finalSource = shouldCacheBust ? 
-            `${currentSource}${currentSource.includes('?') ? '&' : '?'}v=${Date.now()}` : 
-            currentSource;
-            
-        img.src = finalSource;
+        img.src = currentSource;
     };
     
-    // Start the avatar loading process
-    tryNextSource();
+    const createFallbackAvatar = () => {
+        card.removeChild(img);
+        const fallbackDiv = document.createElement('div');
+        fallbackDiv.className = 'error-cosmic';
+        fallbackDiv.style.width = '100%';
+        fallbackDiv.style.height = '100%';
+        fallbackDiv.textContent = username.charAt(0).toUpperCase();
+        card.insertBefore(fallbackDiv, overlay);
+    };
+    
+    const getSourceType = (source) => {
+        if (source.includes('twitter') || source.includes('/x/')) return 'X/Twitter';
+        if (source.includes('github')) return 'GitHub';
+        if (source.includes('dicebear')) return 'Generated';
+        if (source.includes('robohash')) return 'Robot';
+        if (source.includes('boring')) return 'Abstract';
+        if (source.includes('ui-avatars')) return 'Letter';
+        return 'Web';
+    };
+    
+    tryLoadAvatar();
     return card;
 }
 
-// Enhanced display function with smoother animations
+// Enhanced display function with cosmic animations
 function displayPlasmaWall() {
-    console.log('🌌 Materializing plasma wall with', allUsers.length, 'neural entities');
+    console.log('🌌 Materializing cosmic wall with', allUsers.length, 'consciousness entities');
     
     movingWall.innerHTML = '';
     
-    // Create cards with staggered timing for smoother loading
+    // Create cards with staggered cosmic timing
     allUsers.forEach((username, index) => {
         setTimeout(() => {
             const card = createAvatarCard(username);
-            card.style.animationDelay = `${index * 0.1}s`;
+            card.style.animationDelay = `${index * 0.05}s`;
             movingWall.appendChild(card);
-        }, index * 80); // Slightly faster timing
+        }, index * 50);
     });
     
-    // Duplicate for seamless loop with faster timing
+    // Duplicate for seamless loop
     setTimeout(() => {
         allUsers.forEach((username, index) => {
             setTimeout(() => {
                 const card = createAvatarCard(username);
-                card.style.animationDelay = `${(allUsers.length + index) * 0.1}s`;
+                card.style.animationDelay = `${(allUsers.length + index) * 0.05}s`;
                 movingWall.appendChild(card);
-            }, index * 60);
+            }, index * 40);
         });
-    }, allUsers.length * 80 + 1000);
+    }, allUsers.length * 50 + 500);
     
-    // Update counters with live data
-    userCount.textContent = `${allUsers.length} Neural Entities Active`;
-    liveCounter.textContent = `Quantum Network: ${allUsers.length} consciousness signatures detected`;
+    // Update cosmic counters
+    userCount.textContent = `${allUsers.length} Cosmic Entities Connected`;
+    liveCounter.textContent = `Cosmic Network: ${allUsers.length} consciousness signatures detected across space-time`;
 }
 
-// Enhanced backend communication with multiple strategies
+// Enhanced backend communication
 async function saveToBackend(username) {
-    console.log('🚀 Initiating quantum save protocol for:', username);
+    console.log('🚀 Initiating cosmic transmission for:', username);
     
-    const saveStrategies = [
-        // Strategy 1: Direct connection with enhanced headers
-        async () => {
+    for (let retry = 0; retry < CONFIG.MAX_RETRIES; retry++) {
+        try {
             const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Cache-Control': 'no-cache'
                 },
                 body: JSON.stringify({ username }),
                 signal: AbortSignal.timeout(CONFIG.TIMEOUT)
             });
             
             if (response.ok) {
-                const result = await response.json();
-                console.log('✅ Direct quantum save successful:', result);
-                return true;
-            }
-            throw new Error(`Direct: ${response.status} ${response.statusText}`);
-        },
-        
-        // Strategy 2: Multiple proxy attempts
-        ...CONFIG.PROXY_URLS.map((proxyUrl, index) => async () => {
-            const fullUrl = `${proxyUrl}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
-            const response = await fetch(fullUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username }),
-                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
-            });
-            
-            if (response.ok) {
-                console.log(`✅ Proxy quantum save successful via proxy ${index + 1}`);
-                return true;
-            }
-            throw new Error(`Proxy ${index + 1}: ${response.status}`);
-        })
-    ];
-    
-    // Try each strategy with exponential backoff
-    for (let strategyIndex = 0; strategyIndex < saveStrategies.length; strategyIndex++) {
-        for (let retry = 0; retry < CONFIG.MAX_RETRIES; retry++) {
-            try {
-                console.log(`  🔄 Quantum save attempt ${retry + 1}/${CONFIG.MAX_RETRIES} using strategy ${strategyIndex + 1}`);
-                const result = await saveStrategies[strategyIndex]();
-                if (result) return true;
-            } catch (error) {
-                console.log(`  ❌ Strategy ${strategyIndex + 1}, attempt ${retry + 1} failed:`, error.message);
-                if (retry < CONFIG.MAX_RETRIES - 1) {
-                    const delay = CONFIG.RETRY_DELAY * Math.pow(2, retry);
-                    console.log(`  ⏳ Quantum delay: ${delay}ms`);
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                }
-            }
-        }
-    }
-    
-    console.error('❌ All quantum save strategies exhausted');
-    return false;
-}
-
-// Enhanced backend loading
-async function loadFromBackend(forceSync = false) {
-    console.log('📡 Initiating quantum network scan...', forceSync ? '(FORCED)' : '');
-    
-    const loadStrategies = [
-        ...CONFIG.PROXY_URLS.map(proxy => `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`),
-        `${CONFIG.SERVER_URL}/users`
-    ];
-    
-    for (const [index, url] of loadStrategies.entries()) {
-        try {
-            console.log(`  🔄 Quantum scan ${index + 1}/${loadStrategies.length}`);
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: { 'Cache-Control': forceSync ? 'no-cache' : 'max-age=300' },
-                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
-            });
-            
-            if (response.ok) {
-                const serverUsers = await response.json();
-                console.log('✅ Quantum network data received:', serverUsers.length, 'entities');
-                
-                // Load local data
-                const localUsers = loadUsersFromStorage();
-                
-                // Merge without duplicates
-                const allServerUsers = Array.isArray(serverUsers) ? serverUsers : [];
-                allUsers = [...new Set([...DEFAULT_USERS, ...allServerUsers, ...localUsers])];
-                
-                updateStatus('✅ Quantum network synchronized', 'success');
+                console.log('✅ Cosmic transmission successful');
                 return true;
             }
         } catch (error) {
-            console.log(`  ❌ Quantum scan ${index + 1} failed:`, error.message);
+            console.log(`❌ Transmission attempt ${retry + 1} failed:`, error.message);
+            if (retry < CONFIG.MAX_RETRIES - 1) {
+                await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
+            }
         }
     }
     
-    console.log('⚠️ Quantum network unavailable, using local consciousness cache');
-    loadUsersFromStorage();
-    updateStatus('⚠️ Operating in local mode - quantum network offline', 'warning');
     return false;
 }
 
-// Enhanced user submission with better validation
+async function loadFromBackend(forceSync = false) {
+    console.log('📡 Scanning cosmic network...', forceSync ? '(FORCED)' : '');
+    
+    try {
+        const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
+            method: 'GET',
+            headers: { 'Cache-Control': forceSync ? 'no-cache' : 'max-age=300' },
+            signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+        });
+        
+        if (response.ok) {
+            const serverUsers = await response.json();
+            console.log('✅ Cosmic network data received:', serverUsers.length, 'entities');
+            
+            const localUsers = loadUsersFromStorage();
+            const allServerUsers = Array.isArray(serverUsers) ? serverUsers : [];
+            allUsers = [...new Set([...DEFAULT_USERS, ...allServerUsers, ...localUsers, ...searchedUsers])];
+            
+            updateStatus('✅ Cosmic network synchronized', 'success');
+            return true;
+        }
+    } catch (error) {
+        console.log('❌ Cosmic network scan failed:', error.message);
+    }
+    
+    loadUsersFromStorage();
+    updateStatus('⚠️ Operating in local mode - cosmic network offline', 'warning');
+    return false;
+}
+
+// Enhanced user submission
 async function submitUser(username) {
     const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
     
     if (!cleanUsername || cleanUsername.length < 2) {
-        alert('⚠️ Neural signature invalid - minimum 2 characters required');
+        alert('⚠️ Cosmic signature invalid - minimum 2 characters required');
         return;
     }
     
     if (cleanUsername.length > 30) {
-        alert('⚠️ Neural signature too long - maximum 30 characters');
+        alert('⚠️ Cosmic signature too long - maximum 30 characters');
         return;
     }
     
     if (allUsers.includes(cleanUsername)) {
-        alert('⚡ Consciousness already exists in the quantum matrix!');
+        alert('⚡ Consciousness already exists in the cosmic matrix!');
         return;
     }
     
-    console.log('🧬 Processing neural injection:', cleanUsername);
+    console.log('🧬 Processing cosmic transmission:', cleanUsername);
     
     // Enhanced submit animation
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="relative z-10">⟡ INJECTING...</span>';
-    submitBtn.style.transform = 'scale(0.98)';
-    updateStatus('🧬 Injecting consciousness into quantum matrix...', 'info');
+    submitBtn.innerHTML = '<span class="relative z-10">✦ TRANSMITTING...</span>';
+    submitBtn.style.transform = 'scale(0.95)';
+    updateStatus('🧬 Transmitting consciousness to cosmic network...', 'info');
     
-    // Immediate local injection
+    // Immediate local transmission
     allUsers.push(cleanUsername);
     const saved = saveUsersToStorage();
     
     if (!saved) {
-        allUsers.pop(); // Remove if couldn't save locally
-        updateStatus('❌ Local storage failure - injection aborted', 'error');
+        allUsers.pop();
+        updateStatus('❌ Local storage failure - transmission aborted', 'error');
         resetSubmitButton();
         return;
     }
     
-    // Update display immediately
     displayPlasmaWall();
     
-    // Background quantum sync
+    // Background cosmic sync
     const backendSaved = await saveToBackend(cleanUsername);
     
-    // Final status
     if (backendSaved) {
-        updateStatus('✅ Consciousness successfully injected and synchronized!', 'success');
+        updateStatus('✅ Consciousness successfully transmitted and synchronized!', 'success');
     } else {
-        updateStatus('✅ Consciousness injected locally - will sync when quantum network returns', 'warning');
+        updateStatus('✅ Consciousness transmitted locally - will sync when cosmic network returns', 'warning');
     }
     
-    // Clear input with animation
-    usernameInput.style.transform = 'scale(0.98)';
+    // Clear input with cosmic animation
+    usernameInput.style.transform = 'scale(0.95)';
     setTimeout(() => {
         usernameInput.value = '';
         usernameInput.style.transform = 'scale(1)';
     }, 200);
     
-    // Reset button
     setTimeout(resetSubmitButton, 3000);
-    
-    console.log('✨ Neural injection complete - consciousness integrated');
+    console.log('✨ Cosmic transmission complete - consciousness integrated');
 }
 
 function resetSubmitButton() {
     submitBtn.disabled = false;
-    submitBtn.innerHTML = '<span class="relative z-10">INJECT</span>';
+    submitBtn.innerHTML = '<span class="relative z-10">TRANSMIT</span>';
     submitBtn.style.transform = 'scale(1)';
 }
 
-// Event listeners with enhanced handling
+// Event listeners
 submitBtn.addEventListener('click', () => {
     const username = usernameInput.value.trim();
     if (username && !submitBtn.disabled) {
@@ -1121,7 +1156,12 @@ usernameInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && !submitBtn.disabled) {
         const username = usernameInput.value.trim();
         if (username) {
-            submitUser(username);
+            // Check if Shift is held to search instead of submit
+            if (e.shiftKey) {
+                searchBtn.click();
+            } else {
+                submitUser(username);
+            }
         }
     }
 });
@@ -1135,42 +1175,42 @@ usernameInput.addEventListener('blur', () => {
     usernameInput.nextElementSibling.style.opacity = '0';
 });
 
-// Real-time counter updates
+// Real-time cosmic counter updates
 setInterval(() => {
     const timestamp = new Date().toLocaleTimeString();
-    liveCounter.textContent = `Quantum Network: ${allUsers.length} active signatures [${timestamp}]`;
-}, 15000); // Update every 15 seconds for better performance
+    liveCounter.textContent = `Cosmic Network: ${allUsers.length} active signatures [${timestamp}] • Spanning infinite dimensions`;
+}, 20000);
 
 // Enhanced initialization
-async function initializeQuantumMatrix() {
-    console.log('🌌 INITIALIZING QUANTUM PLASMA MATRIX...');
-    console.log('🎵 Audio matrix files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
-    console.log('👥 Default neural signatures:', DEFAULT_USERS.length);
+async function initializeCosmicMatrix() {
+    console.log('🌌 INITIALIZING COSMIC PLASMA NEXUS...');
+    console.log('🎵 Cosmic audio files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
+    console.log('👥 Default cosmic signatures:', DEFAULT_USERS.length);
     console.log('💾 Quantum storage protocol: ACTIVE');
-    console.log('🔄 Enhanced avatar loading: ENABLED');
+    console.log('🔍 User search system: ENABLED');
+    console.log('🔄 Enhanced avatar matrix: OPTIMIZED');
     
-    updateStatus('🌌 Quantum matrix initialization in progress...', 'info');
+    updateStatus('🌌 Cosmic nexus initialization in progress...', 'info');
     
-    // Initialize quantum network
+    // Initialize cosmic network
     const networkOnline = await loadFromBackend();
     
     // Display the plasma wall
     displayPlasmaWall();
     
-    // Final initialization
-    console.log('✨ QUANTUM PLASMA MATRIX ONLINE');
+    console.log('✨ COSMIC PLASMA NEXUS ONLINE');
     console.log(`🧬 Total consciousness signatures: ${allUsers.length}`);
     console.log(`📡 Network status: ${networkOnline ? 'ONLINE' : 'OFFLINE'}`);
+    console.log('🔍 User search: Press Shift+Enter to search instead of add');
     
-    // Set ready status
     setTimeout(() => {
         if (connectionStatus.textContent.includes('initialization')) {
-            updateStatus('⚡ Quantum matrix ready for consciousness injection', 'success');
+            updateStatus('⚡ Cosmic nexus ready for consciousness transmission', 'success');
         }
     }, 2000);
 }
 
-// Auto-sync every 5 minutes with performance optimization
+// Auto-sync with performance optimization
 setInterval(async () => {
     if (!syncInProgress && document.visibilityState === 'visible') {
         console.log('🔄 Auto-sync initiated...');
@@ -1179,18 +1219,14 @@ setInterval(async () => {
     }
 }, 300000);
 
-// Pause auto-sync when tab is not visible for performance
+// Visibility change optimization
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
-        console.log('👁️ Tab visible - quantum matrix active');
+        console.log('👁️ Tab visible - cosmic nexus active');
     } else {
-        console.log('🙈 Tab hidden - quantum matrix standby');
+        console.log('🌙 Tab hidden - cosmic nexus standby mode');
     }
 });
 
-// Start the enhanced quantum matrix
-initializeQuantumMatrix();
-</script>
-
-</body>
-</html>
+// Initialize the enhanced cosmic matrix
+initializeCosmicMatrix();
