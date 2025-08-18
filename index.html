@@ -58,7 +58,7 @@
 </header>
 
 <!-- Enhanced Input Section -->
-<div class="relative z-20 flex flex-col items-center justify-center px-4 mb-8">
+<div class="relative z-10 flex flex-col items-center justify-center px-4 mb-8">
     <!-- Main Input Section -->
     <div class="input-matrix flex items-center gap-4 max-w-5xl w-full">
         <div class="input-wrapper flex-1 relative">
@@ -66,21 +66,19 @@
                 type="text" 
                 id="usernameInput" 
                 placeholder="🔍 Search users or add new neural handle..." 
-                class="w-full px-8 py-5 rounded-2xl text-white bg-black/60 border-2 border-green-500/50 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/30 text-lg backdrop-blur-lg cyber-input transition-all duration-300 relative z-30"
-                autocomplete="off"
-                spellcheck="false"
+                class="w-full px-8 py-5 rounded-2xl text-white bg-black/60 border-2 border-green-500/50 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/30 text-lg backdrop-blur-lg cyber-input transition-all duration-300"
             >
             <div class="input-glow absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300"></div>
         </div>
         <button 
             id="submitBtn" 
-            class="px-10 py-5 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 rounded-2xl font-bold text-lg cyber-button transform hover:scale-105 transition-all duration-300 shadow-lg relative z-30"
+            class="px-10 py-5 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 rounded-2xl font-bold text-lg cyber-button transform hover:scale-105 transition-all duration-300 shadow-lg"
         >
             <span class="relative z-10">INJECT</span>
         </button>
         <button 
             id="clearSearchBtn" 
-            class="px-8 py-5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 rounded-2xl font-medium text-lg cyber-button-search transform hover:scale-105 transition-all duration-300 relative z-30"
+            class="px-8 py-5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 rounded-2xl font-medium text-lg cyber-button-search transform hover:scale-105 transition-all duration-300"
         >
             <span class="relative z-10">CLEAR</span>
         </button>
@@ -94,13 +92,13 @@
     <div class="flex gap-4 mt-6">
         <button 
             id="musicToggle" 
-            class="px-8 py-3 bg-gradient-to-r from-green-800 to-green-700 hover:from-green-700 hover:to-green-600 rounded-xl font-medium transition-all duration-300 cyber-button-small relative z-30"
+            class="px-8 py-3 bg-gradient-to-r from-green-800 to-green-700 hover:from-green-700 hover:to-green-600 rounded-xl font-medium transition-all duration-300 cyber-button-small"
         >
             🎵 Activate Audio Matrix
         </button>
         <button 
             id="syncBtn" 
-            class="px-8 py-3 bg-gradient-to-r from-blue-800 to-blue-700 hover:from-blue-700 hover:to-blue-600 rounded-xl font-medium transition-all duration-300 cyber-button-small relative z-30"
+            class="px-8 py-3 bg-gradient-to-r from-blue-800 to-blue-700 hover:from-blue-700 hover:to-blue-600 rounded-xl font-medium transition-all duration-300 cyber-button-small"
         >
             🔄 Force Sync
         </button>
@@ -342,33 +340,39 @@
     animation: slideInMatrix 1s ease-out;
 }
 
+.search-matrix {
+    animation: slideInMatrix 1.2s ease-out;
+}
+
 @keyframes slideInMatrix {
     from { transform: translateY(-30px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
 
 .cyber-input {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(10, 10, 10, 0.9)) !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(10, 10, 10, 0.9));
     box-shadow: 
         inset 0 0 20px rgba(0, 255, 65, 0.1),
-        0 0 20px rgba(0, 255, 65, 0.1) !important;
-    font-family: 'Courier New', monospace !important;
-    position: relative !important;
-    z-index: 30 !important;
-    pointer-events: auto !important;
+        0 0 20px rgba(0, 255, 65, 0.1);
+    font-family: 'Courier New', monospace;
 }
 
-.cyber-input:focus {
-    border-color: #22c55e !important;
+.search-input {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 139, 0.1));
     box-shadow: 
-        0 0 0 2px rgba(34, 197, 94, 0.3),
-        inset 0 0 20px rgba(0, 255, 65, 0.2),
-        0 0 30px rgba(0, 255, 65, 0.3) !important;
+        inset 0 0 20px rgba(0, 123, 255, 0.1),
+        0 0 15px rgba(0, 123, 255, 0.1);
+    font-family: 'Courier New', monospace;
 }
 
 .cyber-input:focus + .input-glow {
     opacity: 1;
     background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), transparent);
+}
+
+.search-input:focus + .search-glow {
+    opacity: 1;
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), transparent);
 }
 
 .cyber-button {
@@ -379,8 +383,6 @@
     text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
     position: relative;
     overflow: hidden;
-    z-index: 30;
-    pointer-events: auto;
 }
 
 .cyber-button-search {
@@ -391,8 +393,6 @@
     text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
     position: relative;
     overflow: hidden;
-    z-index: 30;
-    pointer-events: auto;
 }
 
 .cyber-button::before,
@@ -416,8 +416,6 @@
     background: linear-gradient(135deg, var(--deep-green), var(--matrix-green));
     box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
     font-size: 14px;
-    z-index: 30;
-    pointer-events: auto;
 }
 
 .search-counter {
@@ -544,20 +542,7 @@
     filter: brightness(1.2) contrast(1.1);
 }
 
-.handle-display {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 255, 65, 0.2));
-    color: var(--neon-green);
-    text-align: center;
-    padding: 8px 4px;
-    font-size: 12px;
-    font-weight: bold;
-    font-family: 'Courier New', monospace;
-    border-radius: 0 0 17px 17px;
-    border: 2px solid var(--dark-green);
+/* Continuing handle-display styles already handled above */px solid var(--dark-green);
     border-top: none;
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
@@ -584,6 +569,19 @@
     color: white !important;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.8) !important;
     box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5) !important;
+}px solid var(--dark-green);
+    border-top: none;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px rgba(0, 255, 65, 0.8);
+}
+
+.avatar-card:hover .handle-display {
+    background: linear-gradient(135deg, rgba(0, 255, 65, 0.9), rgba(34, 197, 94, 0.8));
+    color: var(--cyber-black);
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+    transform: translateY(-4px);
+    box-shadow: 0 4px 15px rgba(0, 255, 65, 0.5);
 }
 
 /* Loading States */
@@ -702,13 +700,8 @@ const CONFIG = {
     RETRY_DELAY: 2000
 };
 
-// In-memory storage (localStorage replacement)
-let quantumUserData = {
-    users: [],
-    timestamp: Date.now(),
-    version: '2.0'
-};
-let lastSyncTime = Date.now();
+const STORAGE_KEY = 'plasma_wall_quantum_users';
+const LAST_SYNC_KEY = 'plasma_wall_last_sync';
 
 // DOM elements
 const usernameInput = document.getElementById('usernameInput');
@@ -738,31 +731,36 @@ const DEFAULT_USERS = [
 
 let allUsers = [...DEFAULT_USERS];
 
-// Enhanced in-memory storage functions
-function saveUsersToMemory() {
+// Enhanced localStorage functions with versioning
+function saveUsersToStorage() {
     try {
-        quantumUserData = {
+        const userData = {
             users: allUsers.filter(user => !DEFAULT_USERS.includes(user)),
             timestamp: Date.now(),
             version: '2.0'
         };
-        lastSyncTime = Date.now();
-        console.log('💾 Quantum data saved to memory:', quantumUserData.users.length, 'neural signatures');
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+        localStorage.setItem(LAST_SYNC_KEY, Date.now().toString());
+        console.log('💾 Quantum data saved:', userData.users.length, 'neural signatures');
         return true;
     } catch (e) {
-        console.error('❌ Quantum memory save failed:', e);
+        console.error('❌ Quantum storage failed:', e);
         return false;
     }
 }
 
-function loadUsersFromMemory() {
+function loadUsersFromStorage() {
     try {
-        const savedUsers = quantumUserData.users || [];
-        console.log('📦 Quantum data loaded from memory:', savedUsers.length, 'neural signatures');
-        allUsers = [...new Set([...DEFAULT_USERS, ...savedUsers])];
-        return savedUsers;
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            const userData = JSON.parse(saved);
+            const savedUsers = userData.users || userData; // Backward compatibility
+            console.log('📦 Quantum data loaded:', savedUsers.length, 'neural signatures');
+            allUsers = [...new Set([...DEFAULT_USERS, ...savedUsers])];
+            return savedUsers;
+        }
     } catch (e) {
-        console.error('❌ Quantum memory load failed:', e);
+        console.error('❌ Quantum load failed:', e);
     }
     return [];
 }
@@ -831,7 +829,7 @@ function updateStatus(message, type = 'info') {
     }, 5000);
 }
 
-// Ultra-enhanced avatar loading system with better fallbacks
+// Ultra-enhanced avatar loading system
 function createAvatarCard(username) {
     console.log(`🖼️ Materializing neural avatar for: ${username}`);
     
@@ -849,32 +847,76 @@ function createAvatarCard(username) {
     card.appendChild(img);
     card.appendChild(overlay);
     
-    // Simplified but more reliable avatar sources
+    // Comprehensive avatar source matrix with X/Twitter focus
     const avatarSources = [
-        // High priority Twitter/X sources
-        `https://unavatar.io/twitter/${username}`,
-        `https://unavatar.io/x/${username}`,
+        // Primary Twitter/X APIs (most reliable for Twitter users)
+        `https://unavatar.io/twitter/${username}?fallback=false`,
+        `https://unavatar.io/x/${username}?fallback=false`,
         
-        // GitHub as fallback
+        // Twitter specific services
+        `https://avatars.io/twitter/${username}?size=140`,
+        `https://twitter-avatar.now.sh/${username}`,
+        
+        // Multi-platform avatar services
+        `https://unavatar.io/${username}?fallback=false`,
+        
+        // GitHub (many X users have same handle)
         `https://avatars.githubusercontent.com/${username}?size=140`,
+        `https://github.com/${username}.png?size=140`,
         
-        // Reliable generated avatars
-        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=140&backgroundColor=22c55e,16a34a,15803d`,
-        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a`,
+        // Alternative social platforms
+        `https://unavatar.io/instagram/${username}?fallback=false`,
+        `https://unavatar.io/discord/${username}?fallback=false`,
+        
+        // Generated avatars with cyberpunk aesthetic
+        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=140&backgroundColor=22c55e,16a34a,15803d&randomizeIds=true`,
+        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a&randomizeIds=true`,
+        `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}&size=140&backgroundColor=22c55e,16a34a,15803d&randomizeIds=true`,
+        `https://api.dicebear.com/7.x/big-smile/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e&randomizeIds=true`,
+        `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&size=140&backgroundColor=22c55e,16a34a&randomizeIds=true`,
+        `https://api.dicebear.com/7.x/identicon/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a&randomizeIds=true`,
+        
+        // Robohash with different sets (cyberpunk theme)
         `https://robohash.org/${username}?size=140x140&set=set1&bgset=bg2`,
+        `https://robohash.org/${username}?size=140x140&set=set2&bgset=bg1`,
+        `https://robohash.org/${username}?size=140x140&set=set3&bgset=bg2`,
+        `https://robohash.org/${username}?size=140x140&set=set4&bgset=bg1`,
         
-        // Letter-based fallback
+        // Boring Avatars with matrix colors
+        `https://source.boringavatars.com/beam/140/${username}?colors=00ff41,22c55e,16a34a,15803d,047857`,
+        `https://source.boringavatars.com/marble/140/${username}?colors=00ff41,22c55e,16a34a,15803d,047857`,
+        `https://source.boringavatars.com/pixel/140/${username}?colors=00ff41,22c55e,16a34a,15803d,047857`,
+        `https://source.boringavatars.com/sunset/140/${username}?colors=00ff41,22c55e,16a34a,15803d,047857`,
+        
+        // Multiavatar
+        `https://api.multiavatar.com/${username}.svg?apikey=free`,
+        
+        // UI Avatars with matrix styling
         `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=00ff41&color=000000&size=140&bold=true&rounded=true&font-size=0.5`,
-        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=22c55e&color=ffffff&size=140&bold=true&rounded=true&font-size=0.5`
+        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=22c55e&color=ffffff&size=140&bold=true&rounded=true&font-size=0.5`,
+        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=16a34a&color=ffffff&size=140&bold=true&rounded=true&font-size=0.5`,
+        
+        // Gravatar variants
+        `https://www.gravatar.com/avatar/${btoa(username).slice(0, 32)}?s=140&d=identicon&r=pg`,
+        `https://www.gravatar.com/avatar/${btoa(username).slice(0, 32)}?s=140&d=retro&r=pg`,
+        `https://www.gravatar.com/avatar/${btoa(username).slice(0, 32)}?s=140&d=wavatar&r=pg`,
+        `https://www.gravatar.com/avatar/${btoa(username).slice(0, 32)}?s=140&d=monsterid&r=pg`,
+        
+        // Placeholder services with matrix theme
+        `https://via.placeholder.com/140x140/00ff41/000000?text=${username.charAt(0).toUpperCase()}`,
+        `https://via.placeholder.com/140x140/22c55e/ffffff?text=${username.charAt(0).toUpperCase()}`,
+        `https://dummyimage.com/140x140/00ff41/000000&text=${username.charAt(0).toUpperCase()}`,
+        `https://picsum.photos/seed/${username}/140/140?grayscale&blur=1`
     ];
     
     let sourceIndex = 0;
-    const maxAttempts = Math.min(avatarSources.length, 5); // Limit attempts for better performance
+    let attempts = 0;
+    const maxAttempts = avatarSources.length;
     let loadStartTime = Date.now();
     
     const tryNextSource = () => {
-        if (sourceIndex >= maxAttempts) {
-            console.log(`❌ Avatar sources exhausted for ${username}, creating matrix avatar`);
+        if (attempts >= maxAttempts) {
+            console.log(`❌ All ${maxAttempts} avatar sources failed for ${username}, creating matrix avatar`);
             card.removeChild(img);
             const matrixDiv = document.createElement('div');
             matrixDiv.className = 'error-matrix';
@@ -886,40 +928,66 @@ function createAvatarCard(username) {
         }
         
         const currentSource = avatarSources[sourceIndex];
-        console.log(`  📡 Avatar attempt ${sourceIndex + 1}/${maxAttempts} for ${username}`);
+        const sourceType = currentSource.includes('twitter') || currentSource.includes('/x/') ? 'Twitter' :
+                          currentSource.includes('github') ? 'GitHub' :
+                          currentSource.includes('dicebear') ? 'Generated' :
+                          currentSource.includes('robohash') ? 'Robot' :
+                          currentSource.includes('ui-avatars') ? 'Letter' : 'Other';
+        
+        console.log(`  📡 Neural probe ${attempts + 1}/${maxAttempts} for ${username}: ${sourceType}`);
+        
+        // Progressive timeout (faster for priority sources)
+        const isHighPriority = attempts < 4; // First 4 sources are high priority
+        const timeoutDuration = isHighPriority ? 4000 : 6000;
         
         const timeout = setTimeout(() => {
-            console.log(`  ⏰ Timeout for ${username}`);
-            sourceIndex++;
+            console.log(`  ⏰ Neural timeout for ${username} (${timeoutDuration}ms)`);
+            attempts++;
+            sourceIndex = (sourceIndex + 1) % avatarSources.length;
             tryNextSource();
-        }, 5000);
+        }, timeoutDuration);
         
         const onSuccess = () => {
             clearTimeout(timeout);
             const loadTime = Date.now() - loadStartTime;
             img.classList.remove('loading-matrix');
-            console.log(`  ✅ Avatar loaded: ${username} (${loadTime}ms)`);
+            console.log(`  ✅ AVATAR MATERIALIZED: ${username} via ${sourceType} (${loadTime}ms, attempt ${attempts + 1})`);
+            
+            // Add success animation
             card.style.animation = 'cardMaterialize 0.6s ease-out';
         };
         
         const onError = () => {
             clearTimeout(timeout);
-            sourceIndex++;
+            console.log(`  ❌ Neural probe ${attempts + 1} failed: ${sourceType}`);
+            attempts++;
+            sourceIndex = (sourceIndex + 1) % avatarSources.length;
             tryNextSource();
         };
         
+        // Enhanced image loading with validation
         img.onload = () => {
-            if (img.naturalWidth > 10 && img.naturalHeight > 10) {
+            // Check if image actually loaded and is not a broken placeholder
+            if (img.naturalWidth > 0 && img.naturalHeight > 0 && img.naturalWidth !== 1 && img.naturalHeight !== 1) {
                 onSuccess();
             } else {
+                console.log(`  ⚠️ Invalid image dimensions for ${username}: ${img.naturalWidth}x${img.naturalHeight}`);
                 onError();
             }
         };
         
         img.onerror = onError;
-        img.src = currentSource;
+        
+        // Set source with cache busting for some services
+        const shouldCacheBust = attempts > 2 && (currentSource.includes('github') || currentSource.includes('twitter'));
+        const finalSource = shouldCacheBust ? 
+            `${currentSource}${currentSource.includes('?') ? '&' : '?'}cb=${Date.now()}` : 
+            currentSource;
+            
+        img.src = finalSource;
     };
     
+    // Start loading
     tryNextSource();
     return card;
 }
@@ -969,7 +1037,7 @@ function displayPlasmaWall(usersToDisplay = null) {
     }
 }
 
-// Fixed search functionality
+// Search functionality
 function performSearch(searchTerm) {
     currentSearchTerm = searchTerm.trim();
     
@@ -987,6 +1055,7 @@ function performSearch(searchTerm) {
     // Enable search mode
     isSearchMode = true;
     submitBtn.innerHTML = '<span class="relative z-10">SEARCH</span>';
+    usernameInput.placeholder = "🔍 Searching...";
     
     // Filter users based on search term
     filteredUsers = allUsers.filter(username => 
@@ -1028,47 +1097,31 @@ function clearSearch() {
     });
     
     displayPlasmaWall();
-    usernameInput.focus(); // Refocus on input after clear
 }
 
 // Enhanced user submission that handles both search and injection
-async function handleSubmission() {
-    const username = usernameInput.value.trim();
+async function submitUser(username) {
+    const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
     
-    if (!username) {
-        usernameInput.focus();
-        return;
-    }
-    
-    // If user is typing to search, perform search
-    if (isSearchMode) {
+    // If in search mode, just perform search
+    if (isSearchMode || currentSearchTerm) {
         performSearch(username);
         return;
     }
     
     // Otherwise, inject new user
-    await submitUser(username);
-}
-
-async function submitUser(username) {
-    const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
-    
     if (!cleanUsername || cleanUsername.length < 2) {
         alert('⚠️ Neural signature invalid - minimum 2 characters required');
-        usernameInput.focus();
         return;
     }
     
     if (cleanUsername.length > 30) {
         alert('⚠️ Neural signature too long - maximum 30 characters');
-        usernameInput.focus();
         return;
     }
     
     if (allUsers.includes(cleanUsername)) {
         alert('⚡ Consciousness already exists in the quantum matrix!');
-        usernameInput.value = '';
-        usernameInput.focus();
         return;
     }
     
@@ -1082,11 +1135,11 @@ async function submitUser(username) {
     
     // Immediate local injection
     allUsers.push(cleanUsername);
-    const saved = saveUsersToMemory();
+    const saved = saveUsersToStorage();
     
     if (!saved) {
-        allUsers.pop(); // Remove if couldn't save
-        updateStatus('❌ Memory storage failure - injection aborted', 'error');
+        allUsers.pop(); // Remove if couldn't save locally
+        updateStatus('❌ Local storage failure - injection aborted', 'error');
         resetSubmitButton();
         return;
     }
@@ -1109,11 +1162,10 @@ async function submitUser(username) {
     setTimeout(() => {
         usernameInput.value = '';
         usernameInput.style.transform = 'scale(1)';
-        usernameInput.focus(); // Keep focus for easy next entry
     }, 200);
     
     // Reset button
-    setTimeout(resetSubmitButton, 2000);
+    setTimeout(resetSubmitButton, 3000);
     
     console.log('✨ Neural injection complete - consciousness integrated');
 }
@@ -1123,7 +1175,7 @@ async function saveToBackend(username) {
     console.log('🚀 Initiating quantum save protocol for:', username);
     
     const saveStrategies = [
-        // Strategy 1: Direct connection
+        // Strategy 1: Direct connection with enhanced headers
         async () => {
             const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
                 method: 'POST',
@@ -1143,20 +1195,38 @@ async function saveToBackend(username) {
                 return true;
             }
             throw new Error(`Direct: ${response.status} ${response.statusText}`);
-        }
+        },
+        
+        // Strategy 2: Multiple proxy attempts
+        ...CONFIG.PROXY_URLS.map((proxyUrl, index) => async () => {
+            const fullUrl = `${proxyUrl}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
+            const response = await fetch(fullUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username }),
+                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+            });
+            
+            if (response.ok) {
+                console.log(`✅ Proxy quantum save successful via proxy ${index + 1}`);
+                return true;
+            }
+            throw new Error(`Proxy ${index + 1}: ${response.status}`);
+        })
     ];
     
-    // Try save strategies
+    // Try each strategy with exponential backoff
     for (let strategyIndex = 0; strategyIndex < saveStrategies.length; strategyIndex++) {
         for (let retry = 0; retry < CONFIG.MAX_RETRIES; retry++) {
             try {
-                console.log(`  🔄 Quantum save attempt ${retry + 1}/${CONFIG.MAX_RETRIES}`);
+                console.log(`  🔄 Quantum save attempt ${retry + 1}/${CONFIG.MAX_RETRIES} using strategy ${strategyIndex + 1}`);
                 const result = await saveStrategies[strategyIndex]();
                 if (result) return true;
             } catch (error) {
-                console.log(`  ❌ Attempt ${retry + 1} failed:`, error.message);
+                console.log(`  ❌ Strategy ${strategyIndex + 1}, attempt ${retry + 1} failed:`, error.message);
                 if (retry < CONFIG.MAX_RETRIES - 1) {
                     const delay = CONFIG.RETRY_DELAY * Math.pow(2, retry);
+                    console.log(`  ⏳ Quantum delay: ${delay}ms`);
                     await new Promise(resolve => setTimeout(resolve, delay));
                 }
             }
@@ -1190,7 +1260,7 @@ async function loadFromBackend(forceSync = false) {
                 console.log('✅ Quantum network data received:', serverUsers.length, 'entities');
                 
                 // Load local data
-                const localUsers = loadUsersFromMemory();
+                const localUsers = loadUsersFromStorage();
                 
                 // Merge without duplicates
                 const allServerUsers = Array.isArray(serverUsers) ? serverUsers : [];
@@ -1205,9 +1275,73 @@ async function loadFromBackend(forceSync = false) {
     }
     
     console.log('⚠️ Quantum network unavailable, using local consciousness cache');
-    loadUsersFromMemory();
+    loadUsersFromStorage();
     updateStatus('⚠️ Operating in local mode - quantum network offline', 'warning');
     return false;
+}
+
+// Enhanced user submission with quantum processing
+async function submitUser(username) {
+    const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
+    
+    if (!cleanUsername || cleanUsername.length < 2) {
+        alert('⚠️ Neural signature invalid - minimum 2 characters required');
+        return;
+    }
+    
+    if (cleanUsername.length > 30) {
+        alert('⚠️ Neural signature too long - maximum 30 characters');
+        return;
+    }
+    
+    if (allUsers.includes(cleanUsername)) {
+        alert('⚡ Consciousness already exists in the quantum matrix!');
+        return;
+    }
+    
+    console.log('🧬 Processing neural injection:', cleanUsername);
+    
+    // Enhanced submit animation
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="relative z-10">⟡ INJECTING...</span>';
+    submitBtn.style.transform = 'scale(0.98)';
+    updateStatus('🧬 Injecting consciousness into quantum matrix...', 'info');
+    
+    // Immediate local injection
+    allUsers.push(cleanUsername);
+    const saved = saveUsersToStorage();
+    
+    if (!saved) {
+        allUsers.pop(); // Remove if couldn't save locally
+        updateStatus('❌ Local storage failure - injection aborted', 'error');
+        resetSubmitButton();
+        return;
+    }
+    
+    // Update display immediately
+    displayPlasmaWall();
+    
+    // Background quantum sync
+    const backendSaved = await saveToBackend(cleanUsername);
+    
+    // Final status
+    if (backendSaved) {
+        updateStatus('✅ Consciousness successfully injected and synchronized!', 'success');
+    } else {
+        updateStatus('✅ Consciousness injected locally - will sync when quantum network returns', 'warning');
+    }
+    
+    // Clear input with animation
+    usernameInput.style.transform = 'scale(0.98)';
+    setTimeout(() => {
+        usernameInput.value = '';
+        usernameInput.style.transform = 'scale(1)';
+    }, 200);
+    
+    // Reset button
+    setTimeout(resetSubmitButton, 3000);
+    
+    console.log('✨ Neural injection complete - consciousness integrated');
 }
 
 function resetSubmitButton() {
@@ -1216,69 +1350,52 @@ function resetSubmitButton() {
     submitBtn.style.transform = 'scale(1)';
 }
 
-// Fixed event listeners
-submitBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!submitBtn.disabled) {
-        handleSubmission();
+// Event listeners with enhanced handling
+submitBtn.addEventListener('click', () => {
+    const username = usernameInput.value.trim();
+    if (username && !submitBtn.disabled) {
+        submitUser(username);
     }
 });
 
 usernameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        if (!submitBtn.disabled) {
-            handleSubmission();
+    if (e.key === 'Enter' && !submitBtn.disabled) {
+        const username = usernameInput.value.trim();
+        if (username) {
+            submitUser(username);
         }
     }
 });
 
-// Real-time search as user types (with debouncing)
-let searchTimeout;
+// Real-time search as user types
 usernameInput.addEventListener('input', (e) => {
     const value = e.target.value.trim();
     
-    // Clear previous timeout
-    if (searchTimeout) {
-        clearTimeout(searchTimeout);
-    }
-    
-    // Debounce search for better performance
-    searchTimeout = setTimeout(() => {
-        if (value) {
-            if (!isSearchMode) {
-                isSearchMode = true;
-                submitBtn.innerHTML = '<span class="relative z-10">ADD TO MATRIX</span>';
-            }
-            performSearch(value);
-        } else {
-            if (isSearchMode) {
-                clearSearch();
-            }
+    // If there's text, enable search mode
+    if (value) {
+        if (!isSearchMode) {
+            isSearchMode = true;
+            submitBtn.innerHTML = '<span class="relative z-10">SEARCH</span>';
+            usernameInput.placeholder = "🔍 Searching...";
         }
-    }, 300);
+        performSearch(value);
+    } else {
+        // If empty, disable search mode
+        if (isSearchMode) {
+            clearSearch();
+        }
+    }
 });
 
-clearSearchBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    clearSearch();
-});
+clearSearchBtn.addEventListener('click', clearSearch);
 
 // Enhanced input effects
-usernameInput.addEventListener('focus', (e) => {
-    const glow = usernameInput.nextElementSibling;
-    if (glow) {
-        glow.style.opacity = '1';
-    }
+usernameInput.addEventListener('focus', () => {
+    usernameInput.nextElementSibling.style.opacity = '1';
 });
 
-usernameInput.addEventListener('blur', (e) => {
-    const glow = usernameInput.nextElementSibling;
-    if (glow) {
-        glow.style.opacity = '0';
-    }
+usernameInput.addEventListener('blur', () => {
+    usernameInput.nextElementSibling.style.opacity = '0';
 });
 
 // Real-time counter updates
@@ -1294,7 +1411,7 @@ async function initializeQuantumMatrix() {
     console.log('🌌 INITIALIZING QUANTUM PLASMA MATRIX...');
     console.log('🎵 Audio matrix files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
     console.log('👥 Default neural signatures:', DEFAULT_USERS.length);
-    console.log('💾 Quantum storage protocol: IN-MEMORY');
+    console.log('💾 Quantum storage protocol: ACTIVE');
     console.log('🔄 Multi-proxy backend sync: ENABLED');
     
     updateStatus('🌌 Quantum matrix initialization in progress...', 'info');
@@ -1304,11 +1421,6 @@ async function initializeQuantumMatrix() {
     
     // Display the plasma wall
     displayPlasmaWall();
-    
-    // Focus on input for immediate use
-    setTimeout(() => {
-        usernameInput.focus();
-    }, 1000);
     
     // Final initialization
     console.log('✨ QUANTUM PLASMA MATRIX ONLINE');
@@ -1328,38 +1440,12 @@ setInterval(async () => {
     if (!syncInProgress) {
         console.log('🔄 Auto-sync initiated...');
         await loadFromBackend();
-        if (!currentSearchTerm) {
-            displayPlasmaWall();
-        }
+        displayPlasmaWall();
     }
 }, 300000);
 
-// Enhanced error handling and debugging
-window.addEventListener('error', (e) => {
-    console.error('❌ Global error:', e.error);
-    updateStatus('⚠️ System error detected - check console', 'error');
-});
-
-// Prevent form submission issues
-document.addEventListener('DOMContentLoaded', () => {
-    // Ensure no form elements interfere
-    const forms = document.querySelectorAll('form');
-    forms.forEach(form => {
-        form.addEventListener('submit', e => e.preventDefault());
-    });
-});
-
 // Start the quantum matrix
-document.addEventListener('DOMContentLoaded', () => {
-    initializeQuantumMatrix();
-});
-
-// Immediate initialization if DOM is already loaded
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeQuantumMatrix);
-} else {
-    initializeQuantumMatrix();
-}
+initializeQuantumMatrix();
 </script>
 
 </body>
