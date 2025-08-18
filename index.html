@@ -14,10 +14,6 @@
     <div class="spinning-portal absolute inset-0 flex items-center justify-center">
         <div class="interstellar-ring"></div>
     </div>
-    <!-- Floating dove -->
-    <div class="floating-dove absolute inset-0 flex items-center justify-center">
-        <div class="dove-container">🕊️</div>
-    </div>
     <!-- Floating particles -->
     <div class="space-particles absolute inset-0"></div>
     <!-- Additional floating orbs -->
@@ -73,7 +69,7 @@
             <div id="movingWall" class="moving-wall absolute top-0 left-0 flex flex-wrap gap-4 animate-move"></div>
         </div>
         
-        <div class="text-center mt-6 text-sm text-green-400 animate-fade-in">Built by aabis 🕊️</div>
+        <div class="text-center mt-6 text-sm text-green-400 animate-fade-in">Built by @seumcoded</div>
     </div>
 </div>
 
@@ -103,11 +99,6 @@
     100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
 }
 
-@keyframes dove-orbit {
-    0% { transform: rotate(0deg) translateX(180px) rotate(0deg); }
-    100% { transform: rotate(360deg) translateX(180px) rotate(-360deg); }
-}
-
 .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
 }
@@ -125,18 +116,6 @@
 
 .glow-text {
     text-shadow: 0 0 10px #22c55e;
-}
-
-/* Floating dove */
-.floating-dove {
-    pointer-events: none;
-}
-
-.dove-container {
-    font-size: 24px;
-    animation: dove-orbit 25s linear infinite;
-    opacity: 0.8;
-    filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.6));
 }
 
 /* Floating orbs */
@@ -387,7 +366,7 @@ const userCount = document.getElementById('userCount');
 
 let musicPlaying = false;
 
-// Enhanced default users list
+// Enhanced default users list (including your new ones)
 const DEFAULT_USERS = [
     'proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax',
     'primay_eth', 'kolyposts', 'Buja_Ques', 'CATTtwit', 
@@ -447,7 +426,7 @@ musicToggle.addEventListener('click', async () => {
     }
 });
 
-// Fixed avatar loading with working sources
+// Significantly improved avatar loading with better sources and caching
 function createUserCard(username) {
     console.log(`🖼️ Creating card for: ${username}`);
     
@@ -465,40 +444,47 @@ function createUserCard(username) {
     card.appendChild(img);
     card.appendChild(overlay);
     
-    // Reliable avatar sources - focusing on services that actually work
+    // More comprehensive avatar sources with better reliability
     const avatarSources = [
-        // GitHub is the most reliable source
-        `https://github.com/${username}.png?size=120`,
+        // Primary Twitter/X sources (most reliable)
+        `https://unavatar.io/twitter/${username}?fallback=false`,
+        `https://unavatar.io/x/${username}?fallback=false`,
+        
+        // Alternative Twitter sources
+        `https://avatars.io/twitter/${username}`,
+        `https://pbs.twimg.com/profile_images/${username}`,
+        
+        // GitHub (many users have same handle)
         `https://avatars.githubusercontent.com/${username}?size=120`,
+        `https://github.com/${username}.png?size=120`,
         
-        // Dicebear - these actually work and look good
-        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=120&backgroundColor=22c55e`,
-        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=120&backgroundColor=16a34a`,
-        `https://api.dicebear.com/7.x/fun-emoji/svg?seed=${username}&size=120&backgroundColor=15803d`,
-        `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&size=120&backgroundColor=22c55e`,
+        // Gravatar (email-based but sometimes works with usernames)
+        `https://www.gravatar.com/avatar/${btoa(username)}?s=120&d=404`,
         
-        // Robohash - reliable and fun
+        // More reliable fallback avatar services
+        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=120&backgroundColor=22c55e`,
+        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=120&backgroundColor=16a34a`,
+        `https://api.dicebear.com/7.x/lorelei/svg?seed=${username}&size=120&backgroundColor=15803d`,
+        
+        // Robohash variants
+        `https://robohash.org/${username}?size=120x120&set=set4`,
         `https://robohash.org/${username}?size=120x120&set=set1`,
-        `https://robohash.org/${username}?size=120x120&set=set2`,
-        `https://robohash.org/${username}?size=120x120&set=set3`,
         
-        // UI Avatars as backup
-        `https://ui-avatars.com/api/?name=${username}&background=22c55e&color=ffffff&size=120&bold=true&rounded=true`,
+        // UI Avatars with better styling
+        `https://ui-avatars.com/api/?name=${username}&background=22c55e&color=ffffff&size=120&bold=true&rounded=true&font-size=0.4`,
         
-        // Boring avatars - simple but reliable
-        `https://source.boringavatars.com/marble/120/${username}?colors=22c55e,16a34a,15803d,0f766e,065f46`,
-        `https://source.boringavatars.com/beam/120/${username}?colors=22c55e,16a34a,15803d,0f766e,065f46`,
-        `https://source.boringavatars.com/pixel/120/${username}?colors=22c55e,16a34a,15803d,0f766e,065f46`
+        // Final placeholder
+        `https://via.placeholder.com/120/16a34a/ffffff?text=${username.charAt(0).toUpperCase()}`
     ];
     
     let sourceIndex = 0;
     let attempts = 0;
-    const maxAttempts = Math.min(avatarSources.length, 8); // Limit attempts for faster loading
+    const maxAttempts = avatarSources.length;
     
     const tryNextSource = () => {
         if (attempts >= maxAttempts) {
-            // Create stylish letter avatar
-            console.log(`✨ Creating custom letter avatar for ${username}`);
+            // All sources failed - create animated letter avatar
+            console.log(`❌ All ${maxAttempts} sources failed for ${username}, creating letter avatar`);
             card.removeChild(img);
             const letterDiv = document.createElement('div');
             letterDiv.className = 'error-avatar';
@@ -511,19 +497,19 @@ function createUserCard(username) {
         }
         
         const currentSource = avatarSources[sourceIndex];
-        console.log(`  📡 Trying source ${attempts + 1}/${maxAttempts} for ${username}`);
+        console.log(`  📡 Trying source ${attempts + 1}/${maxAttempts} for ${username}: ${currentSource.split('?')[0]}`);
         
-        // Shorter timeout for faster response
+        // Shorter timeout for faster loading
         const timeout = setTimeout(() => {
             console.log(`  ⏰ Timeout for ${username} source ${attempts + 1}`);
             attempts++;
             sourceIndex = (sourceIndex + 1) % avatarSources.length;
             tryNextSource();
-        }, 2000); // Reduced to 2 seconds
+        }, 3000);
         
         img.onload = () => {
             clearTimeout(timeout);
-            // Check if image actually loaded properly
+            // Check if image actually loaded (not a broken image)
             if (img.naturalWidth > 0 && img.naturalHeight > 0) {
                 img.classList.remove('loading-placeholder');
                 card.classList.remove('card-loading');
@@ -544,7 +530,12 @@ function createUserCard(username) {
             tryNextSource();
         };
         
-        img.src = currentSource;
+        // Add cache busting for some sources to improve reliability
+        const cacheBustedSrc = currentSource.includes('?') 
+            ? `${currentSource}&cb=${Date.now()}` 
+            : `${currentSource}?cb=${Date.now()}`;
+        
+        img.src = attempts < 2 ? currentSource : cacheBustedSrc;
     };
     
     tryNextSource();
@@ -757,8 +748,7 @@ async function init() {
     console.log('🎵 Looking for music files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
     console.log('👥 Default users:', DEFAULT_USERS);
     console.log('💾 Using localStorage for persistence');
-    console.log('🕊️ Built by aabis with dove animation');
-    console.log('✨ Enhanced animations and improved avatar loading active');
+    console.log('✨ Enhanced animations and avatar loading active');
     
     connectionStatus.textContent = 'Initializing Plasma Wall...';
     
@@ -770,7 +760,6 @@ async function init() {
     
     console.log('✨ Enhanced Plasma Wall ready!');
     console.log(`👥 Total users in wall: ${allUsers.length}`);
-    console.log('🕊️ Dove is orbiting the interstellar ring');
     
     // Final status update
     setTimeout(() => {
