@@ -65,7 +65,7 @@
             <input 
                 type="text" 
                 id="usernameInput" 
-                placeholder="Enter neural handle to inject..." 
+                placeholder="🔍 Search users or add new neural handle..." 
                 class="w-full px-8 py-5 rounded-2xl text-white bg-black/60 border-2 border-green-500/50 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/30 text-lg backdrop-blur-lg cyber-input transition-all duration-300"
             >
             <div class="input-glow absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300"></div>
@@ -76,29 +76,16 @@
         >
             <span class="relative z-10">INJECT</span>
         </button>
-    </div>
-    
-    <!-- Search Section -->
-    <div class="search-matrix flex items-center gap-4 max-w-5xl w-full mt-4">
-        <div class="search-wrapper flex-1 relative">
-            <input 
-                type="text" 
-                id="searchInput" 
-                placeholder="🔍 Search neural signatures in the matrix..." 
-                class="w-full px-8 py-4 rounded-2xl text-white bg-black/40 border-2 border-blue-500/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 text-base backdrop-blur-lg search-input transition-all duration-300"
-            >
-            <div class="search-glow absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300"></div>
-        </div>
         <button 
             id="clearSearchBtn" 
-            class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 rounded-2xl font-medium text-base cyber-button-search transform hover:scale-105 transition-all duration-300"
+            class="px-8 py-5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 rounded-2xl font-medium text-lg cyber-button-search transform hover:scale-105 transition-all duration-300"
         >
             <span class="relative z-10">CLEAR</span>
         </button>
     </div>
     
     <!-- Search Results Counter -->
-    <div id="searchResults" class="mt-2 text-center text-blue-300 search-counter opacity-0 transition-opacity duration-300">
+    <div id="searchResults" class="mt-3 text-center text-blue-300 search-counter opacity-0 transition-opacity duration-300">
         
     </div>
     
@@ -144,7 +131,7 @@
                 Neural Network: ACTIVE
             </div>
             <div class="text-green-400">
-                Architect: @seumcoded
+                Architect: @aabis
             </div>
         </div>
     </div>
@@ -555,20 +542,7 @@
     filter: brightness(1.2) contrast(1.1);
 }
 
-.handle-display {
-    position: absolute;
-    bottom: -12px;
-    left: 0;
-    right: 0;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 255, 65, 0.1));
-    color: var(--neon-green);
-    text-align: center;
-    padding: 8px 4px;
-    font-size: 13px;
-    font-weight: bold;
-    font-family: 'Courier New', monospace;
-    border-radius: 0 0 20px 20px;
-    border: 2px solid var(--dark-green);
+/* Continuing handle-display styles already handled above */px solid var(--dark-green);
     border-top: none;
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
@@ -731,7 +705,6 @@ const LAST_SYNC_KEY = 'plasma_wall_last_sync';
 
 // DOM elements
 const usernameInput = document.getElementById('usernameInput');
-const searchInput = document.getElementById('searchInput');
 const clearSearchBtn = document.getElementById('clearSearchBtn');
 const searchResults = document.getElementById('searchResults');
 const submitBtn = document.getElementById('submitBtn');
@@ -747,6 +720,7 @@ let musicPlaying = false;
 let syncInProgress = false;
 let currentSearchTerm = '';
 let filteredUsers = [];
+let isSearchMode = false;
 
 // Enhanced default users including your requested ones
 const DEFAULT_USERS = [
@@ -1069,11 +1043,19 @@ function performSearch(searchTerm) {
     
     if (!currentSearchTerm) {
         // No search term, show all users
+        isSearchMode = false;
         filteredUsers = [];
         searchResults.style.opacity = '0';
+        submitBtn.innerHTML = '<span class="relative z-10">INJECT</span>';
+        usernameInput.placeholder = "🔍 Search users or add new neural handle...";
         displayPlasmaWall();
         return;
     }
+    
+    // Enable search mode
+    isSearchMode = true;
+    submitBtn.innerHTML = '<span class="relative z-10">SEARCH</span>';
+    usernameInput.placeholder = "🔍 Searching...";
     
     // Filter users based on search term
     filteredUsers = allUsers.filter(username => 
@@ -1084,13 +1066,13 @@ function performSearch(searchTerm) {
     const resultCount = filteredUsers.length;
     if (resultCount === 0) {
         searchResults.textContent = `❌ No neural signatures found for "${currentSearchTerm}"`;
-        searchResults.className = 'mt-2 text-center text-red-400 search-counter opacity-100 transition-opacity duration-300';
+        searchResults.className = 'mt-3 text-center text-red-400 search-counter opacity-100 transition-opacity duration-300';
     } else if (resultCount === 1) {
         searchResults.textContent = `✅ 1 neural signature found for "${currentSearchTerm}"`;
-        searchResults.className = 'mt-2 text-center text-blue-300 search-counter opacity-100 transition-opacity duration-300';
+        searchResults.className = 'mt-3 text-center text-blue-300 search-counter opacity-100 transition-opacity duration-300';
     } else {
         searchResults.textContent = `✅ ${resultCount} neural signatures found for "${currentSearchTerm}"`;
-        searchResults.className = 'mt-2 text-center text-blue-300 search-counter opacity-100 transition-opacity duration-300';
+        searchResults.className = 'mt-3 text-center text-blue-300 search-counter opacity-100 transition-opacity duration-300';
     }
     
     searchResults.style.opacity = '1';
@@ -1101,10 +1083,13 @@ function performSearch(searchTerm) {
 
 // Clear search functionality
 function clearSearch() {
-    searchInput.value = '';
+    usernameInput.value = '';
     currentSearchTerm = '';
     filteredUsers = [];
+    isSearchMode = false;
     searchResults.style.opacity = '0';
+    submitBtn.innerHTML = '<span class="relative z-10">INJECT</span>';
+    usernameInput.placeholder = "🔍 Search users or add new neural handle...";
     
     // Remove search highlights
     document.querySelectorAll('.search-highlight').forEach(card => {
@@ -1112,6 +1097,77 @@ function clearSearch() {
     });
     
     displayPlasmaWall();
+}
+
+// Enhanced user submission that handles both search and injection
+async function submitUser(username) {
+    const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
+    
+    // If in search mode, just perform search
+    if (isSearchMode || currentSearchTerm) {
+        performSearch(username);
+        return;
+    }
+    
+    // Otherwise, inject new user
+    if (!cleanUsername || cleanUsername.length < 2) {
+        alert('⚠️ Neural signature invalid - minimum 2 characters required');
+        return;
+    }
+    
+    if (cleanUsername.length > 30) {
+        alert('⚠️ Neural signature too long - maximum 30 characters');
+        return;
+    }
+    
+    if (allUsers.includes(cleanUsername)) {
+        alert('⚡ Consciousness already exists in the quantum matrix!');
+        return;
+    }
+    
+    console.log('🧬 Processing neural injection:', cleanUsername);
+    
+    // Enhanced submit animation
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="relative z-10">⟡ INJECTING...</span>';
+    submitBtn.style.transform = 'scale(0.98)';
+    updateStatus('🧬 Injecting consciousness into quantum matrix...', 'info');
+    
+    // Immediate local injection
+    allUsers.push(cleanUsername);
+    const saved = saveUsersToStorage();
+    
+    if (!saved) {
+        allUsers.pop(); // Remove if couldn't save locally
+        updateStatus('❌ Local storage failure - injection aborted', 'error');
+        resetSubmitButton();
+        return;
+    }
+    
+    // Update display immediately
+    displayPlasmaWall();
+    
+    // Background quantum sync
+    const backendSaved = await saveToBackend(cleanUsername);
+    
+    // Final status
+    if (backendSaved) {
+        updateStatus('✅ Consciousness successfully injected and synchronized!', 'success');
+    } else {
+        updateStatus('✅ Consciousness injected locally - will sync when quantum network returns', 'warning');
+    }
+    
+    // Clear input with animation
+    usernameInput.style.transform = 'scale(0.98)';
+    setTimeout(() => {
+        usernameInput.value = '';
+        usernameInput.style.transform = 'scale(1)';
+    }, 200);
+    
+    // Reset button
+    setTimeout(resetSubmitButton, 3000);
+    
+    console.log('✨ Neural injection complete - consciousness integrated');
 }
 
 // Enhanced backend communication with multiple strategies
@@ -1311,14 +1367,23 @@ usernameInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Search event listeners
-searchInput.addEventListener('input', (e) => {
-    performSearch(e.target.value);
-});
-
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        performSearch(e.target.value);
+// Real-time search as user types
+usernameInput.addEventListener('input', (e) => {
+    const value = e.target.value.trim();
+    
+    // If there's text, enable search mode
+    if (value) {
+        if (!isSearchMode) {
+            isSearchMode = true;
+            submitBtn.innerHTML = '<span class="relative z-10">SEARCH</span>';
+            usernameInput.placeholder = "🔍 Searching...";
+        }
+        performSearch(value);
+    } else {
+        // If empty, disable search mode
+        if (isSearchMode) {
+            clearSearch();
+        }
     }
 });
 
@@ -1331,14 +1396,6 @@ usernameInput.addEventListener('focus', () => {
 
 usernameInput.addEventListener('blur', () => {
     usernameInput.nextElementSibling.style.opacity = '0';
-});
-
-searchInput.addEventListener('focus', () => {
-    searchInput.nextElementSibling.style.opacity = '1';
-});
-
-searchInput.addEventListener('blur', () => {
-    searchInput.nextElementSibling.style.opacity = '0';
 });
 
 // Real-time counter updates
