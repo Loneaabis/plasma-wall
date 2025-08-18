@@ -284,11 +284,35 @@
 </style>
 
 <script>
-// Configuration
+// Configuration with specific user mappings
 const CONFIG = {
-    MAX_USERS: 20, // Limit for performance
+    MAX_USERS: 20,
     CIRCLE_RADIUS: 180,
-    DEFAULT_USERS: ['proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax']
+    DEFAULT_USERS: ['proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax'],
+    
+    // Add specific user mappings if you have their Discord IDs or other info
+    USER_MAPPINGS: {
+        'proofofnathan': {
+            twitter: 'proofofnathan',
+            discord: null, // Add Discord ID if available
+            customAvatar: null
+        },
+        'scene999': {
+            twitter: 'scene999',
+            discord: null,
+            customAvatar: null
+        },
+        'MaxApoz': {
+            twitter: 'MaxApoz',
+            discord: null,
+            customAvatar: null
+        },
+        'shadowofthefax': {
+            twitter: 'shadowofthefax',
+            discord: null,
+            customAvatar: null
+        }
+    }
 };
 
 // DOM elements
@@ -310,30 +334,37 @@ let state = {
     musicPlaying: false
 };
 
-// COMPLETELY NEW Avatar Loading System - DETECTS GREEN PLACEHOLDERS
+// IMPROVED Avatar Loading System with better Twitter/X and Discord support
 const avatarLoader = {
-    // More diverse sources with different approaches
+    // Prioritized sources with better Twitter/X methods
     sources: [
-        // Twitter direct approaches
+        // Direct Twitter/X profile images (most reliable)
+        (username) => `https://unavatar.io/twitter/${username}`,
+        (username) => `https://unavatar.io/x/${username}`,
+        
+        // Alternative Twitter approaches
         (username) => `https://pbs.twimg.com/profile_images/${username}_400x400.jpg`,
         (username) => `https://twitter.com/${username}/profile_image?size=original`,
-        (username) => `https://unavatar.io/twitter/${username}?fallback=false`,
+        (username) => `https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png`, // This will be filtered out
         
-        // GitHub (many devs use same username)
-        (username) => `https://github.com/${username}.png?size=100`,
-        (username) => `https://avatars.githubusercontent.com/${username}?s=100`,
+        // GitHub (many use same username)
+        (username) => `https://github.com/${username}.png?size=200`,
+        (username) => `https://avatars.githubusercontent.com/${username}?s=200`,
         
         // Other platforms
-        (username) => `https://unavatar.io/instagram/${username}?fallback=false`,
-        (username) => `https://unavatar.io/${username}?fallback=false`,
+        (username) => `https://unavatar.io/instagram/${username}`,
+        (username) => `https://unavatar.io/${username}`,
         
-        // Gravatar attempt
-        (username) => `https://www.gravatar.com/avatar/${username}?s=100&d=404`,
-        
-        // Last resort - good quality generated avatars
-        (username) => `https://api.dicebear.com/7.x/personas/png?seed=${username}&size=100&backgroundColor=transparent`,
-        (username) => `https://robohash.org/${username}?size=100x100&set=set4`
+        // Last resort - high quality generated
+        (username) => `https://api.dicebear.com/7.x/avataaars/png?seed=${username}&size=200&backgroundColor=transparent`,
+        (username) => `https://api.dicebear.com/7.x/personas/png?seed=${username}&size=200&backgroundColor=22c55e`
     ],
+    
+    // Get Discord avatar if Discord ID is provided
+    getDiscordAvatar: (discordId) => {
+        if (!discordId) return null;
+        return `https://cdn.discordapp.com/avatars/${discordId}/avatar.png?size=256`;
+    },
     
     load: async (username, imgElement, cardElement) => {
         console.log(`🖼️ LOADING AVATAR FOR: ${username.toUpperCase()}`);
@@ -342,14 +373,34 @@ const avatarLoader = {
         cardElement.textContent = username.charAt(0).toUpperCase();
         imgElement.style.display = 'none';
         
-        for (let i = 0; i < avatarLoader.sources.length; i++) {
-            const src = avatarLoader.sources[i](username);
-            console.log(`  🔄 TRYING SOURCE ${i + 1}/${avatarLoader.sources.length}`);
+        // Check if we have specific mapping for this user
+        const userMapping = CONFIG.USER_MAPPINGS[username];
+        let sources = [...avatarLoader.sources];
+        
+        // If user has custom avatar URL, try that first
+        if (userMapping?.customAvatar) {
+            sources.unshift(() => userMapping.customAvatar);
+        }
+        
+        // If user has Discord ID, try Discord avatar
+        if (userMapping?.discord) {
+            const discordAvatar = avatarLoader.getDiscordAvatar(userMapping.discord);
+            if (discordAvatar) {
+                sources.unshift(() => discordAvatar);
+            }
+        }
+        
+        // Use specific Twitter username if mapped differently
+        const twitterUsername = userMapping?.twitter || username;
+        
+        for (let i = 0; i < sources.length; i++) {
+            const src = sources[i](twitterUsername);
+            console.log(`  🔄 TRYING SOURCE ${i + 1}/${sources.length}: ${src.substring(0, 50)}...`);
             
             try {
-                const success = await avatarLoader.testAndValidateImage(src, imgElement, cardElement, username, i + 1);
+                const success = await avatarLoader.testImage(src, imgElement, cardElement, username);
                 if (success) {
-                    console.log(`  ✅ SUCCESS! Real avatar loaded for ${username} from source ${i + 1}`);
+                    console.log(`  ✅ SUCCESS! Avatar loaded for ${username} from source ${i + 1}`);
                     return true;
                 }
             } catch (error) {
@@ -357,19 +408,19 @@ const avatarLoader = {
             }
             
             // Small delay between attempts
-            await new Promise(resolve => setTimeout(resolve, 200));
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
         
         console.log(`⚠️ All sources failed for ${username}, keeping letter avatar`);
         return false;
     },
     
-    testAndValidateImage: (src, imgElement, cardElement, username, sourceNum) => {
+    testImage: (src, imgElement, cardElement, username) => {
         return new Promise((resolve) => {
             const timeout = setTimeout(() => {
-                console.log(`    ⏰ TIMEOUT for ${username} source ${sourceNum}`);
+                console.log(`    ⏰ TIMEOUT for ${username}`);
                 resolve(false);
-            }, 5000); // Longer timeout
+            }, 8000); // Longer timeout for better results
             
             const testImg = new Image();
             testImg.crossOrigin = 'anonymous';
@@ -377,61 +428,36 @@ const avatarLoader = {
             testImg.onload = function() {
                 clearTimeout(timeout);
                 
-                // Check if it's a valid, real image
-                if (this.naturalWidth < 20 || this.naturalHeight < 20) {
-                    console.log(`    ❌ TOO SMALL: ${this.naturalWidth}x${this.naturalHeight} for ${username}`);
+                // Basic validation
+                if (this.naturalWidth < 32 || this.naturalHeight < 32) {
+                    console.log(`    ❌ TOO SMALL: ${this.naturalWidth}x${this.naturalHeight}`);
                     resolve(false);
                     return;
                 }
                 
-                console.log(`    🔍 ANALYZING IMAGE: ${this.naturalWidth}x${this.naturalHeight} for ${username}`);
-                
-                // Create a canvas to analyze the image colors
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = this.naturalWidth;
-                canvas.height = this.naturalHeight;
-                
-                try {
-                    ctx.drawImage(this, 0, 0);
-                    
-                    // Sample pixels to detect if it's mostly green/placeholder
-                    const isRealImage = avatarLoader.validateImageContent(ctx, canvas.width, canvas.height, username);
-                    
-                    if (isRealImage) {
-                        console.log(`    ✅ REAL IMAGE DETECTED for ${username}`);
-                        
-                        // Success! Update the actual display
-                        imgElement.src = src;
-                        imgElement.onload = () => {
-                            cardElement.textContent = ''; // Remove letter
-                            imgElement.classList.add('loaded');
-                            imgElement.style.display = 'block';
-                            console.log(`    🎉 DISPLAYED real avatar for ${username}`);
-                        };
-                        resolve(true);
-                    } else {
-                        console.log(`    ❌ PLACEHOLDER/GREEN IMAGE detected for ${username}`);
-                        resolve(false);
-                    }
-                    
-                } catch (canvasError) {
-                    console.log(`    ⚠️ CANVAS ERROR (CORS?): ${canvasError.message} - accepting image anyway`);
-                    // If we can't analyze due to CORS, assume it's good since it loaded
-                    imgElement.src = src;
-                    imgElement.onload = () => {
-                        cardElement.textContent = '';
-                        imgElement.classList.add('loaded');
-                        imgElement.style.display = 'block';
-                        console.log(`    🎉 DISPLAYED avatar for ${username} (CORS bypass)`);
-                    };
-                    resolve(true);
+                // Check for default/placeholder images
+                if (avatarLoader.isDefaultImage(src)) {
+                    console.log(`    ❌ DEFAULT/PLACEHOLDER IMAGE detected`);
+                    resolve(false);
+                    return;
                 }
+                
+                console.log(`    ✅ VALID IMAGE: ${this.naturalWidth}x${this.naturalHeight}`);
+                
+                // Success! Update the display
+                imgElement.src = src;
+                imgElement.onload = () => {
+                    cardElement.textContent = ''; // Remove letter
+                    imgElement.classList.add('loaded');
+                    imgElement.style.display = 'block';
+                    console.log(`    🎉 DISPLAYED avatar for ${username}`);
+                };
+                resolve(true);
             };
             
             testImg.onerror = function() {
                 clearTimeout(timeout);
-                console.log(`    ❌ LOAD ERROR for ${username} source ${sourceNum}`);
+                console.log(`    ❌ LOAD ERROR`);
                 resolve(false);
             };
             
@@ -439,64 +465,15 @@ const avatarLoader = {
         });
     },
     
-    validateImageContent: (ctx, width, height, username) => {
-        try {
-            // Sample multiple points across the image
-            const samplePoints = [
-                [width * 0.25, height * 0.25],
-                [width * 0.75, height * 0.25],
-                [width * 0.5, height * 0.5],
-                [width * 0.25, height * 0.75],
-                [width * 0.75, height * 0.75]
-            ];
-            
-            let greenPixels = 0;
-            let totalPixels = 0;
-            let colorVariation = 0;
-            
-            const colors = [];
-            
-            for (const [x, y] of samplePoints) {
-                const imageData = ctx.getImageData(Math.floor(x), Math.floor(y), 1, 1);
-                const [r, g, b, a] = imageData.data;
-                
-                if (a > 0) { // Not transparent
-                    totalPixels++;
-                    colors.push([r, g, b]);
-                    
-                    // Check if pixel is greenish (like website color)
-                    if (g > r + 20 && g > b + 20) {
-                        greenPixels++;
-                    }
-                    
-                    // Calculate color variation
-                    const brightness = (r + g + b) / 3;
-                    colorVariation += Math.abs(brightness - 128);
-                }
-            }
-            
-            const greenRatio = greenPixels / Math.max(totalPixels, 1);
-            const avgVariation = colorVariation / Math.max(totalPixels, 1);
-            
-            console.log(`    📊 ANALYSIS for ${username}: ${greenPixels}/${totalPixels} green pixels (${(greenRatio * 100).toFixed(1)}%), variation: ${avgVariation.toFixed(1)}`);
-            
-            // Reject if too many green pixels or too little variation (solid color)
-            if (greenRatio > 0.6) {
-                console.log(`    ❌ TOO GREEN: ${(greenRatio * 100).toFixed(1)}% green pixels`);
-                return false;
-            }
-            
-            if (avgVariation < 20 && totalPixels > 2) {
-                console.log(`    ❌ TOO UNIFORM: variation only ${avgVariation.toFixed(1)}`);
-                return false;
-            }
-            
-            return true;
-            
-        } catch (error) {
-            console.log(`    ⚠️ VALIDATION ERROR: ${error.message} - assuming valid`);
-            return true; // If we can't validate, assume it's good
-        }
+    isDefaultImage: (src) => {
+        const defaultPatterns = [
+            'default_profile',
+            'default_avatar',
+            'placeholder',
+            'twimg.com/sticky/default_profile'
+        ];
+        
+        return defaultPatterns.some(pattern => src.toLowerCase().includes(pattern));
     }
 };
 
@@ -523,7 +500,7 @@ const createLegendCard = (username, index, total) => {
     img.className = 'legend-img';
     img.alt = username;
     img.style.display = 'none';
-    img.loading = 'eager'; // Load immediately
+    img.loading = 'eager';
     
     // Create name label
     const nameLabel = document.createElement('div');
@@ -533,9 +510,11 @@ const createLegendCard = (username, index, total) => {
     card.appendChild(img);
     card.appendChild(nameLabel);
     
-    // Click to open Twitter
+    // Click to open Twitter/X
     card.addEventListener('click', () => {
-        window.open(`https://twitter.com/${username}`, '_blank');
+        const userMapping = CONFIG.USER_MAPPINGS[username];
+        const twitterUsername = userMapping?.twitter || username;
+        window.open(`https://x.com/${twitterUsername}`, '_blank');
         card.style.transform = 'scale(0.9)';
         setTimeout(() => card.style.transform = '', 200);
     });
@@ -592,27 +571,31 @@ const utils = {
     }
 };
 
-// Storage functions
+// Storage functions (Note: localStorage may not work in Claude artifacts)
 const storage = {
     save: () => {
         try {
-            localStorage.setItem('hall_of_fame_users', JSON.stringify(state.allUsers));
-            console.log('💾 Saved to localStorage');
+            if (typeof localStorage !== 'undefined') {
+                localStorage.setItem('hall_of_fame_users', JSON.stringify(state.allUsers));
+                console.log('💾 Saved to localStorage');
+            }
         } catch (error) {
-            console.error('❌ Storage save failed:', error);
+            console.log('💾 Storage not available, keeping in memory');
         }
     },
     
     load: () => {
         try {
-            const saved = localStorage.getItem('hall_of_fame_users');
-            if (saved) {
-                const users = JSON.parse(saved);
-                state.allUsers = [...new Set([...CONFIG.DEFAULT_USERS, ...users])];
-                console.log('📦 Loaded from localStorage:', state.allUsers.length);
+            if (typeof localStorage !== 'undefined') {
+                const saved = localStorage.getItem('hall_of_fame_users');
+                if (saved) {
+                    const users = JSON.parse(saved);
+                    state.allUsers = [...new Set([...CONFIG.DEFAULT_USERS, ...users])];
+                    console.log('📦 Loaded from localStorage:', state.allUsers.length);
+                }
             }
         } catch (error) {
-            console.error('❌ Storage load failed:', error);
+            console.log('📦 Using default users');
         }
     }
 };
@@ -719,6 +702,7 @@ const setupEvents = () => {
 // Initialize
 const init = () => {
     console.log('🚀 Initializing Plasma Hall of Fame...');
+    console.log('🖼️ Enhanced avatar loading with Twitter/X and Discord support');
     
     setupEvents();
     storage.load();
@@ -734,8 +718,6 @@ const init = () => {
     
     console.log('✨ Hall of Fame ready!');
     console.log(`👥 Total legends: ${state.allUsers.length}`);
-    console.log('🖼️ Simplified avatar loading system active');
-    console.log('🌀 Circular spinning display like Interstellar');
 };
 
 // Start the application
