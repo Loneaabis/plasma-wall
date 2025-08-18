@@ -1,186 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plasma Wall</title>
-<script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plasma Hall of Fame</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: radial-gradient(circle at center, #001f1f, #000);
+      overflow: hidden;
+    }
+    /* Floating stars background */
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 3s infinite alternate;
+    }
+    @keyframes twinkle {
+      from { opacity: 0.2; }
+      to { opacity: 1; }
+    }
+    /* Shooting stars */
+    .shooting-star {
+      position: absolute;
+      width: 150px;
+      height: 2px;
+      background: linear-gradient(90deg, white, transparent);
+      animation: shoot 5s linear infinite;
+    }
+    @keyframes shoot {
+      0% { transform: translateX(-200px) translateY(0); opacity: 1; }
+      100% { transform: translateX(100vw) translateY(100vh); opacity: 0; }
+    }
+    /* Interstellar orbit */
+    .orbit-ring {
+      width: 600px;
+      height: 600px;
+      border: 2px dashed rgba(255,255,255,0.2);
+      border-radius: 50%;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: spinRing 40s linear infinite;
+    }
+    .orbit-dove {
+      font-size: 2rem;
+      position: absolute;
+      top: -20px; left: 50%;
+      transform: translateX(-50%);
+    }
+    @keyframes spinRing {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    /* User card styling */
+    .user-card {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 1rem;
+      overflow: hidden;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0,255,150,0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: floaty 6s ease-in-out infinite;
+    }
+    .user-card:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px rgba(0,255,200,0.8);
+    }
+    .profile-img {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      margin: 10px auto;
+      object-fit: cover;
+      border: 2px solid #22c55e;
+    }
+    .username-overlay {
+      color: #22c55e;
+      font-weight: bold;
+      padding-bottom: 10px;
+    }
+    @keyframes floaty {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+  </style>
 </head>
-<body class="min-h-screen text-white overflow-hidden relative" style="background: linear-gradient(135deg, #1a3b2e, #0f2922, #1a3b2e);">
+<body class="flex flex-col items-center justify-center text-white">
 
-<!-- Interstellar Background -->
-<div class="absolute inset-0 overflow-hidden">
-    <div class="spinning-portal absolute inset-0 flex items-center justify-center">
-        <div class="interstellar-ring"></div>
-    </div>
-    <div class="space-particles absolute inset-0"></div>
-    <div class="floating-orbs absolute inset-0"></div>
-</div>
+  <!-- Shooting stars -->
+  <div class="shooting-star" style="top:20%; left:0;"></div>
+  <div class="shooting-star" style="top:50%; left:0; animation-delay:2s;"></div>
+  <div class="shooting-star" style="top:80%; left:0; animation-delay:4s;"></div>
 
-<!-- Circling Dove Frame -->
-<div class="dove-frame absolute inset-0 flex items-center justify-center pointer-events-none">
-    <div class="orbit">🕊</div>
-</div>
+  <!-- Orbit Dove Frame -->
+  <div class="orbit-ring">
+    <div class="orbit-dove">🕊</div>
+  </div>
 
-<!-- Audio -->
-<audio id="bgMusic" loop preload="auto" style="display: none;">
-    <source src="./interstellar.mp3" type="audio/mpeg">
-    <source src="./interstellar.wav" type="audio/wav">
-    <source src="./music.mp3" type="audio/mpeg">
-</audio>
+  <!-- Title -->
+  <h1 class="text-4xl font-bold mt-10 mb-6 animate-pulse">🌌 Plasma Hall of Fame</h1>
 
-<!-- Header -->
-<header class="relative z-10 text-center py-6">
-    <h1 class="text-4xl font-bold text-white mb-4 glow-text animate-pulse-glow">
-        Submit your X handle. Join Plasma Wall
-    </h1>
-</header>
+  <!-- Users Wall -->
+  <div id="wall" class="grid grid-cols-2 md:grid-cols-4 gap-6 px-4"></div>
 
-<!-- Input Section -->
-<div class="relative z-10 flex flex-col items-center justify-center px-4 mb-8">
-    <div class="flex items-center gap-4 max-w-4xl w-full">
-        <input 
-            type="text" 
-            id="usernameInput" 
-            placeholder="@handle" 
-            class="flex-1 px-6 py-4 rounded-full text-gray-900 bg-white/90 focus:outline-none focus:ring-2 focus:ring-green-400 text-lg backdrop-blur-sm transition-all duration-300 hover:bg-white/95 focus:scale-105"
-        >
-        <button 
-            id="submitBtn" 
-            class="px-8 py-4 bg-green-600 hover:bg-green-700 rounded-full font-bold transition-all duration-300 text-lg hover:scale-105 hover:shadow-lg hover:shadow-green-500/30"
-        >
-            Submit
-        </button>
-    </div>
-    <button 
-        id="musicToggle" 
-        class="mt-4 px-8 py-3 bg-green-800 hover:bg-green-900 rounded-full font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-700/30"
-    >
-        🎵 Play Music
-    </button>
-    <div id="connectionStatus" class="mt-4 text-center text-green-300 animate-fade-in">Ready to submit</div>
-</div>
+  <!-- Footer -->
+  <div class="text-center mt-10 text-green-400">🕊 Built by Aabis</div>
 
-<!-- Moving Wall Container -->
-<div class="relative z-10 px-4 pb-8">
-    <div class="bg-black/40 backdrop-blur-md rounded-3xl p-8 border border-green-500/30 max-w-7xl mx-auto overflow-hidden glass-effect">
-        <div id="userCount" class="text-center text-green-200 mb-6 animate-fade-in">Loading users...</div>
-        
-        <div class="moving-wall-container relative h-96 overflow-hidden">
-            <div id="movingWall" class="moving-wall absolute top-0 left-0 flex flex-wrap gap-4 animate-move"></div>
-        </div>
-        
-        <!-- Footer -->
-        <div class="text-center mt-6 text-sm text-green-400 animate-fade-in">🕊 Built by Aabis</div>
-    </div>
-</div>
+  <!-- Background Music -->
+  <audio id="bgMusic" loop>
+    <source src="https://files.catbox.moe/5i8k2v.mp3" type="audio/mpeg">
+  </audio>
 
-<!-- Styles -->
-<style>
-/* Glow text */
-@keyframes pulse-glow {
-    0%, 100% { text-shadow: 0 0 5px #22c55e, 0 0 10px #22c55e, 0 0 15px #22c55e; }
-    50% { text-shadow: 0 0 10px #16a34a, 0 0 20px #16a34a, 0 0 30px #16a34a; }
-}
-.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
-.animate-fade-in { animation: fade-in 1s ease-out; }
+  <script>
+    // Auto start music on first click
+    document.body.addEventListener("click", () => {
+      const music = document.getElementById("bgMusic");
+      music.volume = 0.5;
+      music.play();
+    }, { once:true });
 
-.glass-effect { box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.18); }
-.glow-text { text-shadow: 0 0 10px #22c55e; }
+    // Demo usernames
+    const usernames = ["elonmusk","cz_binance","jack","naval","a16z","VitalikButerin","saylor","APompliano"];
 
-/* Dove orbit */
-.orbit {
-    width: 300px; height: 300px;
-    border-radius: 50%;
-    position: relative;
-    animation: orbitRotate 20s linear infinite;
-    font-size: 2rem; color: #22c55e;
-    display: flex; align-items: flex-start; justify-content: center;
-}
-@keyframes orbitRotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
+    function createUserCard(username) {
+      const card = document.createElement("div");
+      card.className = "user-card p-3";
 
-/* Interstellar spinning ring */
-.interstellar-ring {
-    width: 400px; height: 400px;
-    position: relative; animation: spinPortal 20s linear infinite;
-    opacity: 0.4;
-}
-.interstellar-ring::before {
-    content: ''; position: absolute; inset: 0;
-    background: conic-gradient(from 0deg, transparent 0deg, #22c55e 15deg, transparent 30deg, #16a34a 60deg, transparent 75deg, #22c55e 105deg, transparent 120deg, #15803d 150deg, transparent 165deg, #22c55e 195deg, transparent 210deg, #16a34a 240deg, transparent 255deg, #22c55e 285deg, transparent 300deg, #15803d 330deg, transparent 345deg, transparent 360deg);
-    border-radius: 50%;
-    mask: radial-gradient(circle, transparent 30%, black 31%, black 70%, transparent 71%);
-}
-@keyframes spinPortal { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      const img = document.createElement("img");
+      img.className = "profile-img";
+      img.alt = username;
 
-/* Moving wall */
-.moving-wall { width: max-content; animation: slideWall 45s linear infinite; }
-@keyframes slideWall { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+      const overlay = document.createElement("div");
+      overlay.className = "username-overlay";
+      overlay.textContent = `@${username}`;
 
-.user-card { flex-shrink: 0; width: 120px; height: 120px; position: relative; transition: all 0.4s ease; }
-.profile-img { width: 100%; height: 100%; object-fit: cover; border-radius: 15px; border: 3px solid rgba(34, 197, 94, 0.8); box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); }
-.username-overlay { position: absolute; bottom: -5px; left: 0; right: 0; background: rgba(0,0,0,0.9); color: #22c55e; text-align: center; padding: 4px; font-size: 11px; font-weight: bold; border-radius: 0 0 15px 15px; border: 1px solid rgba(34, 197, 94, 0.5); }
+      card.appendChild(img);
+      card.appendChild(overlay);
 
-.error-avatar { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; font-weight: bold; border-radius: 15px; border: 3px solid rgba(34, 197, 94, 0.8); box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); }
-</style>
-
-<!-- Script -->
-<script>
-const DEFAULT_USERS = ['proofofnathan','scene999','MaxApoz','shadowofthefax','primay_eth','kolyposts','Buja_Ques','CATTtwit','The9bo','cryptobaikan','ImFaziiii'];
-let allUsers = [...DEFAULT_USERS];
-const movingWall = document.getElementById('movingWall');
-const userCount = document.getElementById('userCount');
-const usernameInput = document.getElementById('usernameInput');
-const submitBtn = document.getElementById('submitBtn');
-
-function createUserCard(username) {
-    const card = document.createElement('div'); card.className = 'user-card';
-    const img = document.createElement('img'); img.className = 'profile-img'; img.alt = username;
-    const overlay = document.createElement('div'); overlay.className = 'username-overlay'; overlay.textContent = `@${username}`;
-    card.appendChild(img); card.appendChild(overlay);
-
-    const avatarSources = [
+      const sources = [
         `https://unavatar.io/twitter/${username}`,
         `https://unavatar.io/${username}`,
         `https://avatars.githubusercontent.com/${username}?size=120`,
-        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=120&backgroundColor=22c55e`
-    ];
-    let index = 0;
-    function tryNext() {
-        if (index >= avatarSources.length) {
-            card.removeChild(img);
-            const letterDiv = document.createElement('div'); letterDiv.className = 'error-avatar'; letterDiv.textContent = username.charAt(0).toUpperCase();
-            card.insertBefore(letterDiv, overlay); return;
+        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&backgroundColor=22c55e`
+      ];
+
+      let i = 0;
+      const tryNext = () => {
+        if (i >= sources.length) {
+          img.src = "";
+          img.style.display = "none";
+          overlay.style.color = "red";
+          return;
         }
-        img.onload = () => { if (img.naturalWidth > 0) return; index++; tryNext(); };
-        img.onerror = () => { index++; tryNext(); };
-        img.src = avatarSources[index];
+        img.src = sources[i];
+        img.onerror = () => { i++; tryNext(); };
+      };
+      tryNext();
+
+      return card;
     }
-    tryNext();
-    return card;
-}
 
-function displayWall() {
-    movingWall.innerHTML = '';
-    allUsers.forEach(user => movingWall.appendChild(createUserCard(user)));
-    allUsers.forEach(user => movingWall.appendChild(createUserCard(user))); // duplicate for infinite scroll
-    userCount.textContent = `${allUsers.length} members in the Plasma Wall`;
-}
+    const wall = document.getElementById("wall");
+    usernames.forEach(u => wall.appendChild(createUserCard(u)));
 
-function submitUser(username) {
-    const clean = username.replace('@','').replace(/[^a-zA-Z0-9_]/g,'');
-    if (!clean || allUsers.includes(clean)) return;
-    allUsers.push(clean); displayWall(); usernameInput.value = '';
-}
-
-submitBtn.addEventListener('click', ()=>{ if(usernameInput.value.trim()) submitUser(usernameInput.value.trim()); });
-usernameInput.addEventListener('keypress',(e)=>{ if(e.key==='Enter') submitUser(usernameInput.value.trim()); });
-
-displayWall();
-</script>
-
+    // Add random stars
+    for (let i=0; i<50; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.width = star.style.height = Math.random()*3+"px";
+      star.style.top = Math.random()*100+"%";
+      star.style.left = Math.random()*100+"%";
+      star.style.animationDuration = (2+Math.random()*3)+"s";
+      document.body.appendChild(star);
+    }
+  </script>
 </body>
 </html>
