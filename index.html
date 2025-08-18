@@ -760,44 +760,46 @@ function createAvatarCard(username) {
     card.appendChild(overlay);
     
     // Avatar sources with Discord support
-    const avatarSources = [];
+    let avatarSources = [];
     
     if (isDiscordId) {
-        // Discord avatar URLs
-        avatarSources.push(
-            `https://cdn.discordapp.com/avatars/${username}/a_1.png?size=256`,
-            `https://cdn.discordapp.com/avatars/${username}/1.png?size=256`,
-            `https://cdn.discordapp.com/embed/avatars/${parseInt(username) % 5}.png`
-        );
+        // Discord avatar sources
+        avatarSources = [
+            `https://cdn.discordapp.com/avatars/${username}/a_1.gif`,
+            `https://cdn.discordapp.com/avatars/${username}/1.png`,
+            `https://unavatar.io/discord/${username}`,
+            `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&backgroundColor=5865F2`,
+            `https://api.dicebear.com/7.x/pixel-art/svg?seed=${username}&backgroundColor=5865F2,00ff41`,
+            `https://ui-avatars.com/api/?name=D&background=5865F2&color=ffffff&size=200&bold=true`
+        ];
+    } else {
+        // Twitter/X avatar sources
+        avatarSources = [
+            `https://unavatar.io/twitter/${username}`,
+            `https://unavatar.io/x/${username}`,
+            `https://github.com/${username}.png?size=200`,
+            `https://api.dicebear.com/7.x/pixel-art/svg?seed=${username}&backgroundColor=00ff41,22c55e`,
+            `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&backgroundColor=22c55e`,
+            `https://robohash.org/${username}.png?size=200x200&set=set1`,
+            `https://ui-avatars.com/api/?name=${username}&background=00ff41&color=000000&size=200&bold=true`
+        ];
     }
     
-    // Add Twitter/X sources
-    avatarSources.push(
-        `https://unavatar.io/twitter/${username}`,
-        `https://unavatar.io/x/${username}`,
-        `https://github.com/${username}.png?size=200`
-    );
-    
-    // Fallback avatars
-    avatarSources.push(
-        `https://api.dicebear.com/7.x/pixel-art/svg?seed=${username}&backgroundColor=00ff41,22c55e`,
-        `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&backgroundColor=22c55e`,
-        `https://robohash.org/${username}.png?size=200x200`,
-        `https://ui-avatars.com/api/?name=${username.charAt(0)}&background=00ff41&color=000&size=200&bold=true`
-    );
-    
     let currentIndex = 0;
+    let imageLoaded = false;
     
-    const loadAvatar = () => {
-        if (currentIndex >= avatarSources.length) {
-            // Final fallback
-            img.style.display = 'none';
-            const fallback = document.createElement('div');
-            fallback.className = 'error-matrix';
-            fallback.style.width = '100%';
-            fallback.style.height = '100%';
-            fallback.textContent = username.charAt(0).toUpperCase();
-            card.insertBefore(fallback, overlay);
+    const tryLoadImage = () => {
+        if (currentIndex >= avatarSources.length || imageLoaded) {
+            if (!imageLoaded) {
+                // Final fallback
+                img.style.display = 'none';
+                const fallback = document.createElement('div');
+                fallback.className = 'error-matrix';
+                fallback.style.width = '100%';
+                fallback.style.height = '100%';
+                fallback.textContent = username.charAt(0).toUpperCase();
+                card.insertBefore(fallback, overlay);
+            }
             return;
         }
         
@@ -806,33 +808,34 @@ function createAvatarCard(username) {
         testImg.crossOrigin = 'anonymous';
         
         const timeout = setTimeout(() => {
-            currentIndex++;
-            loadAvatar();
+            if (!imageLoaded) {
+                currentIndex++;
+                tryLoadImage();
+            }
         }, 2000);
         
         testImg.onload = function() {
-            if (this.naturalWidth > 0) {
+            if (!imageLoaded && this.naturalWidth > 0) {
                 clearTimeout(timeout);
                 img.src = source;
                 img.classList.remove('loading-matrix');
+                imageLoaded = true;
                 console.log(`✅ Avatar loaded for ${username}`);
-            } else {
-                clearTimeout(timeout);
-                currentIndex++;
-                loadAvatar();
             }
         };
         
         testImg.onerror = function() {
             clearTimeout(timeout);
-            currentIndex++;
-            loadAvatar();
+            if (!imageLoaded) {
+                currentIndex++;
+                tryLoadImage();
+            }
         };
         
         testImg.src = source;
     };
     
-    loadAvatar();
+    tryLoadImage();
     return card;
 }
 
@@ -863,47 +866,101 @@ function displayPlasmaWall() {
 
 // Backend save
 async function saveToBackend(username) {
+    console.log('Saving:', username);
+    
     try {
+        // Try direct first
         const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username }),
+            mode: 'cors'
         });
         
         if (response.ok) {
-            console.log('✅ Saved to backend');
+            console.log('✅ Saved to server');
             return true;
         }
-    } catch (error) {
-        console.log('Backend save failed, using local storage');
+    } catch (e) {
+        console.log('Direct save failed, trying proxy...');
+        
+        // Try with proxy
+        for (const proxy of CONFIG.PROXY_URLS) {
+            try {
+                const url = `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username })
+                });
+                
+                if (response.ok) {
+                    console.log('✅ Saved via proxy');
+                    return true;
+                }
+            } catch (err) {
+                console.log('Proxy failed:', err.message);
+            }
+        }
     }
+    
+    console.log('⚠️ Backend save failed, saved locally only');
     return false;
 }
 
 // Backend load
-async function loadFromBackend() {
+async function loadFromBackend(forceSync = false) {
+    console.log('Loading from backend...');
+    
     try {
-        const response = await fetch(`${CONFIG.SERVER_URL}/users`);
+        // Try direct first
+        const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
+            method: 'GET',
+            mode: 'cors'
+        });
+        
         if (response.ok) {
             const serverUsers = await response.json();
-            console.log('Loaded', serverUsers.length, 'from server');
+            console.log('✅ Loaded', serverUsers.length, 'users from server');
             
             const localUsers = loadUsersFromStorage();
             allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...localUsers])];
+            
+            saveUsersToStorage();
             return true;
         }
-    } catch (error) {
-        console.log('Backend offline, using local storage');
+    } catch (e) {
+        console.log('Direct load failed, trying proxy...');
+        
+        // Try with proxy
+        for (const proxy of CONFIG.PROXY_URLS) {
+            try {
+                const url = `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
+                const response = await fetch(url);
+                
+                if (response.ok) {
+                    const serverUsers = await response.json();
+                    console.log('✅ Loaded via proxy');
+                    
+                    const localUsers = loadUsersFromStorage();
+                    allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...localUsers])];
+                    
+                    saveUsersToStorage();
+                    return true;
+                }
+            } catch (err) {
+                console.log('Proxy failed:', err.message);
+            }
+        }
     }
     
+    console.log('⚠️ Using local storage only');
     loadUsersFromStorage();
     return false;
 }
 
-// Submit user - FIXED INPUT HANDLING
-async function submitUser() {
+// Submit user - FIXED input handling
+function submitUser() {
     const username = usernameInput.value.trim();
     
     if (!username) {
@@ -911,7 +968,7 @@ async function submitUser() {
         return;
     }
     
-    // Clean username
+    // Clean the username
     const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
     
     if (cleanUsername.length < 2) {
@@ -931,90 +988,101 @@ async function submitUser() {
     
     console.log('Adding user:', cleanUsername);
     
-    // Update button
+    // Disable button
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="relative z-10">INJECTING...</span>';
-    updateStatus('Adding user...', 'info');
+    submitBtn.innerHTML = '<span class="relative z-10">⟡ INJECTING...</span>';
+    updateStatus('🧬 Injecting consciousness...', 'info');
     
     // Add to array
     allUsers.push(cleanUsername);
     
     // Save locally
-    saveUsersToStorage();
+    if (!saveUsersToStorage()) {
+        allUsers.pop();
+        updateStatus('❌ Storage failed', 'error');
+        resetSubmitButton();
+        return;
+    }
     
     // Update display immediately
     displayPlasmaWall();
     
-    // Try backend save (don't wait)
-    saveToBackend(cleanUsername);
-    
     // Clear input
     usernameInput.value = '';
     
+    // Try to save to backend (async)
+    saveToBackend(cleanUsername).then(success => {
+        if (success) {
+            updateStatus('✅ User added and synced!', 'success');
+        } else {
+            updateStatus('✅ User added locally', 'warning');
+        }
+    });
+    
     // Reset button
-    setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span class="relative z-10">INJECT</span>';
-        updateStatus('User added successfully!', 'success');
-    }, 2000);
+    setTimeout(resetSubmitButton, 2000);
 }
 
-// Event listeners for submit
-submitBtn.addEventListener('click', submitUser);
+function resetSubmitButton() {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<span class="relative z-10">INJECT</span>';
+}
 
-usernameInput.addEventListener('keypress', (e) => {
+// Event listeners - FIXED
+submitBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    submitUser();
+});
+
+usernameInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
+        e.preventDefault();
         submitUser();
     }
 });
 
-// Test input on change to make sure it's working
-usernameInput.addEventListener('input', (e) => {
+// Test input on type
+usernameInput.addEventListener('input', function(e) {
     console.log('Input value:', e.target.value);
 });
 
-// Real-time counter
+// Counter update
 setInterval(() => {
-    const timestamp = new Date().toLocaleTimeString();
-    liveCounter.textContent = `Network: ${allUsers.length} signatures [${timestamp}]`;
+    const time = new Date().toLocaleTimeString();
+    liveCounter.textContent = `Network: ${allUsers.length} signatures [${time}]`;
 }, 10000);
 
 // Initialize
 async function initialize() {
-    console.log('🌌 INITIALIZING PLASMA WALL...');
-    
-    updateStatus('Initializing...', 'info');
-    
-    // Load users
-    await loadFromBackend();
-    
-    // Display wall
-    displayPlasmaWall();
-    
-    console.log('✨ PLASMA WALL READY');
-    console.log('Total users:', allUsers.length);
+    console.log('🌌 INITIALIZING...');
     
     // Make sure input is enabled
     usernameInput.disabled = false;
     usernameInput.readOnly = false;
-    submitBtn.disabled = false;
     
-    updateStatus('Ready - Enter X handle or Discord ID', 'success');
+    updateStatus('🌌 Initializing...', 'info');
+    
+    // Load data
+    await loadFromBackend();
+    
+    // Display
+    displayPlasmaWall();
+    
+    console.log('✨ READY');
+    updateStatus('⚡ Ready for injection', 'success');
 }
 
-// Auto-sync every 5 minutes
+// Auto-sync
 setInterval(async () => {
     if (!syncInProgress) {
-        console.log('Auto-sync...');
         await loadFromBackend();
-        displayPlasmaWall();
     }
 }, 300000);
 
-// Start the app
+// Start
 initialize();
 
-}); // End of DOMContentLoaded
+}); // End DOMContentLoaded
 </script>
 
 </body>
