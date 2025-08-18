@@ -310,20 +310,29 @@ let state = {
     musicPlaying: false
 };
 
-// IMPROVED Avatar Loading System - MUCH MORE RELIABLE
+// COMPLETELY NEW Avatar Loading System - DETECTS GREEN PLACEHOLDERS
 const avatarLoader = {
-    // Better sources with different approaches
+    // More diverse sources with different approaches
     sources: [
-        // Twitter sources - most important
-        (username) => `https://unavatar.io/twitter/${username}?size=100`,
-        (username) => `https://twitter.com/${username}/profile_image?size=bigger`,
+        // Twitter direct approaches
+        (username) => `https://pbs.twimg.com/profile_images/${username}_400x400.jpg`,
+        (username) => `https://twitter.com/${username}/profile_image?size=original`,
+        (username) => `https://unavatar.io/twitter/${username}?fallback=false`,
         
-        // Alternative services
+        // GitHub (many devs use same username)
         (username) => `https://github.com/${username}.png?size=100`,
-        (username) => `https://unavatar.io/${username}?size=100`,
+        (username) => `https://avatars.githubusercontent.com/${username}?s=100`,
         
-        // Generated fallbacks that ALWAYS work
-        (username) => `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=16a34a&color=ffffff&size=100&bold=true&font-size=0.4`
+        // Other platforms
+        (username) => `https://unavatar.io/instagram/${username}?fallback=false`,
+        (username) => `https://unavatar.io/${username}?fallback=false`,
+        
+        // Gravatar attempt
+        (username) => `https://www.gravatar.com/avatar/${username}?s=100&d=404`,
+        
+        // Last resort - good quality generated avatars
+        (username) => `https://api.dicebear.com/7.x/personas/png?seed=${username}&size=100&backgroundColor=transparent`,
+        (username) => `https://robohash.org/${username}?size=100x100&set=set4`
     ],
     
     load: async (username, imgElement, cardElement) => {
@@ -331,68 +340,163 @@ const avatarLoader = {
         
         // Show letter initially
         cardElement.textContent = username.charAt(0).toUpperCase();
+        imgElement.style.display = 'none';
         
         for (let i = 0; i < avatarLoader.sources.length; i++) {
             const src = avatarLoader.sources[i](username);
-            console.log(`  🔄 TRYING SOURCE ${i + 1}/${avatarLoader.sources.length}: ${src.substring(0, 50)}...`);
+            console.log(`  🔄 TRYING SOURCE ${i + 1}/${avatarLoader.sources.length}`);
             
             try {
-                const success = await avatarLoader.testImage(src, imgElement, cardElement, username, i + 1);
+                const success = await avatarLoader.testAndValidateImage(src, imgElement, cardElement, username, i + 1);
                 if (success) {
-                    console.log(`  ✅ SUCCESS! Avatar loaded for ${username} from source ${i + 1}`);
+                    console.log(`  ✅ SUCCESS! Real avatar loaded for ${username} from source ${i + 1}`);
                     return true;
                 }
             } catch (error) {
                 console.log(`  ❌ Source ${i + 1} failed: ${error.message}`);
             }
+            
+            // Small delay between attempts
+            await new Promise(resolve => setTimeout(resolve, 200));
         }
         
         console.log(`⚠️ All sources failed for ${username}, keeping letter avatar`);
         return false;
     },
     
-    testImage: (src, imgElement, cardElement, username, sourceNum) => {
+    testAndValidateImage: (src, imgElement, cardElement, username, sourceNum) => {
         return new Promise((resolve) => {
             const timeout = setTimeout(() => {
                 console.log(`    ⏰ TIMEOUT for ${username} source ${sourceNum}`);
                 resolve(false);
-            }, 4000); // Increased timeout
+            }, 5000); // Longer timeout
             
-            // Create a completely new image element for testing
             const testImg = new Image();
-            testImg.crossOrigin = 'anonymous'; // Try to avoid CORS issues
+            testImg.crossOrigin = 'anonymous';
             
             testImg.onload = function() {
                 clearTimeout(timeout);
                 
-                // Check if it's a valid image (not a tiny placeholder)
-                if (this.naturalWidth > 20 && this.naturalHeight > 20) {
-                    console.log(`    ✅ VALID IMAGE: ${this.naturalWidth}x${this.naturalHeight} for ${username}`);
+                // Check if it's a valid, real image
+                if (this.naturalWidth < 20 || this.naturalHeight < 20) {
+                    console.log(`    ❌ TOO SMALL: ${this.naturalWidth}x${this.naturalHeight} for ${username}`);
+                    resolve(false);
+                    return;
+                }
+                
+                console.log(`    🔍 ANALYZING IMAGE: ${this.naturalWidth}x${this.naturalHeight} for ${username}`);
+                
+                // Create a canvas to analyze the image colors
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = this.naturalWidth;
+                canvas.height = this.naturalHeight;
+                
+                try {
+                    ctx.drawImage(this, 0, 0);
                     
-                    // Success! Update the actual display
+                    // Sample pixels to detect if it's mostly green/placeholder
+                    const isRealImage = avatarLoader.validateImageContent(ctx, canvas.width, canvas.height, username);
+                    
+                    if (isRealImage) {
+                        console.log(`    ✅ REAL IMAGE DETECTED for ${username}`);
+                        
+                        // Success! Update the actual display
+                        imgElement.src = src;
+                        imgElement.onload = () => {
+                            cardElement.textContent = ''; // Remove letter
+                            imgElement.classList.add('loaded');
+                            imgElement.style.display = 'block';
+                            console.log(`    🎉 DISPLAYED real avatar for ${username}`);
+                        };
+                        resolve(true);
+                    } else {
+                        console.log(`    ❌ PLACEHOLDER/GREEN IMAGE detected for ${username}`);
+                        resolve(false);
+                    }
+                    
+                } catch (canvasError) {
+                    console.log(`    ⚠️ CANVAS ERROR (CORS?): ${canvasError.message} - accepting image anyway`);
+                    // If we can't analyze due to CORS, assume it's good since it loaded
                     imgElement.src = src;
                     imgElement.onload = () => {
-                        cardElement.textContent = ''; // Remove letter
+                        cardElement.textContent = '';
                         imgElement.classList.add('loaded');
                         imgElement.style.display = 'block';
-                        console.log(`    🎉 DISPLAYED avatar for ${username}`);
+                        console.log(`    🎉 DISPLAYED avatar for ${username} (CORS bypass)`);
                     };
                     resolve(true);
-                } else {
-                    console.log(`    ❌ INVALID SIZE: ${this.naturalWidth}x${this.naturalHeight} for ${username}`);
-                    resolve(false);
                 }
             };
             
             testImg.onerror = function() {
                 clearTimeout(timeout);
-                console.log(`    ❌ IMAGE ERROR for ${username} source ${sourceNum}`);
+                console.log(`    ❌ LOAD ERROR for ${username} source ${sourceNum}`);
                 resolve(false);
             };
             
-            // Start the test
             testImg.src = src;
         });
+    },
+    
+    validateImageContent: (ctx, width, height, username) => {
+        try {
+            // Sample multiple points across the image
+            const samplePoints = [
+                [width * 0.25, height * 0.25],
+                [width * 0.75, height * 0.25],
+                [width * 0.5, height * 0.5],
+                [width * 0.25, height * 0.75],
+                [width * 0.75, height * 0.75]
+            ];
+            
+            let greenPixels = 0;
+            let totalPixels = 0;
+            let colorVariation = 0;
+            
+            const colors = [];
+            
+            for (const [x, y] of samplePoints) {
+                const imageData = ctx.getImageData(Math.floor(x), Math.floor(y), 1, 1);
+                const [r, g, b, a] = imageData.data;
+                
+                if (a > 0) { // Not transparent
+                    totalPixels++;
+                    colors.push([r, g, b]);
+                    
+                    // Check if pixel is greenish (like website color)
+                    if (g > r + 20 && g > b + 20) {
+                        greenPixels++;
+                    }
+                    
+                    // Calculate color variation
+                    const brightness = (r + g + b) / 3;
+                    colorVariation += Math.abs(brightness - 128);
+                }
+            }
+            
+            const greenRatio = greenPixels / Math.max(totalPixels, 1);
+            const avgVariation = colorVariation / Math.max(totalPixels, 1);
+            
+            console.log(`    📊 ANALYSIS for ${username}: ${greenPixels}/${totalPixels} green pixels (${(greenRatio * 100).toFixed(1)}%), variation: ${avgVariation.toFixed(1)}`);
+            
+            // Reject if too many green pixels or too little variation (solid color)
+            if (greenRatio > 0.6) {
+                console.log(`    ❌ TOO GREEN: ${(greenRatio * 100).toFixed(1)}% green pixels`);
+                return false;
+            }
+            
+            if (avgVariation < 20 && totalPixels > 2) {
+                console.log(`    ❌ TOO UNIFORM: variation only ${avgVariation.toFixed(1)}`);
+                return false;
+            }
+            
+            return true;
+            
+        } catch (error) {
+            console.log(`    ⚠️ VALIDATION ERROR: ${error.message} - assuming valid`);
+            return true; // If we can't validate, assume it's good
+        }
     }
 };
 
