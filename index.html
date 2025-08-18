@@ -5,93 +5,60 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Plasma Wall - Enhanced</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-<body class="min-h-screen text-white overflow-hidden relative" style="background: linear-gradient(135deg, #1a3b2e, #0f2922, #1a3b2e);">
+<body class="min-h-screen text-white overflow-hidden relative" style="background: linear-gradient(135deg, #1a3b2e, #0f2922, #1a3b2e); font-family: 'Space Grotesk', sans-serif;">
 
-<!-- Interstellar Background -->
 <div class="absolute inset-0 overflow-hidden">
-    <!-- Star field layers -->
     <div class="stars-far absolute inset-0"></div>
     <div class="stars-mid absolute inset-0"></div>
     <div class="stars-near absolute inset-0"></div>
-    
-    <!-- Main spinning circle -->
     <div class="spinning-portal absolute inset-0 flex items-center justify-center">
         <div class="interstellar-ring"></div>
     </div>
-    <!-- Enhanced floating particles -->
     <div class="space-particles absolute inset-0"></div>
-    <!-- Cosmic dust and nebula effects -->
     <div class="cosmic-dust absolute inset-0"></div>
     <div class="nebula-effect absolute inset-0"></div>
 </div>
 
-<!-- Audio -->
-<audio id="bgMusic" loop preload="auto" style="display: none;">
-    <source src="./interstellar.mp3" type="audio/mpeg">
-    <source src="./interstellar.wav" type="audio/wav">
-    <source src="./music.mp3" type="audio/mpeg">
-</audio>
+<audio id="bgMusic" loop preload="auto" style="display: none;"><source src="./music.mp3" type="audio/mpeg"></audio>
 
-<!-- Header -->
 <header class="relative z-10 text-center py-6">
-    <h1 class="text-5xl font-bold text-white mb-4 glow-text">
-        Join the Plasma Wall
-    </h1>
+    <h1 class="text-5xl font-bold text-white mb-4 glow-text animate-title-breath">Join the Plasma Wall</h1>
     <p class="text-green-300 text-lg">Submit your X/Twitter handle and become part of the cosmic community</p>
 </header>
 
-<!-- Stats Section -->
 <div class="relative z-10 flex justify-center mb-6">
     <div class="bg-black/50 backdrop-blur-md rounded-2xl px-6 py-3 border border-green-500/30">
         <div id="userCount" class="text-green-200 font-semibold text-lg">Loading community...</div>
     </div>
 </div>
 
-<!-- Input Section -->
 <div class="relative z-10 flex flex-col items-center justify-center px-4 mb-8">
-    <div class="flex items-center gap-4 max-w-4xl w-full">
-        <input 
-            type="text" 
-            id="usernameInput" 
-            placeholder="@yourusername or yourusername" 
-            class="flex-1 px-6 py-4 rounded-full text-gray-900 bg-white/95 focus:outline-none focus:ring-4 focus:ring-green-400/50 text-lg backdrop-blur-sm shadow-2xl transition-all duration-300 hover:shadow-green-400/20"
-        >
-        <button 
-            id="submitBtn" 
-            class="px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-full font-bold transition-all duration-300 text-lg shadow-2xl hover:shadow-green-400/20 transform hover:scale-105"
-        >
-            Join Plasma
+    <div class="flex flex-col md:flex-row items-center gap-4 max-w-2xl w-full">
+        <input type="text" id="usernameInput" placeholder="@yourusername" class="flex-1 w-full md:w-auto px-6 py-4 rounded-full text-gray-900 bg-white/95 focus:outline-none focus:ring-4 focus:ring-green-400/50 text-lg shadow-2xl transition-all duration-300">
+        <button id="submitBtn" class="px-8 py-4 w-full md:w-auto bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-full font-bold transition-all duration-300 text-lg shadow-2xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+            <span id="submitBtnText">Join Plasma</span>
+            <svg id="submitSpinner" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
         </button>
     </div>
-    
+    <div id="submissionStatus" class="mt-4 text-center text-lg h-6 text-green-300"></div>
     <div class="flex gap-4 mt-4">
-        <button 
-            id="musicToggle" 
-            class="px-6 py-3 bg-gradient-to-r from-green-800 to-green-900 hover:from-green-900 hover:to-green-950 rounded-full font-medium transition-all duration-300 shadow-xl transform hover:scale-105"
-        >
-            🎵 Play Cosmic Music
-        </button>
-        
-        <button 
-            id="refreshBtn" 
-            class="px-6 py-3 bg-gradient-to-r from-blue-800 to-blue-900 hover:from-blue-900 hover:to-blue-950 rounded-full font-medium transition-all duration-300 shadow-xl transform hover:scale-105"
-        >
-            🔄 Refresh Wall
-        </button>
+        <button id="musicToggle" class="px-6 py-3 bg-gradient-to-r from-green-800 to-green-900 hover:from-green-900 hover:to-green-950 rounded-full font-medium transition-all duration-300 shadow-xl transform hover:scale-105">🎵 Play Music</button>
+        <button id="refreshBtn" class="px-6 py-3 bg-gradient-to-r from-blue-800 to-blue-900 hover:from-blue-900 hover:to-blue-950 rounded-full font-medium transition-all duration-300 shadow-xl transform hover:scale-105">🔄 Refresh Wall</button>
     </div>
-    
-    <div id="connectionStatus" class="mt-4 text-center text-green-300 font-medium">Connecting to the plasma network...</div>
 </div>
 
-<!-- Moving Wall Container -->
 <div class="relative z-10 px-4 pb-8">
-    <div class="bg-black/40 backdrop-blur-md rounded-3xl p-8 border border-green-500/30 max-w-7xl mx-auto overflow-hidden shadow-2xl">        
-        <!-- Moving Wall -->
+    <div class="bg-black/40 backdrop-blur-md rounded-3xl p-8 border border-green-500/30 max-w-7xl mx-auto overflow-hidden shadow-2xl">
         <div class="moving-wall-container relative h-96 overflow-hidden">
-            <div id="movingWall" class="moving-wall absolute top-0 left-0 flex flex-wrap gap-4 animate-move"></div>
+            <div id="movingWall" class="moving-wall absolute top-0 left-0 flex flex-wrap gap-4"></div>
         </div>
-        
         <div class="flex justify-between items-center mt-6 text-sm">
             <div class="text-green-400 font-semibold">✨ Built by @aabis</div>
             <div id="lastUpdated" class="text-green-400/70">Last updated: Never</div>
@@ -99,1138 +66,205 @@
     </div>
 </div>
 
-<!-- Styles -->
 <style>
-/* Enhanced glow effects */
-.glow-text {
-    text-shadow: 0 0 10px rgba(34, 197, 94, 0.5), 0 0 20px rgba(34, 197, 94, 0.3);
-}
-
-/* Enhanced interstellar star field */
-.stars-far {
-    background-image: 
-        radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.3), transparent),
-        radial-gradient(1px 1px at 40px 70px, rgba(34, 197, 94, 0.4), transparent),
-        radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.2), transparent),
-        radial-gradient(1px 1px at 130px 80px, rgba(34, 197, 94, 0.3), transparent),
-        radial-gradient(1px 1px at 160px 30px, rgba(255,255,255,0.4), transparent),
-        radial-gradient(1px 1px at 200px 60px, rgba(34, 197, 94, 0.2), transparent),
-        radial-gradient(1px 1px at 240px 90px, rgba(255,255,255,0.3), transparent),
-        radial-gradient(1px 1px at 280px 10px, rgba(34, 197, 94, 0.4), transparent),
-        radial-gradient(1px 1px at 320px 50px, rgba(255,255,255,0.2), transparent),
-        radial-gradient(1px 1px at 360px 80px, rgba(34, 197, 94, 0.3), transparent);
-    background-repeat: repeat;
-    background-size: 400px 300px;
-    animation: starsRotate 200s linear infinite;
-    opacity: 0.6;
-}
-
-.stars-mid {
-    background-image: 
-        radial-gradient(2px 2px at 60px 90px, rgba(255,255,255,0.5), transparent),
-        radial-gradient(1px 1px at 120px 30px, rgba(34, 197, 94, 0.6), transparent),
-        radial-gradient(2px 2px at 180px 70px, rgba(255,255,255,0.4), transparent),
-        radial-gradient(1px 1px at 240px 100px, rgba(34, 197, 94, 0.5), transparent),
-        radial-gradient(2px 2px at 300px 20px, rgba(255,255,255,0.6), transparent),
-        radial-gradient(1px 1px at 360px 60px, rgba(34, 197, 94, 0.4), transparent),
-        radial-gradient(2px 2px at 420px 110px, rgba(255,255,255,0.3), transparent),
-        radial-gradient(1px 1px at 480px 40px, rgba(34, 197, 94, 0.7), transparent);
-    background-repeat: repeat;
-    background-size: 600px 400px;
-    animation: starsRotate 150s linear infinite reverse;
-    opacity: 0.7;
-}
-
-.stars-near {
-    background-image: 
-        radial-gradient(3px 3px at 100px 50px, rgba(255,255,255,0.8), transparent),
-        radial-gradient(2px 2px at 200px 120px, rgba(34, 197, 94, 0.9), transparent),
-        radial-gradient(3px 3px at 300px 80px, rgba(255,255,255,0.7), transparent),
-        radial-gradient(2px 2px at 400px 20px, rgba(34, 197, 94, 0.8), transparent),
-        radial-gradient(4px 4px at 500px 100px, rgba(255,255,255,0.6), transparent),
-        radial-gradient(2px 2px at 600px 60px, rgba(34, 197, 94, 0.7), transparent);
-    background-repeat: repeat;
-    background-size: 700px 500px;
-    animation: starsRotate 100s linear infinite;
-    opacity: 0.8;
-}
-
-@keyframes starsRotate {
-    from { 
-        transform: rotate(0deg) translateX(0) translateY(0);
-    }
-    to { 
-        transform: rotate(360deg) translateX(-50px) translateY(-30px);
-    }
-}
-
-/* Twinkling effect */
-.stars-near::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: 
-        radial-gradient(2px 2px at 150px 75px, rgba(255,255,255,0.9), transparent),
-        radial-gradient(3px 3px at 350px 125px, rgba(34, 197, 94,0.9), transparent),
-        radial-gradient(2px 2px at 550px 25px, rgba(255,255,255,0.8), transparent);
-    background-repeat: repeat;
-    background-size: 700px 500px;
-    animation: twinkle 4s ease-in-out infinite alternate;
-}
-
-@keyframes twinkle {
-    0% { opacity: 0.3; }
-    50% { opacity: 1; }
-    100% { opacity: 0.3; }
-}
-
-/* Nebula effect */
-.nebula-effect {
-    background: radial-gradient(
-        ellipse at 20% 50%, 
-        rgba(34, 197, 94, 0.1) 0%, 
-        transparent 50%
-    ),
-    radial-gradient(
-        ellipse at 80% 20%, 
-        rgba(16, 163, 74, 0.08) 0%, 
-        transparent 50%
-    ),
-    radial-gradient(
-        ellipse at 40% 80%, 
-        rgba(21, 128, 61, 0.12) 0%, 
-        transparent 50%
-    );
-    animation: nebulaFlow 60s ease-in-out infinite alternate;
-}
-
-@keyframes nebulaFlow {
-    0% { 
-        transform: scale(1) rotate(0deg);
-        opacity: 0.3;
-    }
-    50% {
-        transform: scale(1.1) rotate(2deg);
-        opacity: 0.5;
-    }
-    100% { 
-        transform: scale(1) rotate(-1deg);
-        opacity: 0.3;
-    }
-}
-
-/* Enhanced interstellar spinning ring */
-.spinning-portal {
-    pointer-events: none;
-}
-
-.interstellar-ring {
-    width: 500px;
-    height: 500px;
-    position: relative;
-    animation: spinPortal 30s linear infinite;
-    opacity: 0.4;
-}
-
-.interstellar-ring::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: conic-gradient(
-        from 0deg,
-        transparent 0deg,
-        #22c55e 8deg,
-        #16a34a 15deg,
-        transparent 25deg,
-        transparent 35deg,
-        #15803d 45deg,
-        #22c55e 52deg,
-        transparent 65deg,
-        transparent 75deg,
-        #16a34a 85deg,
-        transparent 95deg,
-        transparent 105deg,
-        #22c55e 115deg,
-        transparent 125deg,
-        transparent 135deg,
-        #15803d 145deg,
-        #16a34a 155deg,
-        transparent 165deg,
-        transparent 175deg,
-        #22c55e 185deg,
-        transparent 195deg,
-        transparent 205deg,
-        #16a34a 215deg,
-        transparent 225deg,
-        transparent 235deg,
-        #15803d 245deg,
-        transparent 255deg,
-        transparent 265deg,
-        #22c55e 275deg,
-        transparent 285deg,
-        transparent 295deg,
-        #16a34a 305deg,
-        #15803d 315deg,
-        transparent 325deg,
-        transparent 335deg,
-        #22c55e 345deg,
-        transparent 355deg,
-        transparent 360deg
-    );
-    border-radius: 50%;
-    mask: radial-gradient(circle, transparent 25%, black 26%, black 75%, transparent 76%);
-    -webkit-mask: radial-gradient(circle, transparent 25%, black 26%, black 75%, transparent 76%);
-    filter: blur(1px);
-}
-
-@keyframes spinPortal {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* Enhanced space particles */
-.space-particles {
-    background-image: 
-        radial-gradient(2px 2px at 20px 30px, #22c55e, transparent),
-        radial-gradient(1px 1px at 150px 80px, rgba(34, 197, 94, 0.8), transparent),
-        radial-gradient(1px 1px at 300px 120px, #16a34a, transparent),
-        radial-gradient(2px 2px at 450px 50px, rgba(21, 128, 61, 0.6), transparent),
-        radial-gradient(1px 1px at 600px 200px, #22c55e, transparent),
-        radial-gradient(1px 1px at 750px 100px, rgba(34, 197, 94, 0.7), transparent);
-    background-repeat: repeat;
-    background-size: 800px 300px, 600px 400px, 700px 350px, 500px 250px, 900px 320px, 400px 280px;
-    animation: particleFloat 40s linear infinite;
-    opacity: 0.8;
-}
-
-@keyframes particleFloat {
-    0% { transform: translateX(0) translateY(0) rotate(0deg); }
-    25% { transform: translateX(-60px) translateY(-40px) rotate(90deg); }
-    50% { transform: translateX(-120px) translateY(30px) rotate(180deg); }
-    75% { transform: translateX(-40px) translateY(-60px) rotate(270deg); }
-    100% { transform: translateX(0) translateY(0) rotate(360deg); }
-}
-
-/* Cosmic dust effect */
-.cosmic-dust {
-    background-image: 
-        radial-gradient(1px 1px at 100px 100px, rgba(34, 197, 94, 0.3), transparent),
-        radial-gradient(1px 1px at 200px 200px, rgba(16, 163, 74, 0.2), transparent),
-        radial-gradient(1px 1px at 300px 50px, rgba(21, 128, 61, 0.4), transparent),
-        radial-gradient(1px 1px at 400px 150px, rgba(34, 197, 94, 0.2), transparent),
-        radial-gradient(1px 1px at 500px 250px, rgba(16, 163, 74, 0.3), transparent);
-    background-repeat: repeat;
-    background-size: 600px 300px, 400px 500px, 800px 200px, 300px 400px, 700px 350px;
-    animation: dustFloat 60s linear infinite;
-    opacity: 0.5;
-}
-
-@keyframes dustFloat {
-    0% { transform: translateX(0) translateY(0); }
-    33% { transform: translateX(-30px) translateY(-20px); }
-    66% { transform: translateX(-60px) translateY(15px); }
-    100% { transform: translateX(0) translateY(0); }
-}
-
-/* Enhanced moving wall */
-.moving-wall-container {
-    mask: linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%);
-    -webkit-mask: linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%);
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-.moving-wall {
-    width: max-content;
-    animation: slideWall 80s linear infinite;
-    display: flex;
-    align-items: center;
-}
-
-@keyframes slideWall {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-}
-
-.user-card {
-    flex-shrink: 0;
-    width: 140px;
-    height: 140px;
-    position: relative;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    cursor: pointer;
-    margin: 10px;
-}
-
-.user-card:hover {
-    transform: scale(1.2) translateY(-10px) rotateZ(5deg);
-    z-index: 10;
-}
-
-.profile-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 16px;
-    border: 4px solid rgba(34, 197, 94, 0.9);
-    box-shadow: 
-        0 0 25px rgba(34, 197, 94, 0.5),
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition: all 0.4s ease;
-}
-
-.user-card:hover .profile-img {
-    border-color: #22c55e;
-    box-shadow: 
-        0 0 40px rgba(34, 197, 94, 0.8),
-        0 12px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.username-overlay {
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    right: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 100%);
-    color: #22c55e;
-    text-align: center;
-    padding: 6px 4px;
-    font-size: 12px;
-    font-weight: bold;
-    border-radius: 0 0 16px 16px;
-    border: 2px solid rgba(34, 197, 94, 0.6);
-    border-top: none;
-    backdrop-filter: blur(10px);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    transition: all 0.4s ease;
-}
-
-.user-card:hover .username-overlay {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.9) 0%, rgba(16, 163, 74, 0.9) 100%);
-    color: white;
-    border-color: #22c55e;
-    transform: translateY(-2px);
-}
-
-.loading-placeholder {
-    background: linear-gradient(90deg, 
-        rgba(31, 41, 55, 0.8) 25%, 
-        rgba(55, 65, 81, 0.9) 50%, 
-        rgba(31, 41, 55, 0.8) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite;
-    border-radius: 16px;
-    border: 4px solid rgba(34, 197, 94, 0.3);
-    position: relative;
-}
-
-.loading-placeholder::after {
-    content: '⚡';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 24px;
-    color: rgba(34, 197, 94, 0.8);
-    animation: pulse 1.5s infinite;
-}
-
-@keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
-
-.error-avatar {
-    background: linear-gradient(135deg, 
-        #16a34a 0%, 
-        #15803d 50%, 
-        #166534 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 32px;
-    font-weight: bold;
-    border-radius: 16px;
-    border: 4px solid rgba(34, 197, 94, 0.9);
-    box-shadow: 
-        0 0 25px rgba(34, 197, 94, 0.5),
-        0 8px 32px rgba(0, 0, 0, 0.3);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    position: relative;
-    overflow: hidden;
-}
-
-.error-avatar::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    animation: shine 3s infinite;
-}
-
-@keyframes shine {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Success animation */
-@keyframes successPulse {
-    0% { transform: scale(1); box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); }
-    50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(34, 197, 94, 0.8); }
-    100% { transform: scale(1); box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); }
-}
-
-.success-added {
-    animation: successPulse 0.6s ease-in-out;
-}
+    /* Paste your amazing CSS here. I've added one new animation. */
+    @keyframes titleBreath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+    .animate-title-breath { animation: titleBreath 5s ease-in-out infinite; }
+    /* All your existing CSS */
+    .glow-text { text-shadow: 0 0 10px rgba(34, 197, 94, 0.5), 0 0 20px rgba(34, 197, 94, 0.3); } .stars-far { background-image: radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.3), transparent), radial-gradient(1px 1px at 40px 70px, rgba(34, 197, 94, 0.4), transparent), radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.2), transparent), radial-gradient(1px 1px at 130px 80px, rgba(34, 197, 94, 0.3), transparent), radial-gradient(1px 1px at 160px 30px, rgba(255,255,255,0.4), transparent), radial-gradient(1px 1px at 200px 60px, rgba(34, 197, 94, 0.2), transparent), radial-gradient(1px 1px at 240px 90px, rgba(255,255,255,0.3), transparent), radial-gradient(1px 1px at 280px 10px, rgba(34, 197, 94, 0.4), transparent), radial-gradient(1px 1px at 320px 50px, rgba(255,255,255,0.2), transparent), radial-gradient(1px 1px at 360px 80px, rgba(34, 197, 94, 0.3), transparent); background-repeat: repeat; background-size: 400px 300px; animation: starsRotate 200s linear infinite; opacity: 0.6; } .stars-mid { background-image: radial-gradient(2px 2px at 60px 90px, rgba(255,255,255,0.5), transparent), radial-gradient(1px 1px at 120px 30px, rgba(34, 197, 94, 0.6), transparent), radial-gradient(2px 2px at 180px 70px, rgba(255,255,255,0.4), transparent), radial-gradient(1px 1px at 240px 100px, rgba(34, 197, 94, 0.5), transparent), radial-gradient(2px 2px at 300px 20px, rgba(255,255,255,0.6), transparent), radial-gradient(1px 1px at 360px 60px, rgba(34, 197, 94, 0.4), transparent), radial-gradient(2px 2px at 420px 110px, rgba(255,255,255,0.3), transparent), radial-gradient(1px 1px at 480px 40px, rgba(34, 197, 94, 0.7), transparent); background-repeat: repeat; background-size: 600px 400px; animation: starsRotate 150s linear infinite reverse; opacity: 0.7; } .stars-near { background-image: radial-gradient(3px 3px at 100px 50px, rgba(255,255,255,0.8), transparent), radial-gradient(2px 2px at 200px 120px, rgba(34, 197, 94, 0.9), transparent), radial-gradient(3px 3px at 300px 80px, rgba(255,255,255,0.7), transparent), radial-gradient(2px 2px at 400px 20px, rgba(34, 197, 94, 0.8), transparent), radial-gradient(4px 4px at 500px 100px, rgba(255,255,255,0.6), transparent), radial-gradient(2px 2px at 600px 60px, rgba(34, 197, 94, 0.7), transparent); background-repeat: repeat; background-size: 700px 500px; animation: starsRotate 100s linear infinite; opacity: 0.8; } @keyframes starsRotate { from { transform: rotate(0deg) translateX(0) translateY(0); } to { transform: rotate(360deg) translateX(-50px) translateY(-30px); } } .stars-near::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(2px 2px at 150px 75px, rgba(255,255,255,0.9), transparent), radial-gradient(3px 3px at 350px 125px, rgba(34, 197, 94,0.9), transparent), radial-gradient(2px 2px at 550px 25px, rgba(255,255,255,0.8), transparent); background-repeat: repeat; background-size: 700px 500px; animation: twinkle 4s ease-in-out infinite alternate; } @keyframes twinkle { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } } .nebula-effect { background: radial-gradient( ellipse at 20% 50%, rgba(34, 197, 94, 0.1) 0%, transparent 50% ), radial-gradient( ellipse at 80% 20%, rgba(16, 163, 74, 0.08) 0%, transparent 50% ), radial-gradient( ellipse at 40% 80%, rgba(21, 128, 61, 0.12) 0%, transparent 50% ); animation: nebulaFlow 60s ease-in-out infinite alternate; } @keyframes nebulaFlow { 0% { transform: scale(1) rotate(0deg); opacity: 0.3; } 50% { transform: scale(1.1) rotate(2deg); opacity: 0.5; } 100% { transform: scale(1) rotate(-1deg); opacity: 0.3; } } .spinning-portal { pointer-events: none; } .interstellar-ring { width: 500px; height: 500px; position: relative; animation: spinPortal 30s linear infinite; opacity: 0.4; } .interstellar-ring::before { content: ''; position: absolute; inset: 0; background: conic-gradient( from 0deg, transparent 0deg, #22c55e 8deg, #16a34a 15deg, transparent 25deg, transparent 35deg, #15803d 45deg, #22c55e 52deg, transparent 65deg, transparent 75deg, #16a34a 85deg, transparent 95deg, transparent 105deg, #22c55e 115deg, transparent 125deg, transparent 135deg, #15803d 145deg, #16a34a 155deg, transparent 165deg, transparent 175deg, #22c55e 185deg, transparent 195deg, transparent 205deg, #16a34a 215deg, transparent 225deg, transparent 235deg, #15803d 245deg, transparent 255deg, transparent 265deg, #22c55e 275deg, transparent 285deg, transparent 295deg, #16a34a 305deg, #15803d 315deg, transparent 325deg, transparent 335deg, #22c55e 345deg, transparent 355deg, transparent 360deg ); border-radius: 50%; mask: radial-gradient(circle, transparent 25%, black 26%, black 75%, transparent 76%); -webkit-mask: radial-gradient(circle, transparent 25%, black 26%, black 75%, transparent 76%); filter: blur(1px); } @keyframes spinPortal { from { transform: rotate(0deg); } to { transform: rotate(360deg); } } .space-particles { background-image: radial-gradient(2px 2px at 20px 30px, #22c55e, transparent), radial-gradient(1px 1px at 150px 80px, rgba(34, 197, 94, 0.8), transparent), radial-gradient(1px 1px at 300px 120px, #16a34a, transparent), radial-gradient(2px 2px at 450px 50px, rgba(21, 128, 61, 0.6), transparent), radial-gradient(1px 1px at 600px 200px, #22c55e, transparent), radial-gradient(1px 1px at 750px 100px, rgba(34, 197, 94, 0.7), transparent); background-repeat: repeat; background-size: 800px 300px, 600px 400px, 700px 350px, 500px 250px, 900px 320px, 400px 280px; animation: particleFloat 40s linear infinite; opacity: 0.8; } @keyframes particleFloat { 0% { transform: translateX(0) translateY(0) rotate(0deg); } 25% { transform: translateX(-60px) translateY(-40px) rotate(90deg); } 50% { transform: translateX(-120px) translateY(30px) rotate(180deg); } 75% { transform: translateX(-40px) translateY(-60px) rotate(270deg); } 100% { transform: translateX(0) translateY(0) rotate(360deg); } } .cosmic-dust { background-image: radial-gradient(1px 1px at 100px 100px, rgba(34, 197, 94, 0.3), transparent), radial-gradient(1px 1px at 200px 200px, rgba(16, 163, 74, 0.2), transparent), radial-gradient(1px 1px at 300px 50px, rgba(21, 128, 61, 0.4), transparent), radial-gradient(1px 1px at 400px 150px, rgba(34, 197, 94, 0.2), transparent), radial-gradient(1px 1px at 500px 250px, rgba(16, 163, 74, 0.3), transparent); background-repeat: repeat; background-size: 600px 300px, 400px 500px, 800px 200px, 300px 400px, 700px 350px; animation: dustFloat 60s linear infinite; opacity: 0.5; } @keyframes dustFloat { 0% { transform: translateX(0) translateY(0); } 33% { transform: translateX(-30px) translateY(-20px); } 66% { transform: translateX(-60px) translateY(15px); } 100% { transform: translateX(0) translateY(0); } } .moving-wall-container { mask: linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%); -webkit-mask: linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%); border-radius: 20px; overflow: hidden; } .moving-wall { width: max-content; animation: slideWall 80s linear infinite; display: flex; align-items: center; } @keyframes slideWall { from { transform: translateX(0); } to { transform: translateX(-50%); } } .user-card { flex-shrink: 0; width: 140px; height: 140px; position: relative; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; margin: 10px; } .user-card:hover { transform: scale(1.2) translateY(-10px) rotateZ(5deg); z-index: 10; } .profile-img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; border: 4px solid rgba(34, 197, 94, 0.9); box-shadow: 0 0 25px rgba(34, 197, 94, 0.5), 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1); transition: all 0.4s ease; } .user-card:hover .profile-img { border-color: #22c55e; box-shadow: 0 0 40px rgba(34, 197, 94, 0.8), 0 12px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); } .username-overlay { position: absolute; bottom: -8px; left: 0; right: 0; background: linear-gradient(135deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 100%); color: #22c55e; text-align: center; padding: 6px 4px; font-size: 12px; font-weight: bold; border-radius: 0 0 16px 16px; border: 2px solid rgba(34, 197, 94, 0.6); border-top: none; backdrop-filter: blur(10px); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); transition: all 0.4s ease; } .user-card:hover .username-overlay { background: linear-gradient(135deg, rgba(34, 197, 94, 0.9) 0%, rgba(16, 163, 74, 0.9) 100%); color: white; border-color: #22c55e; transform: translateY(-2px); } .loading-placeholder { background: linear-gradient(90deg, rgba(31, 41, 55, 0.8) 25%, rgba(55, 65, 81, 0.9) 50%, rgba(31, 41, 55, 0.8) 75%); background-size: 200% 100%; animation: shimmer 2s infinite; border-radius: 16px; border: 4px solid rgba(34, 197, 94, 0.3); position: relative; } .loading-placeholder::after { content: '⚡'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; color: rgba(34, 197, 94, 0.8); animation: pulse 1.5s infinite; } @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } } @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } } .error-avatar { background: linear-gradient(135deg, #16a34a 0%, #15803d 50%, #166534 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: bold; border-radius: 16px; border: 4px solid rgba(34, 197, 94, 0.9); box-shadow: 0 0 25px rgba(34, 197, 94, 0.5), 0 8px 32px rgba(0, 0, 0, 0.3); text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden; } .error-avatar::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent); animation: shine 3s infinite; } @keyframes shine { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } @keyframes successPulse { 0% { transform: scale(1); box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); } 50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(34, 197, 94, 0.8); } 100% { transform: scale(1); box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); } } .success-added { animation: successPulse 0.6s ease-in-out; }
 </style>
 
-<!-- Script -->
 <script>
-// Enhanced Configuration
-const CONFIG = {
-    SERVER_URL: 'http://162.250.191.81:4000',
-    PROXY_URLS: [
-        'https://api.allorigins.win/raw?url=',
-        'https://cors-anywhere.herokuapp.com/',
-        'https://corsproxy.io/?'
-    ],
-    TIMEOUT: 10000,
-    MAX_RETRIES: 3,
-    RETRY_DELAY: 1000
-};
+document.addEventListener('DOMContentLoaded', () => {
+    // --- CONFIGURATION ---
+    // Make sure your server is running on this URL
+    const SERVER_URL = 'http://localhost:4000';
 
-// Storage key for localStorage
-const STORAGE_KEY = 'plasma_wall_users_v2';
-const METADATA_KEY = 'plasma_wall_metadata';
+    // --- DOM ELEMENTS ---
+    const movingWall = document.getElementById('movingWall');
+    const userCount = document.getElementById('userCount');
+    const lastUpdated = document.getElementById('lastUpdated');
+    const submissionStatus = document.getElementById('submissionStatus');
+    const usernameInput = document.getElementById('usernameInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitBtnText = document.getElementById('submitBtnText');
+    const submitSpinner = document.getElementById('submitSpinner');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
 
-// DOM elements
-const usernameInput = document.getElementById('usernameInput');
-const submitBtn = document.getElementById('submitBtn');
-const refreshBtn = document.getElementById('refreshBtn');
-const movingWall = document.getElementById('movingWall');
-const bgMusic = document.getElementById('bgMusic');
-const musicToggle = document.getElementById('musicToggle');
-const connectionStatus = document.getElementById('connectionStatus');
-const userCount = document.getElementById('userCount');
-const lastUpdated = document.getElementById('lastUpdated');
+    let allUsers = []; // This will be filled from the server
 
-let musicPlaying = false;
+    // --- Core Functions ---
 
-// Default users (always show these 4)
-const DEFAULT_USERS = ['proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax'];
-
-// All users array
-let allUsers = [...DEFAULT_USERS];
-
-// Utility functions
-function getCurrentTime() {
-    return new Date().toLocaleString();
-}
-
-function updateLastUpdatedTime() {
-    lastUpdated.textContent = `Last updated: ${getCurrentTime()}`;
-}
-
-// Enhanced localStorage functions with metadata
-function saveUsersToStorage() {
-    try {
-        const usersToSave = allUsers.filter(user => !DEFAULT_USERS.includes(user));
-        const metadata = {
-            savedAt: new Date().toISOString(),
-            totalUsers: allUsers.length,
-            version: '2.0'
-        };
-        
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(usersToSave));
-        localStorage.setItem(METADATA_KEY, JSON.stringify(metadata));
-        
-        console.log('💾 Saved to localStorage:', {
-            users: usersToSave.length,
-            total: allUsers.length,
-            time: getCurrentTime()
-        });
-    } catch (e) {
-        console.error('❌ Failed to save to localStorage:', e);
-    }
-}
-
-function loadUsersFromStorage() {
-    try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        const metadata = localStorage.getItem(METADATA_KEY);
-        
-        if (saved && metadata) {
-            const savedUsers = JSON.parse(saved);
-            const meta = JSON.parse(metadata);
-            
-            console.log('📦 Loaded from localStorage:', {
-                users: savedUsers.length,
-                savedAt: meta.savedAt,
-                version: meta.version
-            });
-            
-            allUsers = [...DEFAULT_USERS, ...savedUsers];
-            
-            if (meta.savedAt) {
-                const savedDate = new Date(meta.savedAt);
-                lastUpdated.textContent = `Last updated: ${savedDate.toLocaleString()}`;
+    /**
+     * Fetches the list of users from the backend server.
+     */
+    async function fetchUsers() {
+        try {
+            submissionStatus.textContent = 'Connecting to the plasma network...';
+            const response = await fetch(`${SERVER_URL}/users`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
             }
-            
-            return savedUsers;
+            allUsers = await response.json();
+            submissionStatus.textContent = '✅ Connection established.';
+            setTimeout(() => submissionStatus.textContent = '', 3000);
+            displayMovingWall();
+        } catch (error) {
+            console.error('❌ Failed to fetch users:', error);
+            submissionStatus.textContent = '⚠️ Could not connect to server. Running in offline mode.';
+            userCount.textContent = 'Community data unavailable.';
         }
-    } catch (e) {
-        console.error('❌ Failed to load from localStorage:', e);
     }
-    return [];
-}
 
-// Enhanced music functionality
-musicToggle.addEventListener('click', async () => {
-    try {
-        if (musicPlaying) { 
-            bgMusic.pause(); 
-            musicToggle.innerHTML = '🎵 Play Cosmic Music'; 
-            musicPlaying = false; 
-            console.log('🔇 Music paused');
-        } else { 
-            bgMusic.volume = 0.3;
-            await bgMusic.play(); 
-            musicToggle.innerHTML = '🔇 Pause Music'; 
-            musicPlaying = true; 
-            console.log('🎵 Music playing');
-            
-            // Add visual feedback
-            musicToggle.classList.add('success-added');
-            setTimeout(() => musicToggle.classList.remove('success-added'), 600);
+    /**
+     * Creates a user card element. Much simpler now!
+     */
+    function createUserCard(user, isNew = false) {
+        const card = document.createElement('a');
+        card.className = 'user-card';
+        card.href = `https://twitter.com/${user.username}`;
+        card.target = '_blank';
+        if (isNew) {
+            card.classList.add('success-added');
         }
-    } catch(e) { 
-        console.error('❌ Audio error:', e);
-        connectionStatus.innerHTML = '⚠️ Music files not found - add interstellar.mp3 to your folder';
-        setTimeout(() => {
-            connectionStatus.innerHTML = 'Ready to submit';
-        }, 4000);
-    }
-});
 
-// Enhanced avatar loading with comprehensive sources and better fallback
-function createUserCard(username, isNewUser = false) {
-    console.log(`🖼️ Creating card for: ${username}${isNewUser ? ' (new user)' : ''}`);
-    
-    const card = document.createElement('div');
-    card.className = 'user-card';
-    if (isNewUser) {
-        card.classList.add('success-added');
+        const img = document.createElement('img');
+        img.className = 'profile-img';
+        img.src = user.pfpUrl; // Use the URL directly from our server!
+        img.alt = user.username;
+        
+        // Add a fallback in case the image link from the server is broken
+        img.onerror = () => {
+            img.src = `https://api.dicebear.com/7.x/initials/svg?seed=${user.username}&backgroundColor=22c55e&radius=20`;
+        };
+
+        const overlay = document.createElement('div');
+        overlay.className = 'username-overlay';
+        overlay.textContent = `@${user.username}`;
+
+        card.appendChild(img);
+        card.appendChild(overlay);
+        return card;
+    }
+
+    /**
+     * Renders all users onto the moving wall.
+     */
+    function displayMovingWall(newUsername = null) {
+        movingWall.innerHTML = '';
+        if (allUsers.length === 0) {
+            movingWall.innerHTML = `<div class="loading-placeholder" style="width:140px; height:140px;"></div>`.repeat(10);
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        
+        // Add users to the wall
+        allUsers.forEach(user => {
+            const isNew = user.username === newUsername;
+            fragment.appendChild(createUserCard(user, isNew));
+        });
+
+        // Duplicate for seamless animation loop
+        if (allUsers.length > 5) { // Only loop if there are enough users
+             allUsers.forEach(user => {
+                fragment.appendChild(createUserCard(user));
+            });
+        }
+
+        movingWall.appendChild(fragment);
+
+        // Update stats
+        userCount.textContent = `🌟 ${allUsers.length} members in the Plasma Wall`;
+        lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
     }
     
-    const img = document.createElement('img');
-    img.className = 'profile-img loading-placeholder';
-    img.alt = username;
-    
-    const overlay = document.createElement('div');
-    overlay.className = 'username-overlay';
-    overlay.textContent = `@${username}`;
-    
-    card.appendChild(img);
-    card.appendChild(overlay);
-    
-    // Comprehensive avatar sources in order of reliability
-    const avatarSources = [
-        // Primary Twitter/X sources (most reliable)
-        `https://unavatar.io/twitter/${username}?fallback=false&size=140`,
-        `https://unavatar.io/x/${username}?fallback=false&size=140`,
-        
-        // Alternative Twitter API sources
-        `https://avatars.io/twitter/${username}?size=large`,
-        `https://api.twitter.com/1.1/users/profile_image?screen_name=${username}&size=bigger`,
-        
-        // GitHub (many users have same handle)
-        `https://avatars.githubusercontent.com/${username}?size=140`,
-        `https://github.com/${username}.png?size=140`,
-        
-        // Multi-platform sources
-        `https://unavatar.io/${username}?size=140`,
-        `https://avatar.vercel.sh/${username}?size=140`,
-        
-        // Generated avatars with better designs
-        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=140&backgroundColor=16a34a,22c55e&radius=20`,
-        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=140&backgroundColor=16a34a&radius=20`,
-        `https://api.dicebear.com/7.x/big-smile/svg?seed=${username}&size=140&backgroundColor=16a34a`,
-        `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}&size=140&backgroundColor=22c55e`,
-        
-        // Robohash variants
-        `https://robohash.org/${username}?size=140x140&set=set4&bgset=bg1`,
-        `https://robohash.org/${username}?size=140x140&set=set1&bgset=bg2`,
-        
-        // Final fallbacks
-        `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=16a34a&color=fff&size=140&bold=true&rounded=true&font-size=0.4`,
-        `https://via.placeholder.com/140/16a34a/ffffff?text=${encodeURIComponent(username.charAt(0).toUpperCase())}`
-    ];
-    
-    let sourceIndex = 0;
-    let attempts = 0;
-    const maxAttempts = avatarSources.length;
-    
-    const tryNextSource = () => {
-        if (attempts >= maxAttempts) {
-            // All sources failed - create enhanced letter avatar
-            console.log(`❌ All ${maxAttempts} sources failed for ${username}, using letter avatar`);
-            card.removeChild(img);
-            
-            const letterDiv = document.createElement('div');
-            letterDiv.className = 'error-avatar';
-            letterDiv.style.width = '100%';
-            letterDiv.style.height = '100%';
-            
-            // Use first letter or first two letters for short usernames
-            const displayText = username.length <= 3 ? 
-                username.toUpperCase() : 
-                username.charAt(0).toUpperCase();
-            
-            letterDiv.textContent = displayText;
-            card.insertBefore(letterDiv, overlay);
+    /**
+     * Submits a new user to the backend.
+     */
+    async function submitUser() {
+        const username = usernameInput.value.trim().replace('@', '');
+        if (!username || username.length < 2) {
+            submissionStatus.textContent = 'Please enter a valid username.';
             return;
         }
         
-        const currentSource = avatarSources[sourceIndex];
-        console.log(`  📡 Trying source ${attempts + 1}/${maxAttempts} for ${username}: ${currentSource.split('?')[0]}`);
-        
-        // Set up timeout for this attempt
-        const timeout = setTimeout(() => {
-            console.log(`  ⏰ Timeout for ${username} source ${attempts + 1}`);
-            attempts++;
-            sourceIndex = (sourceIndex + 1) % avatarSources.length;
-            tryNextSource();
-        }, 6000); // Increased timeout for better loading
-        
-        img.onload = () => {
-            clearTimeout(timeout);
-            // Check if image actually loaded (not a 1x1 pixel)
-            if (img.naturalWidth > 1 && img.naturalHeight > 1) {
-                img.classList.remove('loading-placeholder');
-                console.log(`  ✅ Avatar loaded for ${username} from source ${attempts + 1}`);
-            } else {
-                console.log(`  ❌ Invalid image for ${username} from source ${attempts + 1}`);
-                attempts++;
-                sourceIndex = (sourceIndex + 1) % avatarSources.length;
-                tryNextSource();
-            }
-        };
-        
-        img.onerror = () => {
-            clearTimeout(timeout);
-            console.log(`  ❌ Source ${attempts + 1} failed for ${username}`);
-            attempts++;
-            sourceIndex = (sourceIndex + 1) % avatarSources.length;
-            tryNextSource();
-        };
-        
-        img.src = currentSource;
-    };
-    
-    // Add click functionality to user cards
-    card.addEventListener('click', () => {
-        window.open(`https://twitter.com/${username}`, '_blank');
-    });
-    
-    tryNextSource();
-    return card;
-}
+        // Disable button and show spinner
+        setLoadingState(true);
 
-// Enhanced display function with better performance
-function displayMovingWall(highlightNewUser = null) {
-    console.log('🎯 Displaying moving wall with users:', allUsers.length);
-    
-    // Clear wall
-    movingWall.innerHTML = '';
-    
-    // Create cards for all users (single pass)
-    const fragment = document.createDocumentFragment();
-    
-    allUsers.forEach(username => {
-        const isNewUser = username === highlightNewUser;
-        const card = createUserCard(username, isNewUser);
-        fragment.appendChild(card);
-    });
-    
-    // Duplicate for seamless loop
-    allUsers.forEach(username => {
-        const card = createUserCard(username);
-        fragment.appendChild(card);
-    });
-    
-    movingWall.appendChild(fragment);
-    
-    // Update user count with more details
-    userCount.innerHTML = `
-        🌟 ${allUsers.length} members in the Plasma Wall 
-        <span class="text-green-500">• ${allUsers.length - DEFAULT_USERS.length} community members</span>
-    `;
-    
-    updateLastUpdatedTime();
-}
-
-// Enhanced backend save with multiple retry strategies
-async function saveToBackend(username) {
-    console.log('💾 Attempting to save to backend:', username);
-    
-    for (let retry = 0; retry < CONFIG.MAX_RETRIES; retry++) {
-        console.log(`🔄 Attempt ${retry + 1}/${CONFIG.MAX_RETRIES}`);
-        
-        const methods = [
-            // Method 1: Direct connection
-            async () => {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
-                
-                try {
-                    const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({ username }),
-                        signal: controller.signal
-                    });
-                    
-                    clearTimeout(timeoutId);
-                    
-                    if (response.ok) {
-                        console.log('✅ Saved via direct connection');
-                        return true;
-                    }
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                } catch (error) {
-                    clearTimeout(timeoutId);
-                    throw error;
-                }
-            },
-            
-            // Method 2: Multiple proxy attempts
-            ...CONFIG.PROXY_URLS.map(proxyUrl => async () => {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
-                
-                try {
-                    const fullUrl = `${proxyUrl}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
-                    const response = await fetch(fullUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ username }),
-                        signal: controller.signal
-                    });
-                    
-                    clearTimeout(timeoutId);
-                    
-                    if (response.ok) {
-                        console.log(`✅ Saved via proxy: ${proxyUrl}`);
-                        return true;
-                    }
-                    throw new Error(`Proxy ${response.status}: ${response.statusText}`);
-                } catch (error) {
-                    clearTimeout(timeoutId);
-                    throw error;
-                }
-            })
-        ];
-        
-        // Try each method for this retry
-        for (let i = 0; i < methods.length; i++) {
-            try {
-                console.log(`  🔄 Trying save method ${i + 1}/${methods.length} (attempt ${retry + 1})`);
-                const result = await methods[i]();
-                if (result) return true;
-            } catch (error) {
-                console.log(`  ❌ Save method ${i + 1} failed:`, error.message);
-            }
-        }
-        
-        // Wait before retry
-        if (retry < CONFIG.MAX_RETRIES - 1) {
-            console.log(`⏳ Waiting ${CONFIG.RETRY_DELAY}ms before retry...`);
-            await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
-        }
-    }
-    
-    console.error('❌ All backend save attempts failed');
-    return false;
-}
-
-// Enhanced load from backend with better error handling
-async function loadFromBackend() {
-    console.log('📡 Loading users from backend...');
-    
-    const loadMethods = [
-        { name: 'direct', url: `${CONFIG.SERVER_URL}/users` },
-        ...CONFIG.PROXY_URLS.map(proxy => ({
-            name: `proxy-${proxy.split('/')[2]}`,
-            url: `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`
-        }))
-    ];
-    
-    for (const method of loadMethods) {
         try {
-            console.log(`  🔄 Trying to load via ${method.name}...`);
-            
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
-            
-            const response = await fetch(method.url, {
-                signal: controller.signal,
-                headers: { 'Accept': 'application/json' }
+            const response = await fetch(`${SERVER_URL}/addUser`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username }),
             });
-            
-            clearTimeout(timeoutId);
-            
-            if (response.ok) {
-                const serverUsers = await response.json();
-                console.log('✅ Loaded from backend:', serverUsers);
-                
-                // Load saved users from localStorage
-                const savedUsers = loadUsersFromStorage();
-                
-                // Combine all users (defaults + server + localStorage, no duplicates)
-                allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...savedUsers])];
-                
-                connectionStatus.innerHTML = '✅ Connected to plasma network';
-                updateLastUpdatedTime();
-                return true;
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'An error occurred.');
             }
+
+            // Success! Add the new user to our local list and re-render.
+            allUsers.push(result);
+            displayMovingWall(result.username);
+            submissionStatus.textContent = `✅ @${username} successfully joined the wall!`;
+            usernameInput.value = '';
+
         } catch (error) {
-            console.log(`  ❌ Load method ${method.name} failed:`, error.message);
+            console.error('❌ Submission failed:', error);
+            submissionStatus.textContent = `⚠️ Error: ${error.message}`;
+        } finally {
+            // Re-enable button
+            setLoadingState(false);
+            setTimeout(() => submissionStatus.textContent = '', 4000);
         }
     }
-    
-    console.log('⚠️ Backend unavailable, using localStorage');
-    
-    // Load from localStorage only
-    loadUsersFromStorage();
-    connectionStatus.innerHTML = '⚠️ Offline mode - using saved data';
-    return false;
-}
 
-// Enhanced submit user with better validation and feedback
-async function submitUser(username) {
-    const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
+    // --- UI Helpers & Event Listeners ---
     
-    // Enhanced validation
-    if (!cleanUsername || cleanUsername.length < 2) {
-        alert('Please enter a valid username (at least 2 characters, letters/numbers/underscores only)');
-        return;
-    }
-    
-    if (cleanUsername.length > 15) {
-        alert('Username too long (maximum 15 characters)');
-        return;
-    }
-    
-    if (allUsers.includes(cleanUsername)) {
-        alert('This user is already in the Plasma Wall! 🌟');
-        // Highlight existing user briefly
-        const existingCards = document.querySelectorAll('.user-card');
-        existingCards.forEach(card => {
-            const overlay = card.querySelector('.username-overlay');
-            if (overlay && overlay.textContent === `@${cleanUsername}`) {
-                card.style.transform = 'scale(1.3) translateY(-15px)';
-                card.style.zIndex = '100';
-                setTimeout(() => {
-                    card.style.transform = '';
-                    card.style.zIndex = '';
-                }, 2000);
-            }
-        });
-        return;
-    }
-    
-    console.log('🚀 Processing submission:', cleanUsername);
-    
-    // Disable submit with loading animation
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '⚡ Adding to Plasma...';
-    connectionStatus.innerHTML = '🌟 Adding user to the cosmic wall...';
-    
-    // Add immediately to local array and save to localStorage
-    allUsers.push(cleanUsername);
-    saveUsersToStorage();
-    
-    // Update wall immediately with highlight for new user
-    displayMovingWall(cleanUsername);
-    
-    // Try to save to backend in background
-    const saved = await saveToBackend(cleanUsername);
-    
-    if (saved) {
-        connectionStatus.innerHTML = '✅ Added to Plasma Wall and synced to network! 🚀';
-    } else {
-        connectionStatus.innerHTML = '✅ Added to Plasma Wall (saved locally, will sync when network is back) 💫';
-    }
-    
-    // Clear input with success animation
-    usernameInput.value = '';
-    usernameInput.style.transform = 'scale(1.05)';
-    usernameInput.style.borderColor = '#22c55e';
-    
-    setTimeout(() => {
-        usernameInput.style.transform = '';
-        usernameInput.style.borderColor = '';
-    }, 300);
-    
-    // Reset button and status with delay
-    setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Join Plasma';
-        connectionStatus.innerHTML = saved ? 
-            '✅ Connected to plasma network' : 
-            '⚠️ Offline mode - using saved data';
-    }, 3000);
-    
-    console.log('✨ User successfully added to Plasma Wall');
-    
-    // Celebration effect
-    createCelebrationEffect();
-}
-
-// Add celebration effect for successful submissions
-function createCelebrationEffect() {
-    const colors = ['#22c55e', '#16a34a', '#15803d'];
-    const particles = 20;
-    
-    for (let i = 0; i < particles; i++) {
-        const particle = document.createElement('div');
-        particle.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 8px;
-            height: 8px;
-            background: ${colors[Math.floor(Math.random() * colors.length)]};
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1000;
-            animation: celebrate 1.5s ease-out forwards;
-        `;
-        
-        // Random direction
-        const angle = (Math.PI * 2 * i) / particles;
-        const velocity = 50 + Math.random() * 50;
-        const x = Math.cos(angle) * velocity;
-        const y = Math.sin(angle) * velocity;
-        
-        particle.style.setProperty('--x', `${x}px`);
-        particle.style.setProperty('--y', `${y}px`);
-        
-        document.body.appendChild(particle);
-        
-        setTimeout(() => {
-            if (particle.parentNode) {
-                particle.parentNode.removeChild(particle);
-            }
-        }, 1500);
-    }
-}
-
-// Add celebration animation CSS
-const celebrationStyle = document.createElement('style');
-celebrationStyle.textContent = `
-    @keyframes celebrate {
-        0% {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-        100% {
-            transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(celebrationStyle);
-
-// Refresh functionality
-refreshBtn.addEventListener('click', async () => {
-    refreshBtn.disabled = true;
-    refreshBtn.innerHTML = '🔄 Refreshing...';
-    connectionStatus.innerHTML = '🔄 Refreshing plasma network...';
-    
-    // Add loading animation to button
-    refreshBtn.classList.add('success-added');
-    
-    try {
-        const loaded = await loadFromBackend();
-        displayMovingWall();
-        
-        if (loaded) {
-            connectionStatus.innerHTML = '✅ Plasma Wall refreshed successfully!';
+    function setLoadingState(isLoading) {
+        if (isLoading) {
+            submitBtn.disabled = true;
+            submitBtnText.textContent = 'Joining...';
+            submitSpinner.classList.remove('hidden');
         } else {
-            connectionStatus.innerHTML = '⚠️ Network unavailable - showing cached data';
-        }
-    } catch (error) {
-        console.error('❌ Refresh failed:', error);
-        connectionStatus.innerHTML = '❌ Refresh failed - using cached data';
-    }
-    
-    setTimeout(() => {
-        refreshBtn.disabled = false;
-        refreshBtn.innerHTML = '🔄 Refresh Wall';
-        refreshBtn.classList.remove('success-added');
-        
-        if (connectionStatus.textContent.includes('Refreshing') || 
-            connectionStatus.textContent.includes('refreshed')) {
-            connectionStatus.innerHTML = '✅ Connected to plasma network';
-        }
-    }, 2000);
-});
-
-// Event listeners with enhanced functionality
-submitBtn.addEventListener('click', () => {
-    const username = usernameInput.value.trim();
-    if (username) {
-        submitUser(username);
-    } else {
-        usernameInput.focus();
-        usernameInput.style.borderColor = '#ef4444';
-        setTimeout(() => {
-            usernameInput.style.borderColor = '';
-        }, 1000);
-    }
-});
-
-usernameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !submitBtn.disabled) {
-        const username = usernameInput.value.trim();
-        if (username) {
-            submitUser(username);
+            submitBtn.disabled = false;
+            submitBtnText.textContent = 'Join Plasma';
+            submitSpinner.classList.add('hidden');
         }
     }
-});
-
-// Enhanced input validation feedback
-usernameInput.addEventListener('input', (e) => {
-    const value = e.target.value;
-    const cleanValue = value.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
     
-    if (value !== cleanValue) {
-        e.target.value = cleanValue.startsWith('@') ? cleanValue : (cleanValue ? `${cleanValue}` : '');
-    }
+    submitBtn.addEventListener('click', submitUser);
+    usernameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') submitUser();
+    });
+
+    refreshBtn.addEventListener('click', fetchUsers);
     
-    // Real-time validation feedback
-    if (cleanValue.length > 0 && cleanValue.length < 2) {
-        e.target.style.borderColor = '#f59e0b';
-    } else if (cleanValue.length > 15) {
-        e.target.style.borderColor = '#ef4444';
-    } else if (allUsers.includes(cleanValue)) {
-        e.target.style.borderColor = '#f59e0b';
-    } else if (cleanValue.length >= 2) {
-        e.target.style.borderColor = '#22c55e';
-    } else {
-        e.target.style.borderColor = '';
-    }
-});
-
-// Auto-sync functionality (check for updates periodically)
-let autoSyncInterval;
-
-function startAutoSync() {
-    autoSyncInterval = setInterval(async () => {
-        console.log('🔄 Auto-sync check...');
-        try {
-            const wasConnected = connectionStatus.textContent.includes('Connected');
-            const loaded = await loadFromBackend();
-            
-            if (loaded && !wasConnected) {
-                displayMovingWall();
-                console.log('✅ Reconnected to backend');
-            }
-        } catch (error) {
-            console.log('⚠️ Auto-sync check failed:', error.message);
+    let isMusicPlaying = false;
+    musicToggle.addEventListener('click', () => {
+        if (isMusicPlaying) {
+            bgMusic.pause();
+            musicToggle.textContent = '🎵 Play Music';
+        } else {
+            bgMusic.volume = 0.3;
+            bgMusic.play().catch(e => console.error("Audio play failed:", e));
+            musicToggle.textContent = '🔇 Pause Music';
         }
-    }, 30000); // Check every 30 seconds
-}
+        isMusicPlaying = !isMusicPlaying;
+    });
 
-function stopAutoSync() {
-    if (autoSyncInterval) {
-        clearInterval(autoSyncInterval);
+    // --- Initial Load ---
+    function init() {
+        console.log('🚀 Initializing Plasma Wall...');
+        fetchUsers();
     }
-}
 
-// Enhanced initialization with better error handling and loading states
-async function init() {
-    console.log('🚀 Initializing Enhanced Plasma Wall...');
-    console.log('🎵 Looking for music files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
-    console.log('👥 Default users:', DEFAULT_USERS);
-    console.log('💾 Using enhanced localStorage with metadata');
-    console.log('🔄 Auto-sync enabled (30s intervals)');
-    
-    connectionStatus.innerHTML = '🌟 Initializing plasma network...';
-    
-    // Show loading state
-    userCount.innerHTML = '⚡ Loading cosmic community...';
-    movingWall.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #22c55e; font-size: 2rem;">🌌 Loading Plasma Wall...</div>';
-    
-    try {
-        // Load users (backend + localStorage)
-        const backendConnected = await loadFromBackend();
-        
-        // Display the moving wall
-        displayMovingWall();
-        
-        // Start auto-sync if connected
-        if (backendConnected) {
-            startAutoSync();
-        }
-        
-        console.log('✨ Enhanced Plasma Wall ready!');
-        console.log(`👥 Total users in wall: ${allUsers.length}`);
-        console.log(`🌐 Backend connected: ${backendConnected ? 'Yes' : 'No'}`);
-        
-    } catch (error) {
-        console.error('❌ Initialization error:', error);
-        connectionStatus.innerHTML = '❌ Initialization failed - using offline mode';
-        
-        // Fallback to defaults
-        allUsers = [...DEFAULT_USERS];
-        displayMovingWall();
-    }
-    
-    // Final status update
-    setTimeout(() => {
-        if (connectionStatus.textContent.includes('Initializing')) {
-            connectionStatus.innerHTML = '✅ Ready to join the plasma network';
-        }
-    }, 1000);
-}
-
-// Cleanup on page unload
-window.addEventListener('beforeunload', () => {
-    stopAutoSync();
-    if (musicPlaying) {
-        bgMusic.pause();
-    }
+    init();
 });
-
-// Handle visibility change (pause music when tab not visible)
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden && musicPlaying) {
-        bgMusic.pause();
-        musicToggle.innerHTML = '🎵 Play Cosmic Music';
-        musicPlaying = false;
-    }
-});
-
-// Start the enhanced application
-init();
 </script>
-
 </body>
 </html>
