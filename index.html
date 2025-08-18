@@ -6,24 +6,26 @@
 <title>Plasma Wall - Enhanced</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen text-white overflow-hidden relative" style="background: linear-gradient(135deg, #1a3b2e, #0f2922, #1a3b2e);">
+<body class="min-h-screen text-white overflow-hidden relative" style="background: radial-gradient(ellipse at center, #0a4d3a 0%, #064e3b 25%, #022c22 50%, #001a14 100%);">
 
-<!-- Interstellar Background -->
+<!-- Enhanced Background Effects -->
 <div class="absolute inset-0 overflow-hidden">
-    <!-- Star field layers -->
-    <div class="stars-far absolute inset-0"></div>
-    <div class="stars-mid absolute inset-0"></div>
-    <div class="stars-near absolute inset-0"></div>
+    <!-- Animated star layers -->
+    <div class="stars-layer-1 absolute inset-0"></div>
+    <div class="stars-layer-2 absolute inset-0"></div>
+    <div class="stars-layer-3 absolute inset-0"></div>
     
-    <!-- Main spinning circle -->
-    <div class="spinning-portal absolute inset-0 flex items-center justify-center">
-        <div class="interstellar-ring"></div>
+    <!-- Central plasma portal -->
+    <div class="plasma-portal absolute inset-0 flex items-center justify-center">
+        <div class="portal-ring"></div>
+        <div class="portal-inner"></div>
     </div>
-    <!-- Enhanced floating particles -->
-    <div class="space-particles absolute inset-0"></div>
-    <!-- Cosmic dust and nebula effects -->
-    <div class="cosmic-dust absolute inset-0"></div>
-    <div class="nebula-effect absolute inset-0"></div>
+    
+    <!-- Floating energy particles -->
+    <div class="energy-particles absolute inset-0"></div>
+    
+    <!-- Plasma waves -->
+    <div class="plasma-waves absolute inset-0"></div>
 </div>
 
 <!-- Audio -->
@@ -33,442 +35,402 @@
     <source src="./music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Header -->
-<header class="relative z-10 text-center py-6">
-    <h1 class="text-5xl font-bold text-white mb-4 glow-text">
-        Join the Plasma Wall
+<!-- Enhanced Header -->
+<header class="relative z-10 text-center py-8">
+    <h1 class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-green-400 to-green-500 mb-4 plasma-glow">
+        ⚡ PLASMA WALL ⚡
     </h1>
-    <p class="text-green-300 text-lg">Submit your X/Twitter handle and become part of the cosmic community</p>
+    <p class="text-green-200 text-xl font-light tracking-wide">Join the cosmic community • Become part of the energy</p>
 </header>
 
-<!-- Stats Section -->
-<div class="relative z-10 flex justify-center mb-6">
-    <div class="bg-black/50 backdrop-blur-md rounded-2xl px-6 py-3 border border-green-500/30">
-        <div id="userCount" class="text-green-200 font-semibold text-lg">Loading community...</div>
+<!-- Enhanced Stats Section -->
+<div class="relative z-10 flex justify-center mb-8">
+    <div class="bg-black/70 backdrop-blur-xl rounded-3xl px-8 py-4 border-2 border-green-400/50 plasma-card">
+        <div id="userCount" class="text-green-300 font-bold text-xl flex items-center justify-center gap-3">
+            <span class="animate-pulse">🌟</span>
+            <span>Loading plasma network...</span>
+            <span class="animate-pulse">🌟</span>
+        </div>
     </div>
 </div>
 
-<!-- Input Section -->
-<div class="relative z-10 flex flex-col items-center justify-center px-4 mb-8">
-    <div class="flex items-center gap-4 max-w-4xl w-full">
+<!-- Enhanced Input Section -->
+<div class="relative z-10 flex flex-col items-center justify-center px-4 mb-12">
+    <div class="flex items-center gap-6 max-w-5xl w-full mb-6">
         <input 
             type="text" 
             id="usernameInput" 
-            placeholder="@yourusername or yourusername" 
-            class="flex-1 px-6 py-4 rounded-full text-gray-900 bg-white/95 focus:outline-none focus:ring-4 focus:ring-green-400/50 text-lg backdrop-blur-sm shadow-2xl transition-all duration-300 hover:shadow-green-400/20"
+            placeholder="Enter your Twitter/X username" 
+            class="flex-1 px-8 py-5 rounded-2xl text-gray-900 bg-white/95 focus:outline-none focus:ring-4 focus:ring-green-400/70 text-xl font-medium backdrop-blur-sm shadow-2xl transition-all duration-300 hover:shadow-green-400/30 border-2 border-transparent focus:border-green-400"
         >
         <button 
             id="submitBtn" 
-            class="px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-full font-bold transition-all duration-300 text-lg shadow-2xl hover:shadow-green-400/20 transform hover:scale-105"
+            class="px-10 py-5 bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:from-green-600 hover:via-green-700 hover:to-green-800 rounded-2xl font-bold transition-all duration-300 text-xl shadow-2xl hover:shadow-green-400/30 transform hover:scale-105 border-2 border-green-400/30"
         >
-            Join Plasma
+            ⚡ JOIN PLASMA ⚡
         </button>
     </div>
     
-    <div class="flex gap-4 mt-4">
+    <div class="flex gap-6 mb-4">
         <button 
             id="musicToggle" 
-            class="px-6 py-3 bg-gradient-to-r from-green-800 to-green-900 hover:from-green-900 hover:to-green-950 rounded-full font-medium transition-all duration-300 shadow-xl transform hover:scale-105"
+            class="px-6 py-3 bg-gradient-to-r from-emerald-700 to-emerald-800 hover:from-emerald-800 hover:to-emerald-900 rounded-xl font-medium transition-all duration-300 shadow-xl transform hover:scale-105 border border-green-500/30"
         >
-            🎵 Play Cosmic Music
+            🎵 Cosmic Soundtrack
         </button>
         
         <button 
             id="refreshBtn" 
-            class="px-6 py-3 bg-gradient-to-r from-blue-800 to-blue-900 hover:from-blue-900 hover:to-blue-950 rounded-full font-medium transition-all duration-300 shadow-xl transform hover:scale-105"
+            class="px-6 py-3 bg-gradient-to-r from-teal-700 to-teal-800 hover:from-teal-800 hover:to-teal-900 rounded-xl font-medium transition-all duration-300 shadow-xl transform hover:scale-105 border border-green-500/30"
         >
-            🔄 Refresh Wall
+            🔄 Refresh Network
         </button>
     </div>
     
-    <div id="connectionStatus" class="mt-4 text-center text-green-300 font-medium">Connecting to the plasma network...</div>
+    <div id="connectionStatus" class="text-center text-green-300 font-semibold text-lg bg-black/50 backdrop-blur-md rounded-xl px-6 py-3 border border-green-500/20">
+        Connecting to plasma network...
+    </div>
 </div>
 
-<!-- Moving Wall Container -->
+<!-- Enhanced Moving Wall Container -->
 <div class="relative z-10 px-4 pb-8">
-    <div class="bg-black/40 backdrop-blur-md rounded-3xl p-8 border border-green-500/30 max-w-7xl mx-auto overflow-hidden shadow-2xl">        
+    <div class="bg-black/60 backdrop-blur-xl rounded-3xl p-10 border-2 border-green-400/40 max-w-7xl mx-auto overflow-hidden shadow-2xl plasma-card">        
         <!-- Moving Wall -->
-        <div class="moving-wall-container relative h-96 overflow-hidden">
-            <div id="movingWall" class="moving-wall absolute top-0 left-0 flex flex-wrap gap-4 animate-move"></div>
+        <div class="wall-container relative h-96 overflow-hidden rounded-2xl border border-green-500/30">
+            <div id="movingWall" class="moving-wall absolute top-0 left-0 flex items-center gap-6"></div>
         </div>
         
-        <div class="flex justify-between items-center mt-6 text-sm">
-            <div class="text-green-400 font-semibold">✨ Built by @aabis</div>
-            <div id="lastUpdated" class="text-green-400/70">Last updated: Never</div>
+        <div class="flex justify-between items-center mt-8 text-base">
+            <div class="text-green-400 font-bold flex items-center gap-2">
+                <span class="text-xl">⚡</span>
+                <span>Powered by @aabis</span>
+            </div>
+            <div id="lastUpdated" class="text-green-300/80 font-medium">Network Status: Initializing</div>
         </div>
     </div>
 </div>
 
-<!-- Styles -->
+<!-- Enhanced Styles -->
 <style>
-/* Enhanced glow effects */
-.glow-text {
-    text-shadow: 0 0 10px rgba(34, 197, 94, 0.5), 0 0 20px rgba(34, 197, 94, 0.3);
+/* Enhanced plasma glow effects */
+.plasma-glow {
+    text-shadow: 
+        0 0 10px rgba(34, 197, 94, 0.8),
+        0 0 20px rgba(34, 197, 94, 0.6),
+        0 0 30px rgba(34, 197, 94, 0.4),
+        0 0 40px rgba(34, 197, 94, 0.2);
+    animation: plasmaGlow 3s ease-in-out infinite alternate;
 }
 
-/* Enhanced interstellar star field */
-.stars-far {
+@keyframes plasmaGlow {
+    0% { text-shadow: 0 0 10px rgba(34, 197, 94, 0.8), 0 0 20px rgba(34, 197, 94, 0.6), 0 0 30px rgba(34, 197, 94, 0.4); }
+    100% { text-shadow: 0 0 15px rgba(34, 197, 94, 1), 0 0 25px rgba(34, 197, 94, 0.8), 0 0 35px rgba(34, 197, 94, 0.6); }
+}
+
+/* Enhanced card effects */
+.plasma-card {
+    background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(6,78,59,0.3) 100%);
+    box-shadow: 
+        0 0 30px rgba(34, 197, 94, 0.2),
+        inset 0 1px 0 rgba(34, 197, 94, 0.1);
+}
+
+/* Advanced star field system */
+.stars-layer-1 {
     background-image: 
-        radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.3), transparent),
-        radial-gradient(1px 1px at 40px 70px, rgba(34, 197, 94, 0.4), transparent),
-        radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.2), transparent),
-        radial-gradient(1px 1px at 130px 80px, rgba(34, 197, 94, 0.3), transparent),
-        radial-gradient(1px 1px at 160px 30px, rgba(255,255,255,0.4), transparent),
-        radial-gradient(1px 1px at 200px 60px, rgba(34, 197, 94, 0.2), transparent),
-        radial-gradient(1px 1px at 240px 90px, rgba(255,255,255,0.3), transparent),
-        radial-gradient(1px 1px at 280px 10px, rgba(34, 197, 94, 0.4), transparent),
-        radial-gradient(1px 1px at 320px 50px, rgba(255,255,255,0.2), transparent),
-        radial-gradient(1px 1px at 360px 80px, rgba(34, 197, 94, 0.3), transparent);
-    background-repeat: repeat;
-    background-size: 400px 300px;
-    animation: starsRotate 200s linear infinite;
-    opacity: 0.6;
+        radial-gradient(2px 2px at 10% 20%, rgba(34, 197, 94, 0.9), transparent),
+        radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(2px 2px at 60% 10%, rgba(34, 197, 94, 0.7), transparent),
+        radial-gradient(1px 1px at 80% 80%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(2px 2px at 25% 90%, rgba(34, 197, 94, 0.8), transparent);
+    background-size: 300px 300px, 400px 400px, 500px 300px, 350px 450px, 600px 200px;
+    animation: starsFloat1 120s linear infinite;
 }
 
-.stars-mid {
+.stars-layer-2 {
     background-image: 
-        radial-gradient(2px 2px at 60px 90px, rgba(255,255,255,0.5), transparent),
-        radial-gradient(1px 1px at 120px 30px, rgba(34, 197, 94, 0.6), transparent),
-        radial-gradient(2px 2px at 180px 70px, rgba(255,255,255,0.4), transparent),
-        radial-gradient(1px 1px at 240px 100px, rgba(34, 197, 94, 0.5), transparent),
-        radial-gradient(2px 2px at 300px 20px, rgba(255,255,255,0.6), transparent),
-        radial-gradient(1px 1px at 360px 60px, rgba(34, 197, 94, 0.4), transparent),
-        radial-gradient(2px 2px at 420px 110px, rgba(255,255,255,0.3), transparent),
-        radial-gradient(1px 1px at 480px 40px, rgba(34, 197, 94, 0.7), transparent);
-    background-repeat: repeat;
-    background-size: 600px 400px;
-    animation: starsRotate 150s linear infinite reverse;
-    opacity: 0.7;
+        radial-gradient(3px 3px at 40% 30%, rgba(16, 185, 129, 0.8), transparent),
+        radial-gradient(2px 2px at 70% 70%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(3px 3px at 15% 50%, rgba(5, 150, 105, 0.9), transparent),
+        radial-gradient(2px 2px at 85% 25%, rgba(255,255,255,0.6), transparent);
+    background-size: 450px 350px, 300px 500px, 550px 250px, 400px 400px;
+    animation: starsFloat2 90s linear infinite reverse;
 }
 
-.stars-near {
+.stars-layer-3 {
     background-image: 
-        radial-gradient(3px 3px at 100px 50px, rgba(255,255,255,0.8), transparent),
-        radial-gradient(2px 2px at 200px 120px, rgba(34, 197, 94, 0.9), transparent),
-        radial-gradient(3px 3px at 300px 80px, rgba(255,255,255,0.7), transparent),
-        radial-gradient(2px 2px at 400px 20px, rgba(34, 197, 94, 0.8), transparent),
-        radial-gradient(4px 4px at 500px 100px, rgba(255,255,255,0.6), transparent),
-        radial-gradient(2px 2px at 600px 60px, rgba(34, 197, 94, 0.7), transparent);
-    background-repeat: repeat;
-    background-size: 700px 500px;
-    animation: starsRotate 100s linear infinite;
-    opacity: 0.8;
+        radial-gradient(4px 4px at 20% 80%, rgba(6, 182, 212, 0.6), transparent),
+        radial-gradient(3px 3px at 60% 40%, rgba(34, 197, 94, 1), transparent),
+        radial-gradient(4px 4px at 90% 60%, rgba(255,255,255,0.8), transparent);
+    background-size: 700px 400px, 500px 600px, 600px 300px;
+    animation: starsFloat3 150s linear infinite;
 }
 
-@keyframes starsRotate {
-    from { 
-        transform: rotate(0deg) translateX(0) translateY(0);
-    }
-    to { 
-        transform: rotate(360deg) translateX(-50px) translateY(-30px);
-    }
+@keyframes starsFloat1 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-100px, -50px) rotate(360deg); }
 }
 
-/* Twinkling effect */
-.stars-near::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: 
-        radial-gradient(2px 2px at 150px 75px, rgba(255,255,255,0.9), transparent),
-        radial-gradient(3px 3px at 350px 125px, rgba(34, 197, 94,0.9), transparent),
-        radial-gradient(2px 2px at 550px 25px, rgba(255,255,255,0.8), transparent);
-    background-repeat: repeat;
-    background-size: 700px 500px;
-    animation: twinkle 4s ease-in-out infinite alternate;
+@keyframes starsFloat2 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(80px, -80px) rotate(-360deg); }
 }
 
-@keyframes twinkle {
-    0% { opacity: 0.3; }
-    50% { opacity: 1; }
-    100% { opacity: 0.3; }
+@keyframes starsFloat3 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-60px, 40px) rotate(180deg); }
 }
 
-/* Nebula effect */
-.nebula-effect {
-    background: radial-gradient(
-        ellipse at 20% 50%, 
-        rgba(34, 197, 94, 0.1) 0%, 
-        transparent 50%
-    ),
-    radial-gradient(
-        ellipse at 80% 20%, 
-        rgba(16, 163, 74, 0.08) 0%, 
-        transparent 50%
-    ),
-    radial-gradient(
-        ellipse at 40% 80%, 
-        rgba(21, 128, 61, 0.12) 0%, 
-        transparent 50%
-    );
-    animation: nebulaFlow 60s ease-in-out infinite alternate;
-}
-
-@keyframes nebulaFlow {
-    0% { 
-        transform: scale(1) rotate(0deg);
-        opacity: 0.3;
-    }
-    50% {
-        transform: scale(1.1) rotate(2deg);
-        opacity: 0.5;
-    }
-    100% { 
-        transform: scale(1) rotate(-1deg);
-        opacity: 0.3;
-    }
-}
-
-/* Enhanced interstellar spinning ring */
-.spinning-portal {
+/* Enhanced portal effects */
+.plasma-portal {
     pointer-events: none;
 }
 
-.interstellar-ring {
-    width: 500px;
-    height: 500px;
-    position: relative;
-    animation: spinPortal 30s linear infinite;
-    opacity: 0.4;
-}
-
-.interstellar-ring::before {
-    content: '';
-    position: absolute;
-    inset: 0;
+.portal-ring {
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
     background: conic-gradient(
         from 0deg,
         transparent 0deg,
-        #22c55e 8deg,
-        #16a34a 15deg,
-        transparent 25deg,
+        rgba(34, 197, 94, 0.3) 10deg,
+        rgba(16, 185, 129, 0.5) 20deg,
         transparent 35deg,
-        #15803d 45deg,
-        #22c55e 52deg,
-        transparent 65deg,
-        transparent 75deg,
-        #16a34a 85deg,
-        transparent 95deg,
-        transparent 105deg,
-        #22c55e 115deg,
-        transparent 125deg,
-        transparent 135deg,
-        #15803d 145deg,
-        #16a34a 155deg,
-        transparent 165deg,
-        transparent 175deg,
-        #22c55e 185deg,
-        transparent 195deg,
-        transparent 205deg,
-        #16a34a 215deg,
-        transparent 225deg,
-        transparent 235deg,
-        #15803d 245deg,
-        transparent 255deg,
-        transparent 265deg,
-        #22c55e 275deg,
-        transparent 285deg,
-        transparent 295deg,
-        #16a34a 305deg,
-        #15803d 315deg,
-        transparent 325deg,
-        transparent 335deg,
-        #22c55e 345deg,
-        transparent 355deg,
+        transparent 50deg,
+        rgba(5, 150, 105, 0.4) 65deg,
+        rgba(34, 197, 94, 0.6) 75deg,
+        transparent 90deg,
+        transparent 110deg,
+        rgba(16, 185, 129, 0.3) 125deg,
+        transparent 140deg,
+        transparent 160deg,
+        rgba(34, 197, 94, 0.5) 175deg,
+        rgba(5, 150, 105, 0.4) 185deg,
+        transparent 200deg,
+        transparent 220deg,
+        rgba(16, 185, 129, 0.6) 235deg,
+        transparent 250deg,
+        transparent 270deg,
+        rgba(34, 197, 94, 0.4) 285deg,
+        transparent 300deg,
+        transparent 320deg,
+        rgba(5, 150, 105, 0.5) 335deg,
+        transparent 350deg,
         transparent 360deg
     );
-    border-radius: 50%;
-    mask: radial-gradient(circle, transparent 25%, black 26%, black 75%, transparent 76%);
-    -webkit-mask: radial-gradient(circle, transparent 25%, black 26%, black 75%, transparent 76%);
-    filter: blur(1px);
+    mask: radial-gradient(circle, transparent 20%, black 22%, black 78%, transparent 80%);
+    -webkit-mask: radial-gradient(circle, transparent 20%, black 22%, black 78%, transparent 80%);
+    animation: portalSpin 25s linear infinite;
+    filter: blur(1.5px);
 }
 
-@keyframes spinPortal {
+.portal-inner {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, 
+        rgba(34, 197, 94, 0.4) 0%, 
+        rgba(16, 185, 129, 0.2) 30%, 
+        transparent 70%);
+    border-radius: 50%;
+    animation: portalPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes portalSpin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
 
-/* Enhanced space particles */
-.space-particles {
+@keyframes portalPulse {
+    0% { transform: scale(0.8); opacity: 0.6; }
+    100% { transform: scale(1.2); opacity: 0.9; }
+}
+
+/* Enhanced energy particles */
+.energy-particles {
     background-image: 
-        radial-gradient(2px 2px at 20px 30px, #22c55e, transparent),
-        radial-gradient(1px 1px at 150px 80px, rgba(34, 197, 94, 0.8), transparent),
-        radial-gradient(1px 1px at 300px 120px, #16a34a, transparent),
-        radial-gradient(2px 2px at 450px 50px, rgba(21, 128, 61, 0.6), transparent),
-        radial-gradient(1px 1px at 600px 200px, #22c55e, transparent),
-        radial-gradient(1px 1px at 750px 100px, rgba(34, 197, 94, 0.7), transparent);
-    background-repeat: repeat;
-    background-size: 800px 300px, 600px 400px, 700px 350px, 500px 250px, 900px 320px, 400px 280px;
-    animation: particleFloat 40s linear infinite;
-    opacity: 0.8;
+        radial-gradient(3px 3px at 15% 25%, rgba(34, 197, 94, 0.8), transparent),
+        radial-gradient(2px 2px at 45% 75%, rgba(16, 185, 129, 0.9), transparent),
+        radial-gradient(3px 3px at 75% 35%, rgba(5, 150, 105, 0.7), transparent),
+        radial-gradient(2px 2px at 25% 85%, rgba(34, 197, 94, 0.8), transparent),
+        radial-gradient(4px 4px at 85% 15%, rgba(16, 185, 129, 0.6), transparent),
+        radial-gradient(2px 2px at 55% 55%, rgba(34, 197, 94, 0.9), transparent);
+    background-size: 800px 400px, 600px 600px, 700px 350px, 500px 500px, 900px 300px, 400px 700px;
+    animation: particleFlow 30s linear infinite;
 }
 
-@keyframes particleFloat {
-    0% { transform: translateX(0) translateY(0) rotate(0deg); }
-    25% { transform: translateX(-60px) translateY(-40px) rotate(90deg); }
-    50% { transform: translateX(-120px) translateY(30px) rotate(180deg); }
-    75% { transform: translateX(-40px) translateY(-60px) rotate(270deg); }
-    100% { transform: translateX(0) translateY(0) rotate(360deg); }
+@keyframes particleFlow {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-80px, -60px) rotate(90deg); }
+    50% { transform: translate(-160px, 40px) rotate(180deg); }
+    75% { transform: translate(-60px, -80px) rotate(270deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
 }
 
-/* Cosmic dust effect */
-.cosmic-dust {
-    background-image: 
-        radial-gradient(1px 1px at 100px 100px, rgba(34, 197, 94, 0.3), transparent),
-        radial-gradient(1px 1px at 200px 200px, rgba(16, 163, 74, 0.2), transparent),
-        radial-gradient(1px 1px at 300px 50px, rgba(21, 128, 61, 0.4), transparent),
-        radial-gradient(1px 1px at 400px 150px, rgba(34, 197, 94, 0.2), transparent),
-        radial-gradient(1px 1px at 500px 250px, rgba(16, 163, 74, 0.3), transparent);
-    background-repeat: repeat;
-    background-size: 600px 300px, 400px 500px, 800px 200px, 300px 400px, 700px 350px;
-    animation: dustFloat 60s linear infinite;
-    opacity: 0.5;
+/* Plasma waves */
+.plasma-waves {
+    background: 
+        radial-gradient(ellipse 800px 400px at 20% 50%, rgba(34, 197, 94, 0.1), transparent),
+        radial-gradient(ellipse 600px 300px at 80% 30%, rgba(16, 185, 129, 0.08), transparent),
+        radial-gradient(ellipse 700px 350px at 40% 80%, rgba(5, 150, 105, 0.12), transparent);
+    animation: plasmaFlow 45s ease-in-out infinite alternate;
 }
 
-@keyframes dustFloat {
-    0% { transform: translateX(0) translateY(0); }
-    33% { transform: translateX(-30px) translateY(-20px); }
-    66% { transform: translateX(-60px) translateY(15px); }
-    100% { transform: translateX(0) translateY(0); }
+@keyframes plasmaFlow {
+    0% { transform: scale(1) rotate(0deg); opacity: 0.4; }
+    50% { transform: scale(1.1) rotate(2deg); opacity: 0.6; }
+    100% { transform: scale(0.9) rotate(-1deg); opacity: 0.3; }
 }
 
 /* Enhanced moving wall */
-.moving-wall-container {
-    mask: linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%);
-    -webkit-mask: linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%);
-    border-radius: 20px;
-    overflow: hidden;
+.wall-container {
+    background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(6,78,59,0.2) 100%);
+    mask: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
 }
 
 .moving-wall {
-    width: max-content;
-    animation: slideWall 80s linear infinite;
-    display: flex;
-    align-items: center;
+    animation: wallSlide 60s linear infinite;
+    padding: 20px 0;
 }
 
-@keyframes slideWall {
+@keyframes wallSlide {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
 }
 
+/* Enhanced user cards */
 .user-card {
     flex-shrink: 0;
-    width: 140px;
-    height: 140px;
+    width: 160px;
+    height: 160px;
     position: relative;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
-    margin: 10px;
+    margin: 0 8px;
 }
 
 .user-card:hover {
-    transform: scale(1.2) translateY(-10px) rotateZ(5deg);
-    z-index: 10;
+    transform: scale(1.25) translateY(-15px) rotateZ(3deg);
+    z-index: 20;
+}
+
+.profile-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    border: 3px solid rgba(34, 197, 94, 0.8);
+    box-shadow: 
+        0 0 30px rgba(34, 197, 94, 0.4),
+        0 10px 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s ease;
+}
+
+.user-card:hover .profile-container {
+    border-color: #10b981;
+    box-shadow: 
+        0 0 50px rgba(34, 197, 94, 0.7),
+        0 15px 50px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: rotateY(5deg);
 }
 
 .profile-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 16px;
-    border: 4px solid rgba(34, 197, 94, 0.9);
-    box-shadow: 
-        0 0 25px rgba(34, 197, 94, 0.5),
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transition: all 0.4s ease;
 }
 
 .user-card:hover .profile-img {
-    border-color: #22c55e;
-    box-shadow: 
-        0 0 40px rgba(34, 197, 94, 0.8),
-        0 12px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
 }
 
-.username-overlay {
+.username-badge {
     position: absolute;
-    bottom: -8px;
-    left: 0;
-    right: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 100%);
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, rgba(0,0,0,0.95) 0%, rgba(6,78,59,0.9) 100%);
     color: #22c55e;
     text-align: center;
-    padding: 6px 4px;
-    font-size: 12px;
+    padding: 8px 16px;
+    font-size: 13px;
     font-weight: bold;
-    border-radius: 0 0 16px 16px;
-    border: 2px solid rgba(34, 197, 94, 0.6);
-    border-top: none;
-    backdrop-filter: blur(10px);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    border: 2px solid rgba(34, 197, 94, 0.7);
+    backdrop-filter: blur(15px);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
     transition: all 0.4s ease;
+    min-width: 120px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.user-card:hover .username-overlay {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.9) 0%, rgba(16, 163, 74, 0.9) 100%);
+.user-card:hover .username-badge {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.9) 0%, rgba(16, 185, 129, 0.9) 100%);
     color: white;
-    border-color: #22c55e;
-    transform: translateY(-2px);
+    border-color: #10b981;
+    transform: translateX(-50%) translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.3);
 }
 
-.loading-placeholder {
-    background: linear-gradient(90deg, 
-        rgba(31, 41, 55, 0.8) 25%, 
-        rgba(55, 65, 81, 0.9) 50%, 
-        rgba(31, 41, 55, 0.8) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite;
-    border-radius: 16px;
-    border: 4px solid rgba(34, 197, 94, 0.3);
-    position: relative;
-}
-
-.loading-placeholder::after {
-    content: '⚡';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 24px;
-    color: rgba(34, 197, 94, 0.8);
-    animation: pulse 1.5s infinite;
-}
-
-@keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
-
-.error-avatar {
-    background: linear-gradient(135deg, 
-        #16a34a 0%, 
-        #15803d 50%, 
-        #166534 100%);
+/* Enhanced loading states */
+.loading-state {
+    background: linear-gradient(135deg, #064e3b, #0f766e, #047857);
+    background-size: 200% 200%;
+    animation: loadingGradient 2s infinite;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 32px;
+    color: #22c55e;
+    font-size: 28px;
     font-weight: bold;
-    border-radius: 16px;
-    border: 4px solid rgba(34, 197, 94, 0.9);
-    box-shadow: 
-        0 0 25px rgba(34, 197, 94, 0.5),
-        0 8px 32px rgba(0, 0, 0, 0.3);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     position: relative;
     overflow: hidden;
 }
 
-.error-avatar::before {
+.loading-state::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(34, 197, 94, 0.1), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes loadingGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Letter avatar for failed loads */
+.letter-avatar {
+    background: linear-gradient(135deg, #16a34a 0%, #059669 50%, #047857 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.letter-avatar::before {
     content: '';
     position: absolute;
     top: -50%;
@@ -476,759 +438,749 @@
     width: 200%;
     height: 200%;
     background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    animation: shine 3s infinite;
+    animation: letterShine 3s infinite;
 }
 
-@keyframes shine {
+@keyframes letterShine {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
-/* Success animation */
+/* Success animations */
 @keyframes successPulse {
-    0% { transform: scale(1); box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); }
-    50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(34, 197, 94, 0.8); }
-    100% { transform: scale(1); box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); }
+    0% { transform: scale(1); box-shadow: 0 0 30px rgba(34, 197, 94, 0.4); }
+    50% { transform: scale(1.08); box-shadow: 0 0 50px rgba(34, 197, 94, 0.8); }
+    100% { transform: scale(1); box-shadow: 0 0 30px rgba(34, 197, 94, 0.4); }
 }
 
-.success-added {
-    animation: successPulse 0.6s ease-in-out;
+.success-animation {
+    animation: successPulse 0.8s ease-in-out;
+}
+
+/* Celebration particles */
+@keyframes celebrate {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0);
+        opacity: 0;
+    }
 }
 </style>
 
-<!-- Script -->
+<!-- Enhanced JavaScript -->
 <script>
-// Enhanced Configuration
+// Enhanced Configuration with better error handling
 const CONFIG = {
     SERVER_URL: 'http://162.250.191.81:4000',
-    PROXY_URLS: [
+    FALLBACK_URLS: [
         'https://api.allorigins.win/raw?url=',
-        'https://cors-anywhere.herokuapp.com/',
-        'https://corsproxy.io/?'
+        'https://corsproxy.io/?',
+        'https://cors-anywhere.herokuapp.com/'
     ],
-    TIMEOUT: 10000,
-    MAX_RETRIES: 3,
-    RETRY_DELAY: 1000
+    TIMEOUT: 8000,
+    MAX_RETRIES: 2,
+    RETRY_DELAY: 1500,
+    AUTO_SYNC_INTERVAL: 45000
 };
 
-// Storage key for localStorage
-const STORAGE_KEY = 'plasma_wall_users_v2';
-const METADATA_KEY = 'plasma_wall_metadata';
+// Storage keys
+const STORAGE_KEY = 'plasma_wall_users_enhanced';
+const METADATA_KEY = 'plasma_wall_metadata_enhanced';
 
 // DOM elements
-const usernameInput = document.getElementById('usernameInput');
-const submitBtn = document.getElementById('submitBtn');
-const refreshBtn = document.getElementById('refreshBtn');
-const movingWall = document.getElementById('movingWall');
-const bgMusic = document.getElementById('bgMusic');
-const musicToggle = document.getElementById('musicToggle');
-const connectionStatus = document.getElementById('connectionStatus');
-const userCount = document.getElementById('userCount');
-const lastUpdated = document.getElementById('lastUpdated');
+const elements = {
+    usernameInput: document.getElementById('usernameInput'),
+    submitBtn: document.getElementById('submitBtn'),
+    refreshBtn: document.getElementById('refreshBtn'),
+    movingWall: document.getElementById('movingWall'),
+    bgMusic: document.getElementById('bgMusic'),
+    musicToggle: document.getElementById('musicToggle'),
+    connectionStatus: document.getElementById('connectionStatus'),
+    userCount: document.getElementById('userCount'),
+    lastUpdated: document.getElementById('lastUpdated')
+};
 
-let musicPlaying = false;
-
-// Default users (always show these 4)
-const DEFAULT_USERS = ['proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax'];
-
-// All users array
-let allUsers = [...DEFAULT_USERS];
+// State management
+let state = {
+    musicPlaying: false,
+    isConnected: false,
+    autoSyncInterval: null,
+    allUsers: ['proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax'],
+    defaultUsers: ['proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax']
+};
 
 // Utility functions
-function getCurrentTime() {
-    return new Date().toLocaleString();
-}
+const utils = {
+    getCurrentTime: () => new Date().toLocaleString(),
+    
+    cleanUsername: (username) => {
+        return username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
+    },
+    
+    validateUsername: (username) => {
+        const clean = utils.cleanUsername(username);
+        if (!clean || clean.length < 2) return { valid: false, message: 'Username must be at least 2 characters' };
+        if (clean.length > 15) return { valid: false, message: 'Username too long (max 15 characters)' };
+        if (state.allUsers.includes(clean)) return { valid: false, message: 'User already in Plasma Wall!' };
+        return { valid: true, username: clean };
+    },
 
-function updateLastUpdatedTime() {
-    lastUpdated.textContent = `Last updated: ${getCurrentTime()}`;
-}
-
-// Enhanced localStorage functions with metadata
-function saveUsersToStorage() {
-    try {
-        const usersToSave = allUsers.filter(user => !DEFAULT_USERS.includes(user));
-        const metadata = {
-            savedAt: new Date().toISOString(),
-            totalUsers: allUsers.length,
-            version: '2.0'
-        };
-        
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(usersToSave));
-        localStorage.setItem(METADATA_KEY, JSON.stringify(metadata));
-        
-        console.log('💾 Saved to localStorage:', {
-            users: usersToSave.length,
-            total: allUsers.length,
-            time: getCurrentTime()
-        });
-    } catch (e) {
-        console.error('❌ Failed to save to localStorage:', e);
+    delay: (ms) => new Promise(resolve => setTimeout(resolve, ms)),
+    
+    updateStatus: (message, type = 'info') => {
+        elements.connectionStatus.innerHTML = message;
+        elements.connectionStatus.className = `text-center font-semibold text-lg bg-black/50 backdrop-blur-md rounded-xl px-6 py-3 border border-green-500/20 ${
+            type === 'success' ? 'text-green-300' : 
+            type === 'error' ? 'text-red-300' : 
+            type === 'warning' ? 'text-yellow-300' : 'text-green-300'
+        }`;
     }
-}
+};
 
-function loadUsersFromStorage() {
-    try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        const metadata = localStorage.getItem(METADATA_KEY);
-        
-        if (saved && metadata) {
-            const savedUsers = JSON.parse(saved);
-            const meta = JSON.parse(metadata);
+// Enhanced Storage Manager
+const storage = {
+    save: () => {
+        try {
+            const usersToSave = state.allUsers.filter(user => !state.defaultUsers.includes(user));
+            const metadata = {
+                savedAt: new Date().toISOString(),
+                totalUsers: state.allUsers.length,
+                version: '3.0'
+            };
             
-            console.log('📦 Loaded from localStorage:', {
-                users: savedUsers.length,
-                savedAt: meta.savedAt,
-                version: meta.version
-            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(usersToSave));
+            localStorage.setItem(METADATA_KEY, JSON.stringify(metadata));
             
-            allUsers = [...DEFAULT_USERS, ...savedUsers];
+            console.log('💾 Saved to localStorage:', { users: usersToSave.length, total: state.allUsers.length });
+            return true;
+        } catch (error) {
+            console.error('❌ Storage save failed:', error);
+            return false;
+        }
+    },
+    
+    load: () => {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            const metadata = localStorage.getItem(METADATA_KEY);
             
-            if (meta.savedAt) {
-                const savedDate = new Date(meta.savedAt);
-                lastUpdated.textContent = `Last updated: ${savedDate.toLocaleString()}`;
+            if (saved && metadata) {
+                const savedUsers = JSON.parse(saved);
+                const meta = JSON.parse(metadata);
+                
+                state.allUsers = [...state.defaultUsers, ...savedUsers];
+                
+                console.log('📦 Loaded from localStorage:', { users: savedUsers.length, total: state.allUsers.length });
+                
+                if (meta.savedAt) {
+                    elements.lastUpdated.textContent = `Last sync: ${new Date(meta.savedAt).toLocaleString()}`;
+                }
+                
+                return savedUsers;
             }
-            
-            return savedUsers;
+        } catch (error) {
+            console.error('❌ Storage load failed:', error);
         }
-    } catch (e) {
-        console.error('❌ Failed to load from localStorage:', e);
+        return [];
     }
-    return [];
-}
+};
 
-// Enhanced music functionality
-musicToggle.addEventListener('click', async () => {
-    try {
-        if (musicPlaying) { 
-            bgMusic.pause(); 
-            musicToggle.innerHTML = '🎵 Play Cosmic Music'; 
-            musicPlaying = false; 
-            console.log('🔇 Music paused');
-        } else { 
-            bgMusic.volume = 0.3;
-            await bgMusic.play(); 
-            musicToggle.innerHTML = '🔇 Pause Music'; 
-            musicPlaying = true; 
-            console.log('🎵 Music playing');
-            
-            // Add visual feedback
-            musicToggle.classList.add('success-added');
-            setTimeout(() => musicToggle.classList.remove('success-added'), 600);
-        }
-    } catch(e) { 
-        console.error('❌ Audio error:', e);
-        connectionStatus.innerHTML = '⚠️ Music files not found - add interstellar.mp3 to your folder';
-        setTimeout(() => {
-            connectionStatus.innerHTML = 'Ready to submit';
-        }, 4000);
-    }
-});
-
-// Enhanced avatar loading with comprehensive sources and better fallback
-function createUserCard(username, isNewUser = false) {
-    console.log(`🖼️ Creating card for: ${username}${isNewUser ? ' (new user)' : ''}`);
-    
-    const card = document.createElement('div');
-    card.className = 'user-card';
-    if (isNewUser) {
-        card.classList.add('success-added');
-    }
-    
-    const img = document.createElement('img');
-    img.className = 'profile-img loading-placeholder';
-    img.alt = username;
-    
-    const overlay = document.createElement('div');
-    overlay.className = 'username-overlay';
-    overlay.textContent = `@${username}`;
-    
-    card.appendChild(img);
-    card.appendChild(overlay);
-    
-    // Comprehensive avatar sources in order of reliability
-    const avatarSources = [
-        // Primary Twitter/X sources (most reliable)
-        `https://unavatar.io/twitter/${username}?fallback=false&size=140`,
-        `https://unavatar.io/x/${username}?fallback=false&size=140`,
+// Enhanced Avatar Manager with comprehensive fallback system
+const avatarManager = {
+    sources: [
+        // Most reliable Twitter sources
+        (username) => `https://unavatar.io/twitter/${username}?fallback=false`,
+        (username) => `https://unavatar.io/x/${username}?fallback=false`,
         
-        // Alternative Twitter API sources
-        `https://avatars.io/twitter/${username}?size=large`,
-        `https://api.twitter.com/1.1/users/profile_image?screen_name=${username}&size=bigger`,
+        // GitHub (many users share handles)
+        (username) => `https://avatars.githubusercontent.com/${username}`,
+        (username) => `https://github.com/${username}.png`,
         
-        // GitHub (many users have same handle)
-        `https://avatars.githubusercontent.com/${username}?size=140`,
-        `https://github.com/${username}.png?size=140`,
+        // Alternative services
+        (username) => `https://unavatar.io/${username}`,
+        (username) => `https://avatar.vercel.sh/${username}`,
         
-        // Multi-platform sources
-        `https://unavatar.io/${username}?size=140`,
-        `https://avatar.vercel.sh/${username}?size=140`,
-        
-        // Generated avatars with better designs
-        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=140&backgroundColor=16a34a,22c55e&radius=20`,
-        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=140&backgroundColor=16a34a&radius=20`,
-        `https://api.dicebear.com/7.x/big-smile/svg?seed=${username}&size=140&backgroundColor=16a34a`,
-        `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}&size=140&backgroundColor=22c55e`,
+        // High-quality generated avatars
+        (username) => `https://api.dicebear.com/7.x/personas/svg?seed=${username}&backgroundColor=16a34a,22c55e`,
+        (username) => `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}&backgroundColor=059669`,
+        (username) => `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&backgroundColor=047857`,
         
         // Robohash variants
-        `https://robohash.org/${username}?size=140x140&set=set4&bgset=bg1`,
-        `https://robohash.org/${username}?size=140x140&set=set1&bgset=bg2`,
+        (username) => `https://robohash.org/${username}?size=160x160&set=set4&bgset=bg1`,
+        (username) => `https://robohash.org/${username}?size=160x160&set=set1&bgset=bg2`,
         
-        // Final fallbacks
-        `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=16a34a&color=fff&size=140&bold=true&rounded=true&font-size=0.4`,
-        `https://via.placeholder.com/140/16a34a/ffffff?text=${encodeURIComponent(username.charAt(0).toUpperCase())}`
-    ];
+        // Final fallback
+        (username) => `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=16a34a&color=fff&size=160&bold=true&font-size=0.33`
+    ],
     
-    let sourceIndex = 0;
-    let attempts = 0;
-    const maxAttempts = avatarSources.length;
-    
-    const tryNextSource = () => {
-        if (attempts >= maxAttempts) {
-            // All sources failed - create enhanced letter avatar
-            console.log(`❌ All ${maxAttempts} sources failed for ${username}, using letter avatar`);
-            card.removeChild(img);
-            
-            const letterDiv = document.createElement('div');
-            letterDiv.className = 'error-avatar';
-            letterDiv.style.width = '100%';
-            letterDiv.style.height = '100%';
-            
-            // Use first letter or first two letters for short usernames
-            const displayText = username.length <= 3 ? 
-                username.toUpperCase() : 
-                username.charAt(0).toUpperCase();
-            
-            letterDiv.textContent = displayText;
-            card.insertBefore(letterDiv, overlay);
-            return;
-        }
+    loadAvatar: async (username, imgElement, container) => {
+        console.log(`🖼️ Loading avatar for: ${username}`);
         
-        const currentSource = avatarSources[sourceIndex];
-        console.log(`  📡 Trying source ${attempts + 1}/${maxAttempts} for ${username}: ${currentSource.split('?')[0]}`);
-        
-        // Set up timeout for this attempt
-        const timeout = setTimeout(() => {
-            console.log(`  ⏰ Timeout for ${username} source ${attempts + 1}`);
-            attempts++;
-            sourceIndex = (sourceIndex + 1) % avatarSources.length;
-            tryNextSource();
-        }, 6000); // Increased timeout for better loading
-        
-        img.onload = () => {
-            clearTimeout(timeout);
-            // Check if image actually loaded (not a 1x1 pixel)
-            if (img.naturalWidth > 1 && img.naturalHeight > 1) {
-                img.classList.remove('loading-placeholder');
-                console.log(`  ✅ Avatar loaded for ${username} from source ${attempts + 1}`);
-            } else {
-                console.log(`  ❌ Invalid image for ${username} from source ${attempts + 1}`);
-                attempts++;
-                sourceIndex = (sourceIndex + 1) % avatarSources.length;
-                tryNextSource();
-            }
-        };
-        
-        img.onerror = () => {
-            clearTimeout(timeout);
-            console.log(`  ❌ Source ${attempts + 1} failed for ${username}`);
-            attempts++;
-            sourceIndex = (sourceIndex + 1) % avatarSources.length;
-            tryNextSource();
-        };
-        
-        img.src = currentSource;
-    };
-    
-    // Add click functionality to user cards
-    card.addEventListener('click', () => {
-        window.open(`https://twitter.com/${username}`, '_blank');
-    });
-    
-    tryNextSource();
-    return card;
-}
-
-// Enhanced display function with better performance
-function displayMovingWall(highlightNewUser = null) {
-    console.log('🎯 Displaying moving wall with users:', allUsers.length);
-    
-    // Clear wall
-    movingWall.innerHTML = '';
-    
-    // Create cards for all users (single pass)
-    const fragment = document.createDocumentFragment();
-    
-    allUsers.forEach(username => {
-        const isNewUser = username === highlightNewUser;
-        const card = createUserCard(username, isNewUser);
-        fragment.appendChild(card);
-    });
-    
-    // Duplicate for seamless loop
-    allUsers.forEach(username => {
-        const card = createUserCard(username);
-        fragment.appendChild(card);
-    });
-    
-    movingWall.appendChild(fragment);
-    
-    // Update user count with more details
-    userCount.innerHTML = `
-        🌟 ${allUsers.length} members in the Plasma Wall 
-        <span class="text-green-500">• ${allUsers.length - DEFAULT_USERS.length} community members</span>
-    `;
-    
-    updateLastUpdatedTime();
-}
-
-// Enhanced backend save with multiple retry strategies
-async function saveToBackend(username) {
-    console.log('💾 Attempting to save to backend:', username);
-    
-    for (let retry = 0; retry < CONFIG.MAX_RETRIES; retry++) {
-        console.log(`🔄 Attempt ${retry + 1}/${CONFIG.MAX_RETRIES}`);
-        
-        const methods = [
-            // Method 1: Direct connection
-            async () => {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
-                
-                try {
-                    const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({ username }),
-                        signal: controller.signal
-                    });
-                    
-                    clearTimeout(timeoutId);
-                    
-                    if (response.ok) {
-                        console.log('✅ Saved via direct connection');
-                        return true;
-                    }
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                } catch (error) {
-                    clearTimeout(timeoutId);
-                    throw error;
-                }
-            },
-            
-            // Method 2: Multiple proxy attempts
-            ...CONFIG.PROXY_URLS.map(proxyUrl => async () => {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
-                
-                try {
-                    const fullUrl = `${proxyUrl}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
-                    const response = await fetch(fullUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ username }),
-                        signal: controller.signal
-                    });
-                    
-                    clearTimeout(timeoutId);
-                    
-                    if (response.ok) {
-                        console.log(`✅ Saved via proxy: ${proxyUrl}`);
-                        return true;
-                    }
-                    throw new Error(`Proxy ${response.status}: ${response.statusText}`);
-                } catch (error) {
-                    clearTimeout(timeoutId);
-                    throw error;
-                }
-            })
-        ];
-        
-        // Try each method for this retry
-        for (let i = 0; i < methods.length; i++) {
+        for (let i = 0; i < avatarManager.sources.length; i++) {
             try {
-                console.log(`  🔄 Trying save method ${i + 1}/${methods.length} (attempt ${retry + 1})`);
-                const result = await methods[i]();
-                if (result) return true;
+                const src = avatarManager.sources[i](username);
+                console.log(`  📡 Trying source ${i + 1}/${avatarManager.sources.length}: ${src.split('?')[0]}`);
+                
+                const success = await new Promise((resolve) => {
+                    const timeout = setTimeout(() => resolve(false), 5000);
+                    
+                    imgElement.onload = () => {
+                        clearTimeout(timeout);
+                        if (imgElement.naturalWidth > 1 && imgElement.naturalHeight > 1) {
+                            console.log(`  ✅ Avatar loaded for ${username} from source ${i + 1}`);
+                            container.classList.remove('loading-state');
+                            resolve(true);
+                        } else {
+                            resolve(false);
+                        }
+                    };
+                    
+                    imgElement.onerror = () => {
+                        clearTimeout(timeout);
+                        resolve(false);
+                    };
+                    
+                    imgElement.src = src;
+                });
+                
+                if (success) return true;
+                
             } catch (error) {
-                console.log(`  ❌ Save method ${i + 1} failed:`, error.message);
+                console.log(`  ❌ Source ${i + 1} failed: ${error.message}`);
             }
         }
         
-        // Wait before retry
-        if (retry < CONFIG.MAX_RETRIES - 1) {
-            console.log(`⏳ Waiting ${CONFIG.RETRY_DELAY}ms before retry...`);
-            await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
-        }
+        // All sources failed - create letter avatar
+        console.log(`❌ All avatar sources failed for ${username}, using letter avatar`);
+        avatarManager.createLetterAvatar(username, container);
+        return false;
+    },
+    
+    createLetterAvatar: (username, container) => {
+        container.innerHTML = '';
+        container.classList.remove('loading-state');
+        container.classList.add('letter-avatar');
+        
+        const displayText = username.length <= 2 ? username.toUpperCase() : username.charAt(0).toUpperCase();
+        container.textContent = displayText;
     }
-    
-    console.error('❌ All backend save attempts failed');
-    return false;
-}
+};
 
-// Enhanced load from backend with better error handling
-async function loadFromBackend() {
-    console.log('📡 Loading users from backend...');
-    
-    const loadMethods = [
-        { name: 'direct', url: `${CONFIG.SERVER_URL}/users` },
-        ...CONFIG.PROXY_URLS.map(proxy => ({
-            name: `proxy-${proxy.split('/')[2]}`,
-            url: `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`
-        }))
-    ];
-    
-    for (const method of loadMethods) {
+// Enhanced User Card Creator
+const cardCreator = {
+    create: (username, isNew = false) => {
+        console.log(`🎭 Creating card for: ${username}${isNew ? ' (NEW!)' : ''}`);
+        
+        const card = document.createElement('div');
+        card.className = `user-card ${isNew ? 'success-animation' : ''}`;
+        
+        const container = document.createElement('div');
+        container.className = 'profile-container loading-state';
+        container.textContent = '⚡';
+        
+        const img = document.createElement('img');
+        img.className = 'profile-img';
+        img.alt = username;
+        img.style.display = 'none';
+        
+        const badge = document.createElement('div');
+        badge.className = 'username-badge';
+        badge.textContent = `@${username}`;
+        
+        container.appendChild(img);
+        card.appendChild(container);
+        card.appendChild(badge);
+        
+        // Add click handler
+        card.addEventListener('click', () => {
+            window.open(`https://twitter.com/${username}`, '_blank');
+            card.style.transform = 'scale(0.95)';
+            setTimeout(() => card.style.transform = '', 150);
+        });
+        
+        // Load avatar asynchronously
+        avatarManager.loadAvatar(username, img, container).then(success => {
+            if (success) {
+                img.style.display = 'block';
+            }
+        });
+        
+        return card;
+    }
+};
+
+// Enhanced Backend Manager
+const backend = {
+    makeRequest: async (url, options = {}) => {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
+        
         try {
-            console.log(`  🔄 Trying to load via ${method.name}...`);
-            
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
-            
-            const response = await fetch(method.url, {
+            const response = await fetch(url, {
+                ...options,
                 signal: controller.signal,
-                headers: { 'Accept': 'application/json' }
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    ...options.headers
+                }
             });
             
             clearTimeout(timeoutId);
             
             if (response.ok) {
-                const serverUsers = await response.json();
+                return await response.json();
+            }
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        } catch (error) {
+            clearTimeout(timeoutId);
+            throw error;
+        }
+    },
+    
+    save: async (username) => {
+        console.log('💾 Saving to backend:', username);
+        
+        const methods = [
+            // Direct connection
+            () => backend.makeRequest(`${CONFIG.SERVER_URL}/users`, {
+                method: 'POST',
+                body: JSON.stringify({ username })
+            }),
+            
+            // Proxy methods
+            ...CONFIG.FALLBACK_URLS.map(proxy => () => 
+                backend.makeRequest(`${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`, {
+                    method: 'POST',
+                    body: JSON.stringify({ username })
+                })
+            )
+        ];
+        
+        for (let retry = 0; retry < CONFIG.MAX_RETRIES; retry++) {
+            console.log(`🔄 Backend save attempt ${retry + 1}/${CONFIG.MAX_RETRIES}`);
+            
+            for (let i = 0; i < methods.length; i++) {
+                try {
+                    console.log(`  📡 Trying save method ${i + 1}/${methods.length}`);
+                    await methods[i]();
+                    console.log('✅ Successfully saved to backend');
+                    state.isConnected = true;
+                    return true;
+                } catch (error) {
+                    console.log(`  ❌ Save method ${i + 1} failed: ${error.message}`);
+                }
+            }
+            
+            if (retry < CONFIG.MAX_RETRIES - 1) {
+                await utils.delay(CONFIG.RETRY_DELAY);
+            }
+        }
+        
+        console.error('❌ All backend save attempts failed');
+        state.isConnected = false;
+        return false;
+    },
+    
+    load: async () => {
+        console.log('📡 Loading from backend...');
+        
+        const loadMethods = [
+            { name: 'direct', url: `${CONFIG.SERVER_URL}/users` },
+            ...CONFIG.FALLBACK_URLS.map(proxy => ({
+                name: `proxy-${proxy.split('/')[2]}`,
+                url: `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`
+            }))
+        ];
+        
+        for (const method of loadMethods) {
+            try {
+                console.log(`  🔄 Loading via ${method.name}...`);
+                const serverUsers = await backend.makeRequest(method.url);
+                
                 console.log('✅ Loaded from backend:', serverUsers);
                 
-                // Load saved users from localStorage
-                const savedUsers = loadUsersFromStorage();
+                // Merge with localStorage data
+                const savedUsers = storage.load();
+                state.allUsers = [...new Set([...state.defaultUsers, ...serverUsers, ...savedUsers])];
                 
-                // Combine all users (defaults + server + localStorage, no duplicates)
-                allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...savedUsers])];
+                state.isConnected = true;
+                utils.updateStatus('✅ Connected to plasma network', 'success');
+                elements.lastUpdated.textContent = `Network Status: Connected • ${utils.getCurrentTime()}`;
                 
-                connectionStatus.innerHTML = '✅ Connected to plasma network';
-                updateLastUpdatedTime();
                 return true;
+            } catch (error) {
+                console.log(`  ❌ Load method ${method.name} failed: ${error.message}`);
             }
-        } catch (error) {
-            console.log(`  ❌ Load method ${method.name} failed:`, error.message);
         }
+        
+        console.log('⚠️ Backend unavailable, using localStorage');
+        storage.load();
+        state.isConnected = false;
+        utils.updateStatus('⚠️ Offline mode - using cached data', 'warning');
+        elements.lastUpdated.textContent = `Network Status: Offline • ${utils.getCurrentTime()}`;
+        
+        return false;
     }
-    
-    console.log('⚠️ Backend unavailable, using localStorage');
-    
-    // Load from localStorage only
-    loadUsersFromStorage();
-    connectionStatus.innerHTML = '⚠️ Offline mode - using saved data';
-    return false;
-}
+};
 
-// Enhanced submit user with better validation and feedback
-async function submitUser(username) {
-    const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
-    
-    // Enhanced validation
-    if (!cleanUsername || cleanUsername.length < 2) {
-        alert('Please enter a valid username (at least 2 characters, letters/numbers/underscores only)');
-        return;
-    }
-    
-    if (cleanUsername.length > 15) {
-        alert('Username too long (maximum 15 characters)');
-        return;
-    }
-    
-    if (allUsers.includes(cleanUsername)) {
-        alert('This user is already in the Plasma Wall! 🌟');
-        // Highlight existing user briefly
-        const existingCards = document.querySelectorAll('.user-card');
-        existingCards.forEach(card => {
-            const overlay = card.querySelector('.username-overlay');
-            if (overlay && overlay.textContent === `@${cleanUsername}`) {
-                card.style.transform = 'scale(1.3) translateY(-15px)';
-                card.style.zIndex = '100';
-                setTimeout(() => {
-                    card.style.transform = '';
-                    card.style.zIndex = '';
-                }, 2000);
-            }
-        });
-        return;
-    }
-    
-    console.log('🚀 Processing submission:', cleanUsername);
-    
-    // Disable submit with loading animation
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '⚡ Adding to Plasma...';
-    connectionStatus.innerHTML = '🌟 Adding user to the cosmic wall...';
-    
-    // Add immediately to local array and save to localStorage
-    allUsers.push(cleanUsername);
-    saveUsersToStorage();
-    
-    // Update wall immediately with highlight for new user
-    displayMovingWall(cleanUsername);
-    
-    // Try to save to backend in background
-    const saved = await saveToBackend(cleanUsername);
-    
-    if (saved) {
-        connectionStatus.innerHTML = '✅ Added to Plasma Wall and synced to network! 🚀';
-    } else {
-        connectionStatus.innerHTML = '✅ Added to Plasma Wall (saved locally, will sync when network is back) 💫';
-    }
-    
-    // Clear input with success animation
-    usernameInput.value = '';
-    usernameInput.style.transform = 'scale(1.05)';
-    usernameInput.style.borderColor = '#22c55e';
-    
-    setTimeout(() => {
-        usernameInput.style.transform = '';
-        usernameInput.style.borderColor = '';
-    }, 300);
-    
-    // Reset button and status with delay
-    setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Join Plasma';
-        connectionStatus.innerHTML = saved ? 
-            '✅ Connected to plasma network' : 
-            '⚠️ Offline mode - using saved data';
-    }, 3000);
-    
-    console.log('✨ User successfully added to Plasma Wall');
-    
-    // Celebration effect
-    createCelebrationEffect();
-}
-
-// Add celebration effect for successful submissions
-function createCelebrationEffect() {
-    const colors = ['#22c55e', '#16a34a', '#15803d'];
-    const particles = 20;
-    
-    for (let i = 0; i < particles; i++) {
-        const particle = document.createElement('div');
-        particle.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 8px;
-            height: 8px;
-            background: ${colors[Math.floor(Math.random() * colors.length)]};
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1000;
-            animation: celebrate 1.5s ease-out forwards;
+// Enhanced Wall Display Manager
+const wallManager = {
+    display: (highlightUser = null) => {
+        console.log('🎯 Updating wall display:', { users: state.allUsers.length, highlight: highlightUser });
+        
+        elements.movingWall.innerHTML = '';
+        
+        // Update user count with enhanced styling
+        elements.userCount.innerHTML = `
+            <span class="animate-pulse">🌟</span>
+            <span>${state.allUsers.length} Plasma Members</span>
+            <span class="text-green-500 text-base">• ${state.allUsers.length - state.defaultUsers.length} Community</span>
+            <span class="animate-pulse">🌟</span>
         `;
         
-        // Random direction
-        const angle = (Math.PI * 2 * i) / particles;
-        const velocity = 50 + Math.random() * 50;
-        const x = Math.cos(angle) * velocity;
-        const y = Math.sin(angle) * velocity;
+        const fragment = document.createDocumentFragment();
         
-        particle.style.setProperty('--x', `${x}px`);
-        particle.style.setProperty('--y', `${y}px`);
+        // Create cards (doubled for seamless loop)
+        [...state.allUsers, ...state.allUsers].forEach(username => {
+            const isHighlighted = username === highlightUser;
+            const card = cardCreator.create(username, isHighlighted);
+            fragment.appendChild(card);
+        });
         
-        document.body.appendChild(particle);
-        
-        setTimeout(() => {
-            if (particle.parentNode) {
-                particle.parentNode.removeChild(particle);
-            }
-        }, 1500);
+        elements.movingWall.appendChild(fragment);
     }
-}
+};
 
-// Add celebration animation CSS
-const celebrationStyle = document.createElement('style');
-celebrationStyle.textContent = `
-    @keyframes celebrate {
-        0% {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-        100% {
-            transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(celebrationStyle);
-
-// Refresh functionality
-refreshBtn.addEventListener('click', async () => {
-    refreshBtn.disabled = true;
-    refreshBtn.innerHTML = '🔄 Refreshing...';
-    connectionStatus.innerHTML = '🔄 Refreshing plasma network...';
-    
-    // Add loading animation to button
-    refreshBtn.classList.add('success-added');
-    
-    try {
-        const loaded = await loadFromBackend();
-        displayMovingWall();
-        
-        if (loaded) {
-            connectionStatus.innerHTML = '✅ Plasma Wall refreshed successfully!';
-        } else {
-            connectionStatus.innerHTML = '⚠️ Network unavailable - showing cached data';
-        }
-    } catch (error) {
-        console.error('❌ Refresh failed:', error);
-        connectionStatus.innerHTML = '❌ Refresh failed - using cached data';
-    }
-    
-    setTimeout(() => {
-        refreshBtn.disabled = false;
-        refreshBtn.innerHTML = '🔄 Refresh Wall';
-        refreshBtn.classList.remove('success-added');
-        
-        if (connectionStatus.textContent.includes('Refreshing') || 
-            connectionStatus.textContent.includes('refreshed')) {
-            connectionStatus.innerHTML = '✅ Connected to plasma network';
-        }
-    }, 2000);
-});
-
-// Event listeners with enhanced functionality
-submitBtn.addEventListener('click', () => {
-    const username = usernameInput.value.trim();
-    if (username) {
-        submitUser(username);
-    } else {
-        usernameInput.focus();
-        usernameInput.style.borderColor = '#ef4444';
-        setTimeout(() => {
-            usernameInput.style.borderColor = '';
-        }, 1000);
-    }
-});
-
-usernameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !submitBtn.disabled) {
-        const username = usernameInput.value.trim();
-        if (username) {
-            submitUser(username);
-        }
-    }
-});
-
-// Enhanced input validation feedback
-usernameInput.addEventListener('input', (e) => {
-    const value = e.target.value;
-    const cleanValue = value.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
-    
-    if (value !== cleanValue) {
-        e.target.value = cleanValue.startsWith('@') ? cleanValue : (cleanValue ? `${cleanValue}` : '');
-    }
-    
-    // Real-time validation feedback
-    if (cleanValue.length > 0 && cleanValue.length < 2) {
-        e.target.style.borderColor = '#f59e0b';
-    } else if (cleanValue.length > 15) {
-        e.target.style.borderColor = '#ef4444';
-    } else if (allUsers.includes(cleanValue)) {
-        e.target.style.borderColor = '#f59e0b';
-    } else if (cleanValue.length >= 2) {
-        e.target.style.borderColor = '#22c55e';
-    } else {
-        e.target.style.borderColor = '';
-    }
-});
-
-// Auto-sync functionality (check for updates periodically)
-let autoSyncInterval;
-
-function startAutoSync() {
-    autoSyncInterval = setInterval(async () => {
-        console.log('🔄 Auto-sync check...');
+// Enhanced Music Manager
+const musicManager = {
+    toggle: async () => {
         try {
-            const wasConnected = connectionStatus.textContent.includes('Connected');
-            const loaded = await loadFromBackend();
-            
-            if (loaded && !wasConnected) {
-                displayMovingWall();
-                console.log('✅ Reconnected to backend');
+            if (state.musicPlaying) {
+                elements.bgMusic.pause();
+                elements.musicToggle.innerHTML = '🎵 Cosmic Soundtrack';
+                state.musicPlaying = false;
+                console.log('🔇 Music paused');
+            } else {
+                elements.bgMusic.volume = 0.2;
+                await elements.bgMusic.play();
+                elements.musicToggle.innerHTML = '🔇 Stop Music';
+                state.musicPlaying = true;
+                console.log('🎵 Music playing');
+                
+                elements.musicToggle.classList.add('success-animation');
+                setTimeout(() => elements.musicToggle.classList.remove('success-animation'), 800);
             }
         } catch (error) {
-            console.log('⚠️ Auto-sync check failed:', error.message);
+            console.error('❌ Music error:', error);
+            utils.updateStatus('⚠️ Music files not found - add interstellar.mp3 to folder', 'warning');
+            setTimeout(() => {
+                utils.updateStatus('✅ Ready to join plasma network', 'success');
+            }, 4000);
         }
-    }, 30000); // Check every 30 seconds
-}
-
-function stopAutoSync() {
-    if (autoSyncInterval) {
-        clearInterval(autoSyncInterval);
     }
-}
+};
 
-// Enhanced initialization with better error handling and loading states
-async function init() {
-    console.log('🚀 Initializing Enhanced Plasma Wall...');
-    console.log('🎵 Looking for music files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
-    console.log('👥 Default users:', DEFAULT_USERS);
-    console.log('💾 Using enhanced localStorage with metadata');
-    console.log('🔄 Auto-sync enabled (30s intervals)');
+// Enhanced User Submission
+const userSubmission = {
+    submit: async (username) => {
+        const validation = utils.validateUsername(username);
+        
+        if (!validation.valid) {
+            alert(validation.message);
+            userSubmission.highlightExisting(username);
+            return;
+        }
+        
+        const cleanUsername = validation.username;
+        console.log('🚀 Processing submission:', cleanUsername);
+        
+        // UI feedback
+        elements.submitBtn.disabled = true;
+        elements.submitBtn.innerHTML = '⚡ JOINING PLASMA ⚡';
+        utils.updateStatus('🌟 Adding to plasma network...', 'info');
+        
+        // Add to local state immediately
+        state.allUsers.push(cleanUsername);
+        storage.save();
+        
+        // Update display with highlight
+        wallManager.display(cleanUsername);
+        
+        // Try backend save
+        const backendSuccess = await backend.save(cleanUsername);
+        
+        // Update status based on result
+        if (backendSuccess) {
+            utils.updateStatus('✅ Successfully joined the Plasma Wall! 🚀', 'success');
+            elements.lastUpdated.textContent = `Network Status: Connected • ${utils.getCurrentTime()}`;
+        } else {
+            utils.updateStatus('✅ Joined locally! Will sync when network returns 💫', 'warning');
+        }
+        
+        // Success effects
+        userSubmission.celebrationEffect();
+        elements.usernameInput.value = '';
+        elements.usernameInput.style.borderColor = '#22c55e';
+        
+        setTimeout(() => {
+            elements.usernameInput.style.borderColor = '';
+            elements.submitBtn.disabled = false;
+            elements.submitBtn.innerHTML = '⚡ JOIN PLASMA ⚡';
+            
+            if (backendSuccess) {
+                utils.updateStatus('✅ Connected to plasma network', 'success');
+            } else {
+                utils.updateStatus('⚠️ Offline mode - using cached data', 'warning');
+            }
+        }, 3000);
+        
+        console.log('✨ User successfully added to Plasma Wall');
+    },
     
-    connectionStatus.innerHTML = '🌟 Initializing plasma network...';
+    highlightExisting: (username) => {
+        const cleanUsername = utils.cleanUsername(username);
+        setTimeout(() => {
+            const cards = document.querySelectorAll('.user-card');
+            cards.forEach(card => {
+                const badge = card.querySelector('.username-badge');
+                if (badge && badge.textContent === `@${cleanUsername}`) {
+                    card.style.transform = 'scale(1.4) translateY(-20px)';
+                    card.style.zIndex = '100';
+                    card.style.filter = 'brightness(1.3)';
+                    setTimeout(() => {
+                        card.style.transform = '';
+                        card.style.zIndex = '';
+                        card.style.filter = '';
+                    }, 2500);
+                }
+            });
+        }, 100);
+    },
+    
+    celebrationEffect: () => {
+        const colors = ['#22c55e', '#16a34a', '#10b981', '#059669'];
+        
+        for (let i = 0; i < 25; i++) {
+            const particle = document.createElement('div');
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            particle.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                width: 10px;
+                height: 10px;
+                background: ${color};
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 1000;
+                box-shadow: 0 0 10px ${color};
+            `;
+            
+            const angle = (Math.PI * 2 * i) / 25;
+            const velocity = 60 + Math.random() * 60;
+            const x = Math.cos(angle) * velocity;
+            const y = Math.sin(angle) * velocity;
+            
+            particle.style.setProperty('--x', `${x}px`);
+            particle.style.setProperty('--y', `${y}px`);
+            particle.style.animation = 'celebrate 2s ease-out forwards';
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 2000);
+        }
+    }
+};
+
+// Auto-sync Manager
+const autoSync = {
+    start: () => {
+        if (state.autoSyncInterval) return;
+        
+        state.autoSyncInterval = setInterval(async () => {
+            if (!state.isConnected) {
+                console.log('🔄 Auto-sync: Attempting reconnection...');
+                const connected = await backend.load();
+                if (connected) {
+                    wallManager.display();
+                    console.log('✅ Auto-sync: Reconnected successfully');
+                }
+            }
+        }, CONFIG.AUTO_SYNC_INTERVAL);
+        
+        console.log('🔄 Auto-sync started (45s intervals)');
+    },
+    
+    stop: () => {
+        if (state.autoSyncInterval) {
+            clearInterval(state.autoSyncInterval);
+            state.autoSyncInterval = null;
+            console.log('🛑 Auto-sync stopped');
+        }
+    }
+};
+
+// Event Listeners
+const setupEventListeners = () => {
+    // Submit button
+    elements.submitBtn.addEventListener('click', () => {
+        const username = elements.usernameInput.value.trim();
+        if (username) {
+            userSubmission.submit(username);
+        } else {
+            elements.usernameInput.focus();
+            elements.usernameInput.style.borderColor = '#ef4444';
+            setTimeout(() => elements.usernameInput.style.borderColor = '', 1000);
+        }
+    });
+    
+    // Enter key submit
+    elements.usernameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !elements.submitBtn.disabled) {
+            const username = elements.usernameInput.value.trim();
+            if (username) userSubmission.submit(username);
+        }
+    });
+    
+    // Input validation
+    elements.usernameInput.addEventListener('input', (e) => {
+        const value = e.target.value;
+        const clean = value.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
+        
+        if (value !== clean) {
+            e.target.value = clean;
+        }
+        
+        // Visual feedback
+        if (clean.length === 0) {
+            e.target.style.borderColor = '';
+        } else if (clean.length < 2) {
+            e.target.style.borderColor = '#f59e0b';
+        } else if (clean.length > 15) {
+            e.target.style.borderColor = '#ef4444';
+        } else if (state.allUsers.includes(clean)) {
+            e.target.style.borderColor = '#f59e0b';
+        } else {
+            e.target.style.borderColor = '#22c55e';
+        }
+    });
+    
+    // Music toggle
+    elements.musicToggle.addEventListener('click', musicManager.toggle);
+    
+    // Refresh button
+    elements.refreshBtn.addEventListener('click', async () => {
+        elements.refreshBtn.disabled = true;
+        elements.refreshBtn.innerHTML = '🔄 Syncing...';
+        elements.refreshBtn.classList.add('success-animation');
+        
+        utils.updateStatus('🔄 Syncing with plasma network...', 'info');
+        
+        try {
+            const success = await backend.load();
+            wallManager.display();
+            
+            if (success) {
+                utils.updateStatus('✅ Plasma network synchronized! 🚀', 'success');
+            } else {
+                utils.updateStatus('⚠️ Network unavailable - showing cached data', 'warning');
+            }
+        } catch (error) {
+            console.error('❌ Refresh failed:', error);
+            utils.updateStatus('❌ Sync failed - using cached data', 'error');
+        }
+        
+        setTimeout(() => {
+            elements.refreshBtn.disabled = false;
+            elements.refreshBtn.innerHTML = '🔄 Refresh Network';
+            elements.refreshBtn.classList.remove('success-animation');
+        }, 2000);
+    });
+    
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+        autoSync.stop();
+        if (state.musicPlaying) elements.bgMusic.pause();
+    });
+    
+    // Handle tab visibility
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden && state.musicPlaying) {
+            elements.bgMusic.pause();
+            elements.musicToggle.innerHTML = '🎵 Cosmic Soundtrack';
+            state.musicPlaying = false;
+        }
+    });
+};
+
+// Enhanced Initialization
+const init = async () => {
+    console.log('🚀 Initializing Enhanced Plasma Wall v3.0...');
+    console.log('🎵 Music files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
+    console.log('👥 Default users:', state.defaultUsers);
+    console.log('💾 Enhanced localStorage with metadata');
+    console.log('🔄 Auto-sync enabled');
+    console.log('🖼️ Improved avatar loading system');
+    
+    // Setup event listeners
+    setupEventListeners();
     
     // Show loading state
-    userCount.innerHTML = '⚡ Loading cosmic community...';
-    movingWall.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #22c55e; font-size: 2rem;">🌌 Loading Plasma Wall...</div>';
+    utils.updateStatus('🌟 Initializing plasma network...', 'info');
+    elements.userCount.innerHTML = `
+        <span class="animate-pulse">⚡</span>
+        <span>Loading cosmic community...</span>
+        <span class="animate-pulse">⚡</span>
+    `;
+    
+    elements.movingWall.innerHTML = `
+        <div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #22c55e; font-size: 2.5rem; font-weight: bold;">
+            <span class="animate-pulse">🌌 Loading Plasma Wall... ⚡</span>
+        </div>
+    `;
     
     try {
-        // Load users (backend + localStorage)
-        const backendConnected = await loadFromBackend();
+        // Load data (backend + localStorage)
+        const connected = await backend.load();
         
-        // Display the moving wall
-        displayMovingWall();
+        // Display the wall
+        wallManager.display();
         
         // Start auto-sync if connected
-        if (backendConnected) {
-            startAutoSync();
+        if (connected) {
+            autoSync.start();
         }
         
         console.log('✨ Enhanced Plasma Wall ready!');
-        console.log(`👥 Total users in wall: ${allUsers.length}`);
-        console.log(`🌐 Backend connected: ${backendConnected ? 'Yes' : 'No'}`);
+        console.log(`👥 Total users: ${state.allUsers.length}`);
+        console.log(`🌐 Backend connected: ${connected}`);
+        console.log(`💾 Using storage: ${STORAGE_KEY}`);
         
     } catch (error) {
         console.error('❌ Initialization error:', error);
-        connectionStatus.innerHTML = '❌ Initialization failed - using offline mode';
+        utils.updateStatus('❌ Network error - using offline mode', 'error');
         
-        // Fallback to defaults
-        allUsers = [...DEFAULT_USERS];
-        displayMovingWall();
+        // Fallback
+        state.allUsers = [...state.defaultUsers];
+        wallManager.display();
     }
     
-    // Final status update
+    // Final status
     setTimeout(() => {
-        if (connectionStatus.textContent.includes('Initializing')) {
-            connectionStatus.innerHTML = '✅ Ready to join the plasma network';
+        if (elements.connectionStatus.textContent.includes('Initializing')) {
+            utils.updateStatus('✅ Ready to join plasma network', 'success');
         }
-    }, 1000);
-}
+    }, 1500);
+    
+    console.log('🎯 Plasma Wall initialization complete!');
+};
 
-// Cleanup on page unload
-window.addEventListener('beforeunload', () => {
-    stopAutoSync();
-    if (musicPlaying) {
-        bgMusic.pause();
-    }
-});
-
-// Handle visibility change (pause music when tab not visible)
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden && musicPlaying) {
-        bgMusic.pause();
-        musicToggle.innerHTML = '🎵 Play Cosmic Music';
-        musicPlaying = false;
-    }
-});
-
-// Start the enhanced application
+// Start the application
 init();
 </script>
 
