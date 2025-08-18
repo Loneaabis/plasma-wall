@@ -65,22 +65,22 @@
             <input 
                 type="text" 
                 id="usernameInput" 
-                placeholder="🔍 Search users or add new neural handle..." 
+                placeholder="🔍 Type to search or add new handle..." 
                 class="w-full px-8 py-5 rounded-2xl text-white bg-black/60 border-2 border-green-500/50 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/30 text-lg backdrop-blur-lg cyber-input transition-all duration-300"
             >
             <div class="input-glow absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300"></div>
         </div>
         <button 
-            id="submitBtn" 
+            id="actionBtn" 
             class="px-10 py-5 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 rounded-2xl font-bold text-lg cyber-button transform hover:scale-105 transition-all duration-300 shadow-lg"
         >
-            <span class="relative z-10">INJECT</span>
+            <span class="relative z-10">ADD USER</span>
         </button>
         <button 
-            id="clearSearchBtn" 
+            id="clearBtn" 
             class="px-8 py-5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 rounded-2xl font-medium text-lg cyber-button-search transform hover:scale-105 transition-all duration-300"
         >
-            <span class="relative z-10">CLEAR</span>
+            <span class="relative z-10">SHOW ALL</span>
         </button>
     </div>
     
@@ -94,7 +94,7 @@
             id="musicToggle" 
             class="px-8 py-3 bg-gradient-to-r from-green-800 to-green-700 hover:from-green-700 hover:to-green-600 rounded-xl font-medium transition-all duration-300 cyber-button-small"
         >
-            🎵 Activate Audio trillions
+            🎵 Activate Audio Matrix
         </button>
         <button 
             id="syncBtn" 
@@ -113,7 +113,7 @@
 <div class="relative z-10 px-4 pb-8">
     <div class="plasma-container bg-black/50 backdrop-blur-xl rounded-3xl p-8 border-2 border-green-500/30 max-w-8xl mx-auto overflow-hidden shadow-2xl">
         <div id="userCount" class="text-center text-green-200 mb-8 text-xl font-semibold cyber-text">
-            Scanning gays 😆 just joking...
+            Scanning neural network... 🚀
         </div>
         
         <!-- Enhanced Moving Wall -->
@@ -340,10 +340,6 @@
     animation: slideInMatrix 1s ease-out;
 }
 
-.search-matrix {
-    animation: slideInMatrix 1.2s ease-out;
-}
-
 @keyframes slideInMatrix {
     from { transform: translateY(-30px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
@@ -357,22 +353,9 @@
     font-family: 'Courier New', monospace;
 }
 
-.search-input {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 139, 0.1));
-    box-shadow: 
-        inset 0 0 20px rgba(0, 123, 255, 0.1),
-        0 0 15px rgba(0, 123, 255, 0.1);
-    font-family: 'Courier New', monospace;
-}
-
 .cyber-input:focus + .input-glow {
     opacity: 1;
     background: linear-gradient(135deg, rgba(0, 255, 65, 0.1), transparent);
-}
-
-.search-input:focus + .search-glow {
-    opacity: 1;
-    background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), transparent);
 }
 
 .cyber-button {
@@ -542,7 +525,19 @@
     filter: brightness(1.2) contrast(1.1);
 }
 
-/* Continuing handle-display styles already handled above */px solid var(--dark-green);
+.handle-display {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(34, 197, 94, 0.3));
+    border-radius: 0 0 16px 16px;
+    border: 2px solid var(--dark-green);
     border-top: none;
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
@@ -569,19 +564,6 @@
     color: white !important;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.8) !important;
     box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5) !important;
-}px solid var(--dark-green);
-    border-top: none;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    text-shadow: 0 0 5px rgba(0, 255, 65, 0.8);
-}
-
-.avatar-card:hover .handle-display {
-    background: linear-gradient(135deg, rgba(0, 255, 65, 0.9), rgba(34, 197, 94, 0.8));
-    color: var(--cyber-black);
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-    transform: translateY(-4px);
-    box-shadow: 0 4px 15px rgba(0, 255, 65, 0.5);
 }
 
 /* Loading States */
@@ -700,14 +682,18 @@ const CONFIG = {
     RETRY_DELAY: 2000
 };
 
-const STORAGE_KEY = 'plasma_wall_quantum_users';
-const LAST_SYNC_KEY = 'plasma_wall_last_sync';
+// In-memory storage (replacing localStorage calls)
+let quantumUserData = {
+    users: [],
+    timestamp: Date.now(),
+    version: '2.0'
+};
 
 // DOM elements
 const usernameInput = document.getElementById('usernameInput');
-const clearSearchBtn = document.getElementById('clearSearchBtn');
+const clearBtn = document.getElementById('clearBtn');
 const searchResults = document.getElementById('searchResults');
-const submitBtn = document.getElementById('submitBtn');
+const actionBtn = document.getElementById('actionBtn');
 const syncBtn = document.getElementById('syncBtn');
 const movingWall = document.getElementById('movingWall');
 const bgMusic = document.getElementById('bgMusic');
@@ -725,23 +711,21 @@ let isSearchMode = false;
 // Enhanced default users including your requested ones
 const DEFAULT_USERS = [
     'proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax',
-    'primay_eth', 'kolyposts', 'techaddictif', 'CATTtwit', 
+    'primay_eth', 'kolyposts', 'CATTtwit', 
     'The9bo', 'ImFaziiii'
 ];
 
 let allUsers = [...DEFAULT_USERS];
 
-// Enhanced localStorage functions with versioning
-function saveUsersToStorage() {
+// Enhanced storage functions using in-memory storage
+function saveUsersToMemory() {
     try {
-        const userData = {
+        quantumUserData = {
             users: allUsers.filter(user => !DEFAULT_USERS.includes(user)),
             timestamp: Date.now(),
             version: '2.0'
         };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
-        localStorage.setItem(LAST_SYNC_KEY, Date.now().toString());
-        console.log('💾 Quantum data saved:', userData.users.length, 'neural signatures');
+        console.log('💾 Quantum data saved:', quantumUserData.users.length, 'neural signatures');
         return true;
     } catch (e) {
         console.error('❌ Quantum storage failed:', e);
@@ -749,16 +733,12 @@ function saveUsersToStorage() {
     }
 }
 
-function loadUsersFromStorage() {
+function loadUsersFromMemory() {
     try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            const userData = JSON.parse(saved);
-            const savedUsers = userData.users || userData; // Backward compatibility
-            console.log('📦 Quantum data loaded:', savedUsers.length, 'neural signatures');
-            allUsers = [...new Set([...DEFAULT_USERS, ...savedUsers])];
-            return savedUsers;
-        }
+        const savedUsers = quantumUserData.users || [];
+        console.log('📦 Quantum data loaded:', savedUsers.length, 'neural signatures');
+        allUsers = [...new Set([...DEFAULT_USERS, ...savedUsers])];
+        return savedUsers;
     } catch (e) {
         console.error('❌ Quantum load failed:', e);
     }
@@ -835,6 +815,7 @@ function createAvatarCard(username) {
     
     const card = document.createElement('div');
     card.className = 'avatar-card';
+    card.dataset.username = username; // Add data attribute for easier searching
     
     const img = document.createElement('img');
     img.className = 'avatar-img loading-matrix';
@@ -917,7 +898,7 @@ function createAvatarCard(username) {
     const tryNextSource = () => {
         if (attempts >= maxAttempts) {
             console.log(`❌ All ${maxAttempts} avatar sources failed for ${username}, creating matrix avatar`);
-            card.removeChild(img);
+            img.remove();
             const matrixDiv = document.createElement('div');
             matrixDiv.className = 'error-matrix';
             matrixDiv.style.width = '100%';
@@ -1028,6 +1009,10 @@ function displayPlasmaWall(usersToDisplay = null) {
     }, displayUsers.length * 60 + 500);
     
     // Update counters
+    updateDisplayCounters(displayUsers);
+}
+
+function updateDisplayCounters(displayUsers) {
     if (currentSearchTerm) {
         userCount.textContent = `${displayUsers.length} of ${allUsers.length} Neural Entities Found`;
         liveCounter.textContent = `Search Results: ${displayUsers.length} matches for "${currentSearchTerm}"`;
@@ -1037,59 +1022,63 @@ function displayPlasmaWall(usersToDisplay = null) {
     }
 }
 
-// Search functionality
+// FIXED: Separate search and add functionality
 function performSearch(searchTerm) {
-    currentSearchTerm = searchTerm.trim();
+    currentSearchTerm = searchTerm.toLowerCase().trim();
+    console.log('🔍 Performing search for:', currentSearchTerm);
     
     if (!currentSearchTerm) {
-        // No search term, show all users
-        isSearchMode = false;
-        filteredUsers = [];
-        searchResults.style.opacity = '0';
-        submitBtn.innerHTML = '<span class="relative z-10">INJECT</span>';
-        usernameInput.placeholder = "🔍 Search users or add new neural handle...";
-        displayPlasmaWall();
+        showAllUsers();
         return;
     }
     
-    // Enable search mode
-    isSearchMode = true;
-    submitBtn.innerHTML = '<span class="relative z-10">SEARCH</span>';
-    usernameInput.placeholder = "🔍 Searching...";
-    
     // Filter users based on search term
     filteredUsers = allUsers.filter(username => 
-        username.toLowerCase().includes(currentSearchTerm.toLowerCase())
+        username.toLowerCase().includes(currentSearchTerm)
     );
     
-    // Update search results counter
-    const resultCount = filteredUsers.length;
-    if (resultCount === 0) {
-        searchResults.textContent = `❌ No neural signatures found for "${currentSearchTerm}"`;
-        searchResults.className = 'mt-3 text-center text-red-400 search-counter opacity-100 transition-opacity duration-300';
-    } else if (resultCount === 1) {
-        searchResults.textContent = `✅ 1 neural signature found for "${currentSearchTerm}"`;
-        searchResults.className = 'mt-3 text-center text-blue-300 search-counter opacity-100 transition-opacity duration-300';
-    } else {
-        searchResults.textContent = `✅ ${resultCount} neural signatures found for "${currentSearchTerm}"`;
-        searchResults.className = 'mt-3 text-center text-blue-300 search-counter opacity-100 transition-opacity duration-300';
-    }
+    console.log('🔍 Search results:', filteredUsers.length, 'users found');
     
-    searchResults.style.opacity = '1';
+    // Update UI for search mode
+    isSearchMode = true;
+    actionBtn.innerHTML = '<span class="relative z-10">ADD THIS</span>';
+    clearBtn.innerHTML = '<span class="relative z-10">SHOW ALL</span>';
+    
+    // Update search results counter
+    updateSearchResults(filteredUsers.length);
     
     // Display filtered results
     displayPlasmaWall(filteredUsers);
 }
 
-// Clear search functionality
-function clearSearch() {
-    usernameInput.value = '';
+function updateSearchResults(resultCount) {
+    if (resultCount === 0) {
+        searchResults.textContent = `❌ No neural signatures found for "${currentSearchTerm}"`;
+        searchResults.className = 'mt-3 text-center text-red-400 search-counter opacity-100 transition-opacity duration-300';
+        actionBtn.innerHTML = '<span class="relative z-10">ADD NEW</span>';
+    } else if (resultCount === 1) {
+        searchResults.textContent = `✅ 1 neural signature found for "${currentSearchTerm}"`;
+        searchResults.className = 'mt-3 text-center text-blue-300 search-counter opacity-100 transition-opacity duration-300';
+        actionBtn.innerHTML = '<span class="relative z-10">ADD THIS</span>';
+    } else {
+        searchResults.textContent = `✅ ${resultCount} neural signatures found for "${currentSearchTerm}"`;
+        searchResults.className = 'mt-3 text-center text-blue-300 search-counter opacity-100 transition-opacity duration-300';
+        actionBtn.innerHTML = '<span class="relative z-10">ADD NEW</span>';
+    }
+    
+    searchResults.style.opacity = '1';
+}
+
+function showAllUsers() {
+    console.log('👁️ Showing all users');
     currentSearchTerm = '';
     filteredUsers = [];
     isSearchMode = false;
+    
+    // Reset UI
+    actionBtn.innerHTML = '<span class="relative z-10">ADD USER</span>';
+    clearBtn.innerHTML = '<span class="relative z-10">SHOW ALL</span>';
     searchResults.style.opacity = '0';
-    submitBtn.innerHTML = '<span class="relative z-10">INJECT</span>';
-    usernameInput.placeholder = "🔍 Search users or add new neural handle...";
     
     // Remove search highlights
     document.querySelectorAll('.search-highlight').forEach(card => {
@@ -1099,18 +1088,30 @@ function clearSearch() {
     displayPlasmaWall();
 }
 
-// Enhanced user submission that handles both search and injection
-async function submitUser(username) {
-    const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
+// FIXED: Enhanced user submission that properly handles search vs add
+async function handleUserAction() {
+    const inputValue = usernameInput.value.trim();
+    const cleanUsername = inputValue.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
     
-    // If in search mode, just perform search
-    if (isSearchMode || currentSearchTerm) {
-        performSearch(username);
+    console.log('🎯 Action triggered:', { inputValue, cleanUsername, isSearchMode, currentSearchTerm });
+    
+    if (!cleanUsername) {
+        alert('⚠️ Please enter a username');
         return;
     }
     
-    // Otherwise, inject new user
-    if (!cleanUsername || cleanUsername.length < 2) {
+    // If we're in search mode and have search results, add the user
+    if (isSearchMode || currentSearchTerm) {
+        await addNewUser(cleanUsername);
+        return;
+    }
+    
+    // Otherwise, just add the user directly
+    await addNewUser(cleanUsername);
+}
+
+async function addNewUser(cleanUsername) {
+    if (cleanUsername.length < 2) {
         alert('⚠️ Neural signature invalid - minimum 2 characters required');
         return;
     }
@@ -1122,25 +1123,28 @@ async function submitUser(username) {
     
     if (allUsers.includes(cleanUsername)) {
         alert('⚡ Consciousness already exists in the quantum matrix!');
+        // If user exists, just search for them
+        usernameInput.value = cleanUsername;
+        performSearch(cleanUsername);
         return;
     }
     
     console.log('🧬 Processing neural injection:', cleanUsername);
     
     // Enhanced submit animation
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="relative z-10">⟡ INJECTING...</span>';
-    submitBtn.style.transform = 'scale(0.98)';
+    actionBtn.disabled = true;
+    actionBtn.innerHTML = '<span class="relative z-10">⟡ INJECTING...</span>';
+    actionBtn.style.transform = 'scale(0.98)';
     updateStatus('🧬 Injecting consciousness into quantum matrix...', 'info');
     
     // Immediate local injection
     allUsers.push(cleanUsername);
-    const saved = saveUsersToStorage();
+    const saved = saveUsersToMemory();
     
     if (!saved) {
         allUsers.pop(); // Remove if couldn't save locally
-        updateStatus('❌ Local storage failure - injection aborted', 'error');
-        resetSubmitButton();
+        updateStatus('❌ Memory storage failure - injection aborted', 'error');
+        resetActionButton();
         return;
     }
     
@@ -1162,12 +1166,23 @@ async function submitUser(username) {
     setTimeout(() => {
         usernameInput.value = '';
         usernameInput.style.transform = 'scale(1)';
-    }, 200);
+        showAllUsers(); // Reset to show all users
+    }, 500);
     
     // Reset button
-    setTimeout(resetSubmitButton, 3000);
+    setTimeout(resetActionButton, 2000);
     
     console.log('✨ Neural injection complete - consciousness integrated');
+}
+
+function resetActionButton() {
+    actionBtn.disabled = false;
+    if (isSearchMode) {
+        actionBtn.innerHTML = '<span class="relative z-10">ADD THIS</span>';
+    } else {
+        actionBtn.innerHTML = '<span class="relative z-10">ADD USER</span>';
+    }
+    actionBtn.style.transform = 'scale(1)';
 }
 
 // Enhanced backend communication with multiple strategies
@@ -1260,7 +1275,7 @@ async function loadFromBackend(forceSync = false) {
                 console.log('✅ Quantum network data received:', serverUsers.length, 'entities');
                 
                 // Load local data
-                const localUsers = loadUsersFromStorage();
+                const localUsers = loadUsersFromMemory();
                 
                 // Merge without duplicates
                 const allServerUsers = Array.isArray(serverUsers) ? serverUsers : [];
@@ -1275,127 +1290,60 @@ async function loadFromBackend(forceSync = false) {
     }
     
     console.log('⚠️ Quantum network unavailable, using local consciousness cache');
-    loadUsersFromStorage();
+    loadUsersFromMemory();
     updateStatus('⚠️ Operating in local mode - quantum network offline', 'warning');
     return false;
 }
 
-// Enhanced user submission with quantum processing
-async function submitUser(username) {
-    const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
-    
-    if (!cleanUsername || cleanUsername.length < 2) {
-        alert('⚠️ Neural signature invalid - minimum 2 characters required');
-        return;
-    }
-    
-    if (cleanUsername.length > 30) {
-        alert('⚠️ Neural signature too long - maximum 30 characters');
-        return;
-    }
-    
-    if (allUsers.includes(cleanUsername)) {
-        alert('⚡ Consciousness already exists in the quantum matrix!');
-        return;
-    }
-    
-    console.log('🧬 Processing neural injection:', cleanUsername);
-    
-    // Enhanced submit animation
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="relative z-10">⟡ INJECTING...</span>';
-    submitBtn.style.transform = 'scale(0.98)';
-    updateStatus('🧬 Injecting consciousness into quantum matrix...', 'info');
-    
-    // Immediate local injection
-    allUsers.push(cleanUsername);
-    const saved = saveUsersToStorage();
-    
-    if (!saved) {
-        allUsers.pop(); // Remove if couldn't save locally
-        updateStatus('❌ Local storage failure - injection aborted', 'error');
-        resetSubmitButton();
-        return;
-    }
-    
-    // Update display immediately
-    displayPlasmaWall();
-    
-    // Background quantum sync
-    const backendSaved = await saveToBackend(cleanUsername);
-    
-    // Final status
-    if (backendSaved) {
-        updateStatus('✅ Consciousness successfully injected and synchronized!', 'success');
-    } else {
-        updateStatus('✅ Consciousness injected locally - will sync when quantum network returns', 'warning');
-    }
-    
-    // Clear input with animation
-    usernameInput.style.transform = 'scale(0.98)';
-    setTimeout(() => {
-        usernameInput.value = '';
-        usernameInput.style.transform = 'scale(1)';
-    }, 200);
-    
-    // Reset button
-    setTimeout(resetSubmitButton, 3000);
-    
-    console.log('✨ Neural injection complete - consciousness integrated');
-}
-
-function resetSubmitButton() {
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = '<span class="relative z-10">INJECT</span>';
-    submitBtn.style.transform = 'scale(1)';
-}
-
-// Event listeners with enhanced handling
-submitBtn.addEventListener('click', () => {
-    const username = usernameInput.value.trim();
-    if (username && !submitBtn.disabled) {
-        submitUser(username);
-    }
-});
+// FIXED: Event listeners with proper separation
+actionBtn.addEventListener('click', handleUserAction);
 
 usernameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !submitBtn.disabled) {
-        const username = usernameInput.value.trim();
-        if (username) {
-            submitUser(username);
-        }
+    if (e.key === 'Enter') {
+        handleUserAction();
     }
 });
 
-// Real-time search as user types
+// FIXED: Real-time search as user types (this was the main issue)
+let searchTimeout;
 usernameInput.addEventListener('input', (e) => {
     const value = e.target.value.trim();
     
-    // If there's text, enable search mode
-    if (value) {
-        if (!isSearchMode) {
-            isSearchMode = true;
-            submitBtn.innerHTML = '<span class="relative z-10">SEARCH</span>';
-            usernameInput.placeholder = "🔍 Searching...";
-        }
-        performSearch(value);
-    } else {
-        // If empty, disable search mode
-        if (isSearchMode) {
-            clearSearch();
-        }
+    // Clear previous timeout
+    if (searchTimeout) {
+        clearTimeout(searchTimeout);
     }
+    
+    // Debounce search for better performance
+    searchTimeout = setTimeout(() => {
+        if (value) {
+            performSearch(value);
+        } else {
+            showAllUsers();
+        }
+    }, 300); // 300ms delay for smooth typing
 });
 
-clearSearchBtn.addEventListener('click', clearSearch);
+// FIXED: Clear/Show All button
+clearBtn.addEventListener('click', () => {
+    console.log('🔄 Clear/Show All clicked');
+    usernameInput.value = '';
+    showAllUsers();
+});
 
 // Enhanced input effects
 usernameInput.addEventListener('focus', () => {
-    usernameInput.nextElementSibling.style.opacity = '1';
+    const glowElement = usernameInput.nextElementSibling;
+    if (glowElement) {
+        glowElement.style.opacity = '1';
+    }
 });
 
 usernameInput.addEventListener('blur', () => {
-    usernameInput.nextElementSibling.style.opacity = '0';
+    const glowElement = usernameInput.nextElementSibling;
+    if (glowElement) {
+        glowElement.style.opacity = '0';
+    }
 });
 
 // Real-time counter updates
@@ -1411,7 +1359,7 @@ async function initializeQuantumMatrix() {
     console.log('🌌 INITIALIZING QUANTUM PLASMA MATRIX...');
     console.log('🎵 Audio matrix files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
     console.log('👥 Default neural signatures:', DEFAULT_USERS.length);
-    console.log('💾 Quantum storage protocol: ACTIVE');
+    console.log('💾 Quantum storage protocol: IN-MEMORY');
     console.log('🔄 Multi-proxy backend sync: ENABLED');
     
     updateStatus('🌌 Quantum matrix initialization in progress...', 'info');
@@ -1430,7 +1378,7 @@ async function initializeQuantumMatrix() {
     // Set ready status
     setTimeout(() => {
         if (connectionStatus.textContent.includes('initialization')) {
-            updateStatus('⚡ Quantum matrix ready for consciousness injection', 'success');
+            updateStatus('⚡ Quantum matrix ready - Type to search, Enter to add!', 'success');
         }
     }, 2000);
 }
@@ -1440,7 +1388,9 @@ setInterval(async () => {
     if (!syncInProgress) {
         console.log('🔄 Auto-sync initiated...');
         await loadFromBackend();
-        displayPlasmaWall();
+        if (!isSearchMode) {
+            displayPlasmaWall();
+        }
     }
 }, 300000);
 
