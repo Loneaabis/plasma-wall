@@ -42,6 +42,13 @@
     </div>
 </div>
 
+<!-- Audio -->
+<audio id="bgMusic" loop preload="auto" style="display: none;">
+    <source src="./interstellar.mp3" type="audio/mpeg">
+    <source src="./interstellar.wav" type="audio/wav">
+    <source src="./music.mp3" type="audio/mpeg">
+</audio>
+
 <!-- Input Section -->
 <div class="relative z-10 flex flex-col items-center justify-center px-6 mb-8">
     <div class="flex items-center gap-6 max-w-4xl w-full mb-6">
@@ -61,6 +68,13 @@
     
     <div class="flex gap-6 mb-4">
         <button 
+            id="musicToggle" 
+            class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 rounded-lg font-semibold transition-all duration-300 shadow-lg transform hover:scale-105"
+        >
+            🎵 Cosmic Soundtrack
+        </button>
+        
+        <button 
             id="refreshBtn" 
             class="px-6 py-3 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 rounded-lg font-semibold transition-all duration-300 shadow-lg transform hover:scale-105"
         >
@@ -73,16 +87,19 @@
     </div>
 </div>
 
-<!-- Circular Hall of Fame Display -->
-<div class="relative z-10 px-6">
-    <div class="hall-container bg-black/60 backdrop-blur-xl rounded-3xl p-8 border-2 border-green-400/50 max-w-6xl mx-auto">
-        <div class="circular-hall relative w-full h-96 overflow-hidden">
+<!-- Circular Hall of Fame Display - CENTERED -->
+<div class="relative z-10 px-6 mb-12">
+    <div class="hall-container bg-black/70 backdrop-blur-xl rounded-3xl p-12 border-3 border-green-400/60 max-w-4xl mx-auto">
+        <div class="circular-hall relative w-full mx-auto overflow-visible" style="height: 500px;">
             <div id="circularDisplay" class="absolute inset-0 flex items-center justify-center">
                 <!-- Users will be positioned in circle here -->
             </div>
+            
+            <!-- Center indicator -->
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-green-400/30 rounded-full border-2 border-green-400/60 animate-pulse"></div>
         </div>
         
-        <div class="text-center mt-6 text-green-300 font-bold">
+        <div class="text-center mt-8 text-green-300 font-bold">
             <span class="text-xl">🕊 Spinning Hall of Legends 🕊</span>
         </div>
     </div>
@@ -159,38 +176,46 @@
     66% { transform: translateY(30px) rotate(240deg); }
 }
 
-/* Circular Hall Styles */
+/* Circular Hall Styles - BETTER CENTERED */
 .circular-hall {
     position: relative;
     border-radius: 50%;
-    border: 2px solid rgba(34, 197, 94, 0.3);
-    background: radial-gradient(circle, rgba(34, 197, 94, 0.05) 0%, transparent 70%);
+    border: 3px solid rgba(34, 197, 94, 0.5);
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, rgba(34, 197, 94, 0.03) 50%, transparent 80%);
+    box-shadow: 
+        inset 0 0 50px rgba(34, 197, 94, 0.1),
+        0 0 30px rgba(34, 197, 94, 0.2);
 }
 
 .legend-card {
     position: absolute;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid rgba(34, 197, 94, 0.8);
+    border: 4px solid rgba(34, 197, 94, 0.9);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
     background: linear-gradient(135deg, #16a34a, #22c55e);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-weight: bold;
-    font-size: 24px;
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+    font-size: 28px;
+    box-shadow: 
+        0 0 25px rgba(34, 197, 94, 0.5),
+        0 8px 20px rgba(0, 0, 0, 0.3);
+    transform-origin: center center;
 }
 
 .legend-card:hover {
-    transform: scale(1.4);
-    z-index: 20;
+    transform: scale(1.5);
+    z-index: 30;
     border-color: #10b981;
-    box-shadow: 0 0 40px rgba(34, 197, 94, 0.8);
+    box-shadow: 
+        0 0 50px rgba(34, 197, 94, 0.9),
+        0 15px 35px rgba(0, 0, 0, 0.4);
 }
 
 .legend-img {
@@ -198,24 +223,32 @@
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.legend-img.loaded {
+    opacity: 1;
 }
 
 .legend-name {
     position: absolute;
-    bottom: -25px;
+    bottom: -35px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.95);
     color: #22c55e;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 25px;
+    font-size: 14px;
     font-weight: bold;
-    border: 1px solid rgba(34, 197, 94, 0.6);
+    border: 2px solid rgba(34, 197, 94, 0.7);
     white-space: nowrap;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .legend-card:hover .legend-name {
@@ -263,6 +296,8 @@ const elements = {
     usernameInput: document.getElementById('usernameInput'),
     submitBtn: document.getElementById('submitBtn'),
     refreshBtn: document.getElementById('refreshBtn'),
+    musicToggle: document.getElementById('musicToggle'),
+    bgMusic: document.getElementById('bgMusic'),
     circularDisplay: document.getElementById('circularDisplay'),
     connectionStatus: document.getElementById('connectionStatus'),
     userCount: document.getElementById('userCount')
@@ -271,84 +306,120 @@ const elements = {
 // Application state
 let state = {
     allUsers: [...CONFIG.DEFAULT_USERS],
-    isLoading: false
+    isLoading: false,
+    musicPlaying: false
 };
 
-// SIMPLE and RELIABLE Avatar Loading
+// IMPROVED Avatar Loading System - MUCH MORE RELIABLE
 const avatarLoader = {
-    // Only the most reliable sources
+    // Better sources with different approaches
     sources: [
-        (username) => `https://unavatar.io/twitter/${username}?size=80`,
-        (username) => `https://github.com/${username}.png?size=80`,
-        (username) => `https://unavatar.io/${username}?size=80`,
-        (username) => `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=16a34a&color=fff&size=80&bold=true`
+        // Twitter sources - most important
+        (username) => `https://unavatar.io/twitter/${username}?size=100`,
+        (username) => `https://twitter.com/${username}/profile_image?size=bigger`,
+        
+        // Alternative services
+        (username) => `https://github.com/${username}.png?size=100`,
+        (username) => `https://unavatar.io/${username}?size=100`,
+        
+        // Generated fallbacks that ALWAYS work
+        (username) => `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=16a34a&color=ffffff&size=100&bold=true&font-size=0.4`
     ],
     
     load: async (username, imgElement, cardElement) => {
-        console.log(`🖼️ Loading avatar for: ${username}`);
+        console.log(`🖼️ LOADING AVATAR FOR: ${username.toUpperCase()}`);
         
-        // Show initial letter while loading
+        // Show letter initially
         cardElement.textContent = username.charAt(0).toUpperCase();
         
         for (let i = 0; i < avatarLoader.sources.length; i++) {
+            const src = avatarLoader.sources[i](username);
+            console.log(`  🔄 TRYING SOURCE ${i + 1}/${avatarLoader.sources.length}: ${src.substring(0, 50)}...`);
+            
             try {
-                const src = avatarLoader.sources[i](username);
-                console.log(`  Trying source ${i + 1}: ${src}`);
-                
-                const success = await new Promise((resolve) => {
-                    const timeout = setTimeout(() => resolve(false), 3000);
-                    
-                    imgElement.onload = () => {
-                        clearTimeout(timeout);
-                        console.log(`  ✅ Success for ${username}`);
-                        cardElement.textContent = '';
-                        imgElement.style.display = 'block';
-                        resolve(true);
-                    };
-                    
-                    imgElement.onerror = () => {
-                        clearTimeout(timeout);
-                        console.log(`  ❌ Failed for ${username}`);
-                        resolve(false);
-                    };
-                    
-                    imgElement.src = src;
-                });
-                
-                if (success) return true;
-                
+                const success = await avatarLoader.testImage(src, imgElement, cardElement, username, i + 1);
+                if (success) {
+                    console.log(`  ✅ SUCCESS! Avatar loaded for ${username} from source ${i + 1}`);
+                    return true;
+                }
             } catch (error) {
-                console.log(`  ❌ Error: ${error.message}`);
+                console.log(`  ❌ Source ${i + 1} failed: ${error.message}`);
             }
         }
         
-        // Keep letter avatar if all fail
-        console.log(`❌ All sources failed for ${username}, keeping letter avatar`);
+        console.log(`⚠️ All sources failed for ${username}, keeping letter avatar`);
         return false;
+    },
+    
+    testImage: (src, imgElement, cardElement, username, sourceNum) => {
+        return new Promise((resolve) => {
+            const timeout = setTimeout(() => {
+                console.log(`    ⏰ TIMEOUT for ${username} source ${sourceNum}`);
+                resolve(false);
+            }, 4000); // Increased timeout
+            
+            // Create a completely new image element for testing
+            const testImg = new Image();
+            testImg.crossOrigin = 'anonymous'; // Try to avoid CORS issues
+            
+            testImg.onload = function() {
+                clearTimeout(timeout);
+                
+                // Check if it's a valid image (not a tiny placeholder)
+                if (this.naturalWidth > 20 && this.naturalHeight > 20) {
+                    console.log(`    ✅ VALID IMAGE: ${this.naturalWidth}x${this.naturalHeight} for ${username}`);
+                    
+                    // Success! Update the actual display
+                    imgElement.src = src;
+                    imgElement.onload = () => {
+                        cardElement.textContent = ''; // Remove letter
+                        imgElement.classList.add('loaded');
+                        imgElement.style.display = 'block';
+                        console.log(`    🎉 DISPLAYED avatar for ${username}`);
+                    };
+                    resolve(true);
+                } else {
+                    console.log(`    ❌ INVALID SIZE: ${this.naturalWidth}x${this.naturalHeight} for ${username}`);
+                    resolve(false);
+                }
+            };
+            
+            testImg.onerror = function() {
+                clearTimeout(timeout);
+                console.log(`    ❌ IMAGE ERROR for ${username} source ${sourceNum}`);
+                resolve(false);
+            };
+            
+            // Start the test
+            testImg.src = src;
+        });
     }
 };
 
-// Create Legend Card
+// Create Legend Card - LARGER AND BETTER POSITIONED
 const createLegendCard = (username, index, total) => {
     const card = document.createElement('div');
     card.className = 'legend-card';
     
-    // Calculate position on circle
+    // Calculate position on circle - BIGGER RADIUS for better spacing
     const angle = (index / total) * 2 * Math.PI;
-    const x = Math.cos(angle) * CONFIG.CIRCLE_RADIUS;
-    const y = Math.sin(angle) * CONFIG.CIRCLE_RADIUS;
+    const radius = 220; // Increased from 180
+    const x = Math.cos(angle) * radius;
+    const y = Math.sin(angle) * radius;
     
-    card.style.left = `calc(50% + ${x}px - 40px)`;
-    card.style.top = `calc(50% + ${y}px - 40px)`;
+    // Position the card (accounting for card size of 100px = 50px from center)
+    card.style.left = `calc(50% + ${x}px - 50px)`;
+    card.style.top = `calc(50% + ${y}px - 50px)`;
     
     // Initial letter display
     card.textContent = username.charAt(0).toUpperCase();
     
-    // Create image element
+    // Create image element with better settings
     const img = document.createElement('img');
     img.className = 'legend-img';
     img.alt = username;
     img.style.display = 'none';
+    img.loading = 'eager'; // Load immediately
     
     // Create name label
     const nameLabel = document.createElement('div');
@@ -361,11 +432,12 @@ const createLegendCard = (username, index, total) => {
     // Click to open Twitter
     card.addEventListener('click', () => {
         window.open(`https://twitter.com/${username}`, '_blank');
-        card.style.transform = 'scale(0.95)';
-        setTimeout(() => card.style.transform = '', 150);
+        card.style.transform = 'scale(0.9)';
+        setTimeout(() => card.style.transform = '', 200);
     });
     
-    // Load avatar
+    // Start loading avatar immediately
+    console.log(`🎯 CREATING CARD FOR: ${username}`);
     avatarLoader.load(username, img, card);
     
     return card;
@@ -502,6 +574,28 @@ const setupEvents = () => {
         const value = e.target.value;
         const clean = value.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
         if (value !== clean) e.target.value = clean;
+    });
+    
+    // Music toggle functionality
+    elements.musicToggle.addEventListener('click', async () => {
+        try {
+            if (state.musicPlaying) {
+                elements.bgMusic.pause();
+                elements.musicToggle.innerHTML = '🎵 Cosmic Soundtrack';
+                state.musicPlaying = false;
+                console.log('🔇 Music paused');
+            } else {
+                elements.bgMusic.volume = 0.3;
+                await elements.bgMusic.play();
+                elements.musicToggle.innerHTML = '🔇 Stop Music';
+                state.musicPlaying = true;
+                console.log('🎵 Music playing');
+            }
+        } catch (error) {
+            console.error('❌ Music error:', error);
+            utils.updateStatus('⚠️ Music files not found', 'warning');
+            setTimeout(() => utils.updateStatus('✅ Hall of Fame ready 🕊', 'success'), 3000);
+        }
     });
     
     elements.refreshBtn.addEventListener('click', () => {
