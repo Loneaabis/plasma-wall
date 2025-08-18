@@ -119,7 +119,7 @@
                 Neural Network: ACTIVE
             </div>
             <div class="text-green-400">
-                Architect: @seumcoded
+                Created by: aabis
             </div>
         </div>
     </div>
@@ -631,11 +631,12 @@ const liveCounter = document.getElementById('liveCounter');
 let musicPlaying = false;
 let syncInProgress = false;
 
-// Enhanced default users including your requested ones
+// Enhanced default users including your requested ones + the new users
 const DEFAULT_USERS = [
     'proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax',
     'primay_eth', 'kolyposts', 'Buja_Ques', 'CATTtwit', 
-    'The9bo', 'cryptobaikan', 'ImFaziiii'
+    'The9bo', 'cryptobaikan', 'ImFaziiii', 'pauliepunt', 
+    'happysubstack', '0xlinkevm', 'lucidxpl', 'cblison'
 ];
 
 let allUsers = [...DEFAULT_USERS];
@@ -738,7 +739,7 @@ function updateStatus(message, type = 'info') {
     }, 5000);
 }
 
-// Ultra-enhanced avatar loading system
+// Ultra-enhanced avatar loading system with better Twitter/X focus
 function createAvatarCard(username) {
     console.log(`🖼️ Materializing neural avatar for: ${username}`);
     
@@ -756,76 +757,70 @@ function createAvatarCard(username) {
     card.appendChild(img);
     card.appendChild(overlay);
     
-    // Comprehensive avatar source matrix with X/Twitter focus
+    // Enhanced avatar source matrix with priority for Twitter/X profiles
     const avatarSources = [
-        // Primary Twitter/X APIs (most reliable for Twitter users)
+        // HIGH PRIORITY: Twitter/X focused sources (most likely to work for X handles)
         `https://unavatar.io/twitter/${username}?fallback=false`,
         `https://unavatar.io/x/${username}?fallback=false`,
+        `https://pbs.twimg.com/profile_images/1/${username}/400x400.jpg`, // Twitter CDN attempt
         
-        // Twitter specific services
+        // Twitter-specific avatar services
         `https://avatars.io/twitter/${username}?size=140`,
-        `https://twitter-avatar.now.sh/${username}`,
+        `https://twitter-avatar.vercel.app/${username}`,
         
-        // Multi-platform avatar services
+        // Cross-platform services (good for users with same handle across platforms)
         `https://unavatar.io/${username}?fallback=false`,
-        
-        // GitHub (many X users have same handle)
-        `https://avatars.githubusercontent.com/${username}?size=140`,
         `https://github.com/${username}.png?size=140`,
+        `https://avatars.githubusercontent.com/${username}?size=140`,
         
-        // Alternative social platforms
+        // Social platform alternatives
         `https://unavatar.io/instagram/${username}?fallback=false`,
         `https://unavatar.io/discord/${username}?fallback=false`,
         
-        // Generated avatars with cyberpunk aesthetic
-        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=140&backgroundColor=22c55e,16a34a,15803d&randomizeIds=true`,
-        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a&randomizeIds=true`,
-        `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}&size=140&backgroundColor=22c55e,16a34a,15803d&randomizeIds=true`,
-        `https://api.dicebear.com/7.x/big-smile/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e&randomizeIds=true`,
-        `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&size=140&backgroundColor=22c55e,16a34a&randomizeIds=true`,
-        `https://api.dicebear.com/7.x/identicon/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a&randomizeIds=true`,
+        // Enhanced generated avatars with cyberpunk green theme
+        `https://api.dicebear.com/7.x/personas/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a&flip=true&randomizeIds=true`,
+        `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a&accessories=prescription02,prescription01,sunglasses,wayfarers&accessoriesColor=black,blue01,blue02,blue03&clotheColor=black,blue01,blue02,blue03,gray01,gray02&eyeType=default,happy,hearts,side,squint,surprised,wink,winkWacky&facialHairColor=auburn,black,blonde,brown,pastel,platinum,red&facialHairType=default,mustachemagnum,moustachefancy,blank&hairColor=auburn,black,blonde,brown,pastel,platinum,red&hatColor=black,blue01,blue02,blue03,gray01,gray02,heather,pastel,pink,red&mouthType=default,eating,grimace,sad,screamopen,serious,smile,tongue,twinkle&skinColor=tanned,yellow,pale,light,brown,darkbrown,black&topType=longhaircurly,longhaircurvy,longhairdreads,longhairfrida,longhairnottoobig,longhairmiawalace,longhairoddlysized,longhairstyles,shorthairbuzz,shorthairimpostor,shorthairleftpart,shorthairraised,shorthairrightpart,shorthairscandar,shorthairsides,shorthairtop,nohair,hat,winterhat03,winterhat04,turban,shortflat,shortround,shorthairshaggymullet&randomizeIds=true`,
+        `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a&randomizeIds=true`,
+        `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a,15803d&randomizeIds=true`,
+        `https://api.dicebear.com/7.x/identicon/svg?seed=${username}&size=140&backgroundColor=00ff41,22c55e,16a34a,15803d&randomizeIds=true`,
         
-        // Robohash with different sets (cyberpunk theme)
-        `https://robohash.org/${username}?size=140x140&set=set1&bgset=bg2`,
-        `https://robohash.org/${username}?size=140x140&set=set2&bgset=bg1`,
-        `https://robohash.org/${username}?size=140x140&set=set3&bgset=bg2`,
-        `https://robohash.org/${username}?size=140x140&set=set4&bgset=bg1`,
+        // Cyberpunk-themed robot avatars
+        `https://robohash.org/${username}?size=140x140&set=set1&bgset=bg2&hues=green`,
+        `https://robohash.org/${username}?size=140x140&set=set2&bgset=bg1&hues=green`,
+        `https://robohash.org/${username}?size=140x140&set=set3&bgset=bg2&hues=green`,
         
-        // Boring Avatars with matrix colors
+        // Matrix-colored boring avatars
         `https://source.boringavatars.com/beam/140/${username}?colors=00ff41,22c55e,16a34a,15803d,047857`,
         `https://source.boringavatars.com/marble/140/${username}?colors=00ff41,22c55e,16a34a,15803d,047857`,
         `https://source.boringavatars.com/pixel/140/${username}?colors=00ff41,22c55e,16a34a,15803d,047857`,
         `https://source.boringavatars.com/sunset/140/${username}?colors=00ff41,22c55e,16a34a,15803d,047857`,
         
-        // Multiavatar
-        `https://api.multiavatar.com/${username}.svg?apikey=free`,
-        
         // UI Avatars with matrix styling
-        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=00ff41&color=000000&size=140&bold=true&rounded=true&font-size=0.5`,
-        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=22c55e&color=ffffff&size=140&bold=true&rounded=true&font-size=0.5`,
-        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=16a34a&color=ffffff&size=140&bold=true&rounded=true&font-size=0.5`,
+        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=00ff41&color=000000&size=140&bold=true&rounded=true&font-size=0.6`,
+        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=22c55e&color=ffffff&size=140&bold=true&rounded=true&font-size=0.6`,
+        `https://ui-avatars.com/api/?name=${username.charAt(0).toUpperCase()}&background=16a34a&color=ffffff&size=140&bold=true&rounded=true&font-size=0.6`,
         
-        // Gravatar variants
-        `https://www.gravatar.com/avatar/${btoa(username).slice(0, 32)}?s=140&d=identicon&r=pg`,
-        `https://www.gravatar.com/avatar/${btoa(username).slice(0, 32)}?s=140&d=retro&r=pg`,
-        `https://www.gravatar.com/avatar/${btoa(username).slice(0, 32)}?s=140&d=wavatar&r=pg`,
-        `https://www.gravatar.com/avatar/${btoa(username).slice(0, 32)}?s=140&d=monsterid&r=pg`,
+        // Gravatar variants with username hash
+        `https://www.gravatar.com/avatar/${btoa(username + 'matrix').slice(0, 32)}?s=140&d=identicon&r=pg`,
+        `https://www.gravatar.com/avatar/${btoa(username + 'cyber').slice(0, 32)}?s=140&d=retro&r=pg`,
+        `https://www.gravatar.com/avatar/${btoa(username + 'neural').slice(0, 32)}?s=140&d=wavatar&r=pg`,
         
-        // Placeholder services with matrix theme
+        // Enhanced multiavatar
+        `https://api.multiavatar.com/${username}.svg`,
+        
+        // Fallback placeholders
         `https://via.placeholder.com/140x140/00ff41/000000?text=${username.charAt(0).toUpperCase()}`,
-        `https://via.placeholder.com/140x140/22c55e/ffffff?text=${username.charAt(0).toUpperCase()}`,
-        `https://dummyimage.com/140x140/00ff41/000000&text=${username.charAt(0).toUpperCase()}`,
-        `https://picsum.photos/seed/${username}/140/140?grayscale&blur=1`
+        `https://dummyimage.com/140x140/22c55e/ffffff&text=${username.charAt(0).toUpperCase()}`
     ];
     
     let sourceIndex = 0;
     let attempts = 0;
-    const maxAttempts = avatarSources.length;
+    const maxAttempts = Math.min(avatarSources.length, 15); // Limit attempts for performance
     let loadStartTime = Date.now();
     
     const tryNextSource = () => {
         if (attempts >= maxAttempts) {
-            console.log(`❌ All ${maxAttempts} avatar sources failed for ${username}, creating matrix avatar`);
+            console.log(`❌ All ${attempts} avatar sources failed for ${username}, creating matrix fallback`);
             card.removeChild(img);
             const matrixDiv = document.createElement('div');
             matrixDiv.className = 'error-matrix';
@@ -837,20 +832,21 @@ function createAvatarCard(username) {
         }
         
         const currentSource = avatarSources[sourceIndex];
-        const sourceType = currentSource.includes('twitter') || currentSource.includes('/x/') ? 'Twitter' :
+        const sourceType = currentSource.includes('twitter') || currentSource.includes('/x/') ? 'X/Twitter' :
                           currentSource.includes('github') ? 'GitHub' :
                           currentSource.includes('dicebear') ? 'Generated' :
-                          currentSource.includes('robohash') ? 'Robot' :
-                          currentSource.includes('ui-avatars') ? 'Letter' : 'Other';
+                          currentSource.includes('robohash') ? 'Cyber' :
+                          currentSource.includes('ui-avatars') ? 'Letter' :
+                          currentSource.includes('boring') ? 'Abstract' : 'Other';
         
-        console.log(`  📡 Neural probe ${attempts + 1}/${maxAttempts} for ${username}: ${sourceType}`);
+        console.log(`  📡 Avatar scan ${attempts + 1}/${maxAttempts} for ${username}: ${sourceType}`);
         
-        // Progressive timeout (faster for priority sources)
-        const isHighPriority = attempts < 4; // First 4 sources are high priority
-        const timeoutDuration = isHighPriority ? 4000 : 6000;
+        // Shorter timeout for better UX (especially for high-priority Twitter sources)
+        const isHighPriority = attempts < 5; // First 5 sources are high priority
+        const timeoutDuration = isHighPriority ? 3000 : 5000;
         
         const timeout = setTimeout(() => {
-            console.log(`  ⏰ Neural timeout for ${username} (${timeoutDuration}ms)`);
+            console.log(`  ⏰ Timeout for ${username} (${timeoutDuration}ms)`);
             attempts++;
             sourceIndex = (sourceIndex + 1) % avatarSources.length;
             tryNextSource();
@@ -860,7 +856,7 @@ function createAvatarCard(username) {
             clearTimeout(timeout);
             const loadTime = Date.now() - loadStartTime;
             img.classList.remove('loading-matrix');
-            console.log(`  ✅ AVATAR MATERIALIZED: ${username} via ${sourceType} (${loadTime}ms, attempt ${attempts + 1})`);
+            console.log(`  ✅ AVATAR LOADED: ${username} via ${sourceType} (${loadTime}ms, attempt ${attempts + 1})`);
             
             // Add success animation
             card.style.animation = 'cardMaterialize 0.6s ease-out';
@@ -868,66 +864,67 @@ function createAvatarCard(username) {
         
         const onError = () => {
             clearTimeout(timeout);
-            console.log(`  ❌ Neural probe ${attempts + 1} failed: ${sourceType}`);
+            console.log(`  ❌ Failed: ${sourceType} for ${username}`);
             attempts++;
             sourceIndex = (sourceIndex + 1) % avatarSources.length;
             tryNextSource();
         };
         
-        // Enhanced image loading with validation
+        // Enhanced image loading with better validation
         img.onload = () => {
-            // Check if image actually loaded and is not a broken placeholder
-            if (img.naturalWidth > 0 && img.naturalHeight > 0 && img.naturalWidth !== 1 && img.naturalHeight !== 1) {
+            // Validate image dimensions and ensure it's not a 1x1 tracking pixel or broken image
+            if (img.naturalWidth > 10 && img.naturalHeight > 10 && 
+                img.naturalWidth !== 1 && img.naturalHeight !== 1) {
                 onSuccess();
             } else {
-                console.log(`  ⚠️ Invalid image dimensions for ${username}: ${img.naturalWidth}x${img.naturalHeight}`);
+                console.log(`  ⚠️ Invalid image for ${username}: ${img.naturalWidth}x${img.naturalHeight}`);
                 onError();
             }
         };
         
         img.onerror = onError;
         
-        // Set source with cache busting for some services
-        const shouldCacheBust = attempts > 2 && (currentSource.includes('github') || currentSource.includes('twitter'));
+        // Set source with cache busting for problematic services
+        const shouldCacheBust = attempts > 3;
         const finalSource = shouldCacheBust ? 
-            `${currentSource}${currentSource.includes('?') ? '&' : '?'}cb=${Date.now()}` : 
+            `${currentSource}${currentSource.includes('?') ? '&' : '?'}v=${Date.now()}` : 
             currentSource;
             
         img.src = finalSource;
     };
     
-    // Start loading
+    // Start the avatar loading process
     tryNextSource();
     return card;
 }
 
-// Enhanced display function with quantum animations
+// Enhanced display function with smoother animations
 function displayPlasmaWall() {
     console.log('🌌 Materializing plasma wall with', allUsers.length, 'neural entities');
     
     movingWall.innerHTML = '';
     
-    // Create cards with quantum timing
+    // Create cards with staggered timing for smoother loading
     allUsers.forEach((username, index) => {
         setTimeout(() => {
             const card = createAvatarCard(username);
-            card.style.animationDelay = `${index * 0.08}s`;
+            card.style.animationDelay = `${index * 0.1}s`;
             movingWall.appendChild(card);
-        }, index * 60);
+        }, index * 80); // Slightly faster timing
     });
     
-    // Duplicate for seamless quantum loop
+    // Duplicate for seamless loop with faster timing
     setTimeout(() => {
         allUsers.forEach((username, index) => {
             setTimeout(() => {
                 const card = createAvatarCard(username);
-                card.style.animationDelay = `${(allUsers.length + index) * 0.08}s`;
+                card.style.animationDelay = `${(allUsers.length + index) * 0.1}s`;
                 movingWall.appendChild(card);
-            }, index * 40);
+            }, index * 60);
         });
-    }, allUsers.length * 60 + 500);
+    }, allUsers.length * 80 + 1000);
     
-    // Update counters
+    // Update counters with live data
     userCount.textContent = `${allUsers.length} Neural Entities Active`;
     liveCounter.textContent = `Quantum Network: ${allUsers.length} consciousness signatures detected`;
 }
@@ -1042,7 +1039,7 @@ async function loadFromBackend(forceSync = false) {
     return false;
 }
 
-// Enhanced user submission with quantum processing
+// Enhanced user submission with better validation
 async function submitUser(username) {
     const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
     
@@ -1142,7 +1139,7 @@ usernameInput.addEventListener('blur', () => {
 setInterval(() => {
     const timestamp = new Date().toLocaleTimeString();
     liveCounter.textContent = `Quantum Network: ${allUsers.length} active signatures [${timestamp}]`;
-}, 10000);
+}, 15000); // Update every 15 seconds for better performance
 
 // Enhanced initialization
 async function initializeQuantumMatrix() {
@@ -1150,7 +1147,7 @@ async function initializeQuantumMatrix() {
     console.log('🎵 Audio matrix files: ./interstellar.mp3, ./interstellar.wav, ./music.mp3');
     console.log('👥 Default neural signatures:', DEFAULT_USERS.length);
     console.log('💾 Quantum storage protocol: ACTIVE');
-    console.log('🔄 Multi-proxy backend sync: ENABLED');
+    console.log('🔄 Enhanced avatar loading: ENABLED');
     
     updateStatus('🌌 Quantum matrix initialization in progress...', 'info');
     
@@ -1173,16 +1170,25 @@ async function initializeQuantumMatrix() {
     }, 2000);
 }
 
-// Auto-sync every 5 minutes
+// Auto-sync every 5 minutes with performance optimization
 setInterval(async () => {
-    if (!syncInProgress) {
+    if (!syncInProgress && document.visibilityState === 'visible') {
         console.log('🔄 Auto-sync initiated...');
         await loadFromBackend();
         displayPlasmaWall();
     }
 }, 300000);
 
-// Start the quantum matrix
+// Pause auto-sync when tab is not visible for performance
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        console.log('👁️ Tab visible - quantum matrix active');
+    } else {
+        console.log('🙈 Tab hidden - quantum matrix standby');
+    }
+});
+
+// Start the enhanced quantum matrix
 initializeQuantumMatrix();
 </script>
 
