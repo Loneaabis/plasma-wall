@@ -371,10 +371,6 @@
     border-bottom: none;
 }
 
-.row-1 { }
-.row-2 { }
-.row-3 { }
-
 .plasma-wall {
     display: flex;
     gap: 20px;
@@ -432,50 +428,6 @@
     background: linear-gradient(135deg, var(--deep-green), var(--matrix-green));
 }
 
-.avatar-loading {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 255, 65, 0.1));
-    animation: loadingPulse 1.5s ease-in-out infinite;
-}
-
-.avatar-loading::after {
-    content: '⟡';
-    font-size: 32px;
-    color: var(--neon-green);
-    animation: loadingSpin 1s linear infinite;
-}
-
-@keyframes loadingPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
-}
-
-@keyframes loadingSpin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.avatar-fallback {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--matrix-green), var(--deep-green));
-    color: var(--neon-green);
-    font-size: 48px;
-    font-weight: bold;
-    font-family: 'Courier New', monospace;
-    text-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
-}
-
 .handle-display {
     position: absolute;
     bottom: 0;
@@ -529,7 +481,7 @@
 }
 </style>
 
-<!-- Enhanced JavaScript -->
+<!-- Complete JavaScript -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     
@@ -810,13 +762,18 @@ async function saveToBackend(username) {
     for (let attempt = 0; attempt < CONFIG.MAX_RETRIES; attempt++) {
         try {
             // Try direct connection
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
+            
             const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username }),
                 mode: 'cors',
-                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+                signal: controller.signal
             });
+            
+            clearTimeout(timeoutId);
             
             if (response.ok) {
                 console.log('✅ Saved to server');
@@ -829,12 +786,17 @@ async function saveToBackend(username) {
             for (const proxy of CONFIG.PROXY_URLS) {
                 try {
                     const url = `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
+                    
                     const response = await fetch(url, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ username }),
-                        signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+                        signal: controller.signal
                     });
+                    
+                    clearTimeout(timeoutId);
                     
                     if (response.ok) {
                         console.log('✅ Saved via proxy');
@@ -862,11 +824,16 @@ async function loadFromBackend(forceSync = false) {
     for (let attempt = 0; attempt < CONFIG.MAX_RETRIES; attempt++) {
         try {
             // Try direct connection
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
+            
             const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
                 method: 'GET',
                 mode: 'cors',
-                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+                signal: controller.signal
             });
+            
+            clearTimeout(timeoutId);
             
             if (response.ok) {
                 const serverUsers = await response.json();
@@ -885,9 +852,14 @@ async function loadFromBackend(forceSync = false) {
             for (const proxy of CONFIG.PROXY_URLS) {
                 try {
                     const url = `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
+                    
                     const response = await fetch(url, {
-                        signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+                        signal: controller.signal
                     });
+                    
+                    clearTimeout(timeoutId);
                     
                     if (response.ok) {
                         const serverUsers = await response.json();
