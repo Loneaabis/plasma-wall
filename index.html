@@ -82,18 +82,18 @@
             id="musicToggle" 
             class="px-8 py-3 bg-gradient-to-r from-green-800 to-green-700 hover:from-green-700 hover:to-green-600 rounded-xl font-medium transition-all duration-300 cyber-button-small"
         >
-            🕊 On music
+            🎵 Play Music
         </button>
         <button 
             id="syncBtn" 
             class="px-8 py-3 bg-gradient-to-r from-blue-800 to-blue-700 hover:from-blue-700 hover:to-blue-600 rounded-xl font-medium transition-all duration-300 cyber-button-small"
         >
-            🕊 Force Sync
+            🔄 Force Sync
         </button>
     </div>
     
     <div id="connectionStatus" class="mt-4 text-center text-green-300 status-text">
-        Initializing quantum connection...TRILLIONS🕊
+        Initializing quantum connection...
     </div>
 </div>
 
@@ -101,12 +101,25 @@
 <div class="relative z-10 px-4 pb-8">
     <div class="plasma-container bg-black/50 backdrop-blur-xl rounded-3xl p-8 border-2 border-green-500/30 max-w-8xl mx-auto overflow-hidden shadow-2xl">
         <div id="userCount" class="text-center text-green-200 mb-8 text-xl font-semibold cyber-text">
-            Scanning the photos...
+            Scanning the matrix...
         </div>
         
-        <!-- Enhanced Moving Wall -->
-        <div class="plasma-wall-container relative h-[450px] overflow-hidden rounded-2xl border border-green-500/20">
-            <div id="movingWall" class="plasma-wall absolute top-0 left-0 flex items-center gap-6 py-6"></div>
+        <!-- Enhanced Moving Wall with Multiple Rows -->
+        <div class="plasma-wall-container relative h-[500px] overflow-hidden rounded-2xl border border-green-500/20">
+            <!-- Row 1 - Moving Right -->
+            <div class="wall-row row-1">
+                <div id="movingWall1" class="plasma-wall"></div>
+            </div>
+            
+            <!-- Row 2 - Moving Left -->
+            <div class="wall-row row-2">
+                <div id="movingWall2" class="plasma-wall reverse"></div>
+            </div>
+            
+            <!-- Row 3 - Moving Right -->
+            <div class="wall-row row-3">
+                <div id="movingWall3" class="plasma-wall"></div>
+            </div>
             
             <!-- Wall overlay effects -->
             <div class="wall-overlay absolute inset-0 pointer-events-none">
@@ -119,7 +132,7 @@
                 Neural Network: ACTIVE | X/Discord Support
             </div>
             <div class="text-green-400">
-                Architect: @aabis
+                Architect: @aabis | Enhanced
             </div>
         </div>
     </div>
@@ -211,8 +224,7 @@
     background: 
         radial-gradient(circle at 20% 30%, rgba(0, 255, 65, 0.15) 0%, transparent 50%),
         radial-gradient(circle at 80% 70%, rgba(34, 197, 94, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(22, 163, 74, 0.08) 0%, transparent 70%),
-        radial-gradient(circle at 30% 80%, rgba(0, 255, 65, 0.1) 0%, transparent 60%);
+        radial-gradient(circle at 50% 50%, rgba(22, 163, 74, 0.08) 0%, transparent 70%);
     animation: energyPulse 12s ease-in-out infinite;
 }
 
@@ -222,10 +234,6 @@
 }
 
 /* Plasma Orbs */
-.plasma-orbs {
-    pointer-events: none;
-}
-
 .plasma-orb {
     position: absolute;
     border-radius: 50%;
@@ -309,37 +317,7 @@
     animation: cyber-pulse 2s ease-in-out infinite;
 }
 
-.matrix-text {
-    font-family: 'Courier New', monospace;
-    text-shadow: 0 0 8px var(--dark-green);
-}
-
-.pulse-fade {
-    animation: pulseFade 3s ease-in-out infinite;
-}
-
-@keyframes pulseFade {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
-}
-
-/* Enhanced Input Styling */
-.input-matrix {
-    animation: slideInMatrix 1s ease-out;
-}
-
-@keyframes slideInMatrix {
-    from { transform: translateY(-30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-.input-wrapper input {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(10, 10, 10, 0.9));
-    box-shadow: 
-        inset 0 0 20px rgba(0, 255, 65, 0.1),
-        0 0 20px rgba(0, 255, 65, 0.1);
-}
-
+/* Buttons */
 .cyber-button {
     background: linear-gradient(135deg, var(--dark-green), var(--matrix-green));
     box-shadow: 
@@ -366,18 +344,9 @@
     100% { left: 100%; }
 }
 
-.cyber-button-small {
-    background: linear-gradient(135deg, var(--deep-green), var(--matrix-green));
-    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
-    font-size: 14px;
-}
-
 /* Enhanced Wall Container */
 .plasma-container {
     animation: containerRise 1.5s ease-out;
-    box-shadow: 
-        0 0 50px rgba(0, 255, 65, 0.1),
-        inset 0 0 30px rgba(0, 255, 65, 0.05);
 }
 
 @keyframes containerRise {
@@ -385,32 +354,47 @@
     to { transform: translateY(0); opacity: 1; }
 }
 
-/* Enhanced Plasma Wall */
+/* Multi-Row Wall System */
 .plasma-wall-container {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 255, 65, 0.02));
-    mask: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
-    -webkit-mask: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+    position: relative;
 }
+
+.wall-row {
+    position: relative;
+    height: 160px;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+}
+
+.wall-row:last-child {
+    border-bottom: none;
+}
+
+.row-1 { }
+.row-2 { }
+.row-3 { }
 
 .plasma-wall {
-    width: max-content;
-    animation: plasmaFlow 60s linear infinite;
-    padding: 20px 0;
+    display: flex;
+    gap: 20px;
+    position: absolute;
+    animation: slideWall 40s linear infinite;
+    padding: 10px;
 }
 
-@keyframes plasmaFlow {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+.plasma-wall.reverse {
+    animation: slideWallReverse 45s linear infinite;
 }
 
-/* Wall Overlay Effects */
-.scan-line {
-    animation: wallScan 3s ease-in-out infinite;
+@keyframes slideWall {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
-@keyframes wallScan {
-    0%, 100% { top: 0; opacity: 0.8; }
-    50% { top: 90%; opacity: 0.3; }
+@keyframes slideWallReverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
 }
 
 /* Enhanced Avatar Cards */
@@ -419,68 +403,91 @@
     width: 140px;
     height: 140px;
     position: relative;
-    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    animation: cardMaterialize 0.8s ease-out;
-    filter: drop-shadow(0 0 10px rgba(0, 255, 65, 0.3));
-}
-
-@keyframes cardMaterialize {
-    from { 
-        transform: scale(0.3) rotate(15deg); 
-        opacity: 0;
-        filter: blur(10px);
-    }
-    to { 
-        transform: scale(1) rotate(0deg); 
-        opacity: 1;
-        filter: blur(0px);
-    }
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
 }
 
 .avatar-card:hover {
-    transform: scale(1.15) translateY(-15px) rotate(3deg);
+    transform: scale(1.1) translateY(-5px);
     z-index: 20;
     filter: drop-shadow(0 0 25px rgba(0, 255, 65, 0.6));
+}
+
+.avatar-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--deep-green), var(--matrix-green));
+    border: 3px solid var(--dark-green);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
 }
 
 .avatar-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 20px;
-    border: 3px solid var(--dark-green);
-    box-shadow: 
-        0 0 30px rgba(0, 255, 65, 0.4),
-        inset 0 0 20px rgba(0, 255, 65, 0.1);
-    transition: all 0.4s ease;
-    background: linear-gradient(135deg, var(--deep-green), var(--matrix-green));
+    display: block;
 }
 
-.avatar-card:hover .avatar-img {
-    border-color: var(--neon-green);
-    box-shadow: 
-        0 0 40px rgba(0, 255, 65, 0.7),
-        inset 0 0 30px rgba(0, 255, 65, 0.2);
-    filter: brightness(1.2) contrast(1.1);
+.avatar-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 255, 65, 0.1));
+    animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+.avatar-loading::after {
+    content: '⟡';
+    font-size: 32px;
+    color: var(--neon-green);
+    animation: loadingSpin 1s linear infinite;
+}
+
+@keyframes loadingPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes loadingSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--matrix-green), var(--deep-green));
+    color: var(--neon-green);
+    font-size: 48px;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
 }
 
 .handle-display {
     position: absolute;
-    bottom: -12px;
+    bottom: 0;
     left: 0;
     right: 0;
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 255, 65, 0.1));
     color: var(--neon-green);
     text-align: center;
-    padding: 8px 4px;
-    font-size: 13px;
+    padding: 6px 4px;
+    font-size: 12px;
     font-weight: bold;
     font-family: 'Courier New', monospace;
-    border-radius: 0 0 20px 20px;
-    border: 2px solid var(--dark-green);
-    border-top: none;
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
     text-shadow: 0 0 5px rgba(0, 255, 65, 0.8);
     white-space: nowrap;
     overflow: hidden;
@@ -491,81 +498,12 @@
     background: linear-gradient(135deg, rgba(0, 255, 65, 0.9), rgba(34, 197, 94, 0.8));
     color: var(--cyber-black);
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-    transform: translateY(-4px);
-    box-shadow: 0 4px 15px rgba(0, 255, 65, 0.5);
 }
 
-/* Loading States */
-.loading-matrix {
-    background: linear-gradient(
-        45deg, 
-        rgba(0, 0, 0, 0.8) 25%, 
-        rgba(0, 255, 65, 0.2) 50%, 
-        rgba(0, 0, 0, 0.8) 75%
-    );
-    background-size: 400% 400%;
-    animation: matrixShimmer 2s ease-in-out infinite;
-    border-radius: 20px;
-    border: 3px solid var(--dark-green);
-    position: relative;
-    overflow: hidden;
-}
-
-.loading-matrix::before {
-    content: '⟡';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 32px;
-    color: var(--neon-green);
-    animation: loadingSpin 1.5s linear infinite;
-}
-
-@keyframes matrixShimmer {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
-
-@keyframes loadingSpin {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-.error-matrix {
-    background: linear-gradient(135deg, var(--matrix-green), var(--deep-green), var(--neon-green));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--cyber-black);
-    font-size: 32px;
-    font-weight: bold;
-    border-radius: 20px;
-    border: 3px solid var(--dark-green);
-    animation: errorPulse 2s ease-in-out infinite;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-}
-
-@keyframes errorPulse {
-    0%, 100% { box-shadow: 0 0 30px rgba(0, 255, 65, 0.4); }
-    50% { box-shadow: 0 0 50px rgba(0, 255, 65, 0.8); }
-}
-
-/* Status and Counter Styling */
+/* Status styling */
 .status-text {
     font-family: 'Courier New', monospace;
     text-shadow: 0 0 8px var(--dark-green);
-}
-
-.cyber-text {
-    font-family: 'Courier New', monospace;
-    text-shadow: 0 0 10px var(--neon-green);
-}
-
-.matrix-signature {
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    opacity: 0.8;
 }
 
 /* Responsive Design */
@@ -575,30 +513,23 @@
         gap: 16px;
     }
     
-    .input-wrapper {
-        width: 100%;
-    }
-    
     .avatar-card {
         width: 120px;
         height: 120px;
     }
     
-    .interstellar-ring-outer {
-        width: 400px;
-        height: 400px;
+    .wall-row {
+        height: 140px;
     }
     
-    .interstellar-ring-main {
-        width: 300px;
-        height: 300px;
+    .plasma-wall-container {
+        height: 420px;
     }
 }
 </style>
 
-<!-- Complete JavaScript -->
+<!-- Enhanced JavaScript -->
 <script>
-// Wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', function() {
     
 // Configuration
@@ -609,17 +540,16 @@ const CONFIG = {
         'https://cors-anywhere.herokuapp.com/'
     ],
     TIMEOUT: 5000,
-    MAX_RETRIES: 2,
+    MAX_RETRIES: 3,
     RETRY_DELAY: 1000
 };
 
 const STORAGE_KEY = 'plasma_wall_quantum_users';
 
-// Get DOM elements
+// DOM elements
 const usernameInput = document.getElementById('usernameInput');
 const submitBtn = document.getElementById('submitBtn');
 const syncBtn = document.getElementById('syncBtn');
-const movingWall = document.getElementById('movingWall');
 const bgMusic = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
 const connectionStatus = document.getElementById('connectionStatus');
@@ -638,9 +568,197 @@ const DEFAULT_USERS = [
 
 let allUsers = [...DEFAULT_USERS];
 
-// Make sure input is working
-usernameInput.removeAttribute('readonly');
-usernameInput.removeAttribute('disabled');
+// Enhanced Avatar System with better fallbacks
+class AvatarLoader {
+    constructor(username) {
+        this.username = username;
+        this.isDiscordId = /^\d+$/.test(username);
+        this.loadAttempts = 0;
+        this.maxAttempts = 5;
+    }
+    
+    getAvatarSources() {
+        const sources = [];
+        
+        if (this.isDiscordId) {
+            // Discord sources
+            sources.push(
+                `https://cdn.discordapp.com/avatars/${this.username}/a_1.gif`,
+                `https://cdn.discordapp.com/avatars/${this.username}/1.png`,
+                `https://unavatar.io/discord/${this.username}`,
+                `https://api.dicebear.com/7.x/bottts/svg?seed=${this.username}&backgroundColor=00ff41,22c55e`,
+                `https://api.dicebear.com/7.x/pixel-art/svg?seed=${this.username}&backgroundColor=5865F2,00ff41`
+            );
+        } else {
+            // Twitter/X sources with multiple fallbacks
+            sources.push(
+                `https://unavatar.io/twitter/${this.username}`,
+                `https://unavatar.io/x/${this.username}`,
+                `https://github.com/${this.username}.png?size=200`
+            );
+        }
+        
+        // Universal fallbacks - these should always work
+        sources.push(
+            `https://api.dicebear.com/7.x/identicon/svg?seed=${this.username}&backgroundColor=00ff41,22c55e`,
+            `https://api.dicebear.com/7.x/shapes/svg?seed=${this.username}&backgroundColor=00ff41,22c55e`,
+            `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${this.username}&backgroundColor=00ff41`,
+            `https://robohash.org/${this.username}.png?size=200x200&set=set4&bgset=bg2`,
+            `https://avatars.dicebear.com/api/jdenticon/${this.username}.svg?background=%2300ff41`
+        );
+        
+        return sources;
+    }
+    
+    async loadImage(src) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            
+            const timeout = setTimeout(() => {
+                reject(new Error('Timeout'));
+            }, 3000);
+            
+            img.onload = function() {
+                clearTimeout(timeout);
+                if (this.naturalWidth > 0) {
+                    resolve(src);
+                } else {
+                    reject(new Error('Invalid image'));
+                }
+            };
+            
+            img.onerror = function() {
+                clearTimeout(timeout);
+                reject(new Error('Load failed'));
+            };
+            
+            img.src = src;
+        });
+    }
+    
+    async findWorkingAvatar() {
+        const sources = this.getAvatarSources();
+        
+        for (const source of sources) {
+            try {
+                await this.loadImage(source);
+                console.log(`✅ Avatar loaded for ${this.username}`);
+                return source;
+            } catch (e) {
+                continue;
+            }
+        }
+        
+        return null;
+    }
+}
+
+// Create enhanced avatar card
+function createAvatarCard(username) {
+    const card = document.createElement('div');
+    card.className = 'avatar-card';
+    
+    const container = document.createElement('div');
+    container.className = 'avatar-container';
+    
+    // Loading state
+    const loading = document.createElement('div');
+    loading.className = 'avatar-loading';
+    container.appendChild(loading);
+    
+    const img = document.createElement('img');
+    img.className = 'avatar-img';
+    img.alt = username;
+    img.style.display = 'none';
+    container.appendChild(img);
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'handle-display';
+    
+    const isDiscordId = /^\d+$/.test(username);
+    overlay.textContent = isDiscordId ? `Discord: ${username.slice(-6)}` : `@${username}`;
+    
+    card.appendChild(container);
+    card.appendChild(overlay);
+    
+    // Load avatar
+    const loader = new AvatarLoader(username);
+    loader.findWorkingAvatar().then(src => {
+        if (src) {
+            img.src = src;
+            img.style.display = 'block';
+            loading.style.display = 'none';
+        } else {
+            // Fallback to initial letter
+            loading.style.display = 'none';
+            const fallback = document.createElement('div');
+            fallback.className = 'avatar-fallback';
+            fallback.textContent = username.charAt(0).toUpperCase();
+            container.appendChild(fallback);
+        }
+    }).catch(() => {
+        // Final fallback
+        loading.style.display = 'none';
+        const fallback = document.createElement('div');
+        fallback.className = 'avatar-fallback';
+        fallback.textContent = username.charAt(0).toUpperCase();
+        container.appendChild(fallback);
+    });
+    
+    return card;
+}
+
+// Display plasma wall with multiple rows
+function displayPlasmaWall() {
+    console.log('Displaying', allUsers.length, 'users');
+    
+    // Clear existing walls
+    for (let i = 1; i <= 3; i++) {
+        const wall = document.getElementById(`movingWall${i}`);
+        if (wall) {
+            wall.innerHTML = '';
+        }
+    }
+    
+    // Shuffle users for variety
+    const shuffled = [...allUsers].sort(() => Math.random() - 0.5);
+    
+    // Distribute users across rows
+    const usersPerRow = Math.ceil(allUsers.length / 3);
+    const rows = [
+        shuffled.slice(0, usersPerRow),
+        shuffled.slice(usersPerRow, usersPerRow * 2),
+        shuffled.slice(usersPerRow * 2)
+    ];
+    
+    // Populate each row
+    rows.forEach((rowUsers, rowIndex) => {
+        const wall = document.getElementById(`movingWall${rowIndex + 1}`);
+        if (!wall) return;
+        
+        // Create cards for this row
+        const createRow = () => {
+            rowUsers.forEach((username, index) => {
+                const card = createAvatarCard(username);
+                card.style.animationDelay = `${index * 0.05}s`;
+                wall.appendChild(card);
+            });
+        };
+        
+        // Create two sets for seamless loop
+        createRow();
+        createRow();
+        
+        // Adjust animation speed based on row
+        const baseSpeed = 40 + (rowIndex * 5);
+        wall.style.animationDuration = `${baseSpeed}s`;
+    });
+    
+    // Update counters
+    userCount.textContent = `${allUsers.length} Neural Entities Active`;
+    liveCounter.textContent = `Network: ${allUsers.length} signatures detected`;
+}
 
 // Storage functions
 function saveUsersToStorage() {
@@ -679,7 +797,7 @@ musicToggle.addEventListener('click', async () => {
     try {
         if (musicPlaying) { 
             bgMusic.pause(); 
-            musicToggle.textContent = '🎵 Activate Audio Matrix'; 
+            musicToggle.textContent = '🎵 Play Music'; 
             musicPlaying = false; 
         } else { 
             bgMusic.volume = 0.3;
@@ -687,7 +805,7 @@ musicToggle.addEventListener('click', async () => {
             if (playPromise !== undefined) {
                 playPromise.catch(e => console.log('Audio play failed:', e));
             }
-            musicToggle.textContent = '🔇 Deactivate Audio Matrix'; 
+            musicToggle.textContent = '🔇 Stop Music'; 
             musicPlaying = true; 
         }
     } catch(e) { 
@@ -704,20 +822,20 @@ syncBtn.addEventListener('click', async () => {
     syncBtn.disabled = true;
     syncBtn.textContent = '🔄 Syncing...';
     
-    updateStatus('🔄 Synchronizing...', 'info');
+    updateStatus('🔄 Synchronizing with server...', 'info');
     
-    await loadFromBackend(true);
+    const success = await loadFromBackend(true);
     displayPlasmaWall();
     
     setTimeout(() => {
         syncBtn.disabled = false;
         syncBtn.textContent = '🔄 Force Sync';
         syncInProgress = false;
-        updateStatus('✅ Sync complete', 'success');
+        updateStatus(success ? '✅ Sync complete' : '⚠️ Using local data', success ? 'success' : 'warning');
     }, 2000);
 });
 
-// Status update
+// Status update with auto-clear
 function updateStatus(message, type = 'info') {
     connectionStatus.textContent = message;
     connectionStatus.className = `mt-4 text-center status-text ${
@@ -727,180 +845,59 @@ function updateStatus(message, type = 'info') {
         'text-green-300'
     }`;
     
-    setTimeout(() => {
-        connectionStatus.textContent = 'Ready';
-        connectionStatus.className = 'mt-4 text-center status-text text-green-300';
-    }, 5000);
-}
-
-// ENHANCED Avatar creation with Discord support
-function createAvatarCard(username) {
-    console.log(`Creating avatar for: ${username}`);
-    
-    const card = document.createElement('div');
-    card.className = 'avatar-card';
-    
-    const img = document.createElement('img');
-    img.className = 'avatar-img loading-matrix';
-    img.alt = username;
-    
-    const overlay = document.createElement('div');
-    overlay.className = 'handle-display';
-    
-    // Check if it's a Discord ID (all numbers)
-    const isDiscordId = /^\d+$/.test(username);
-    
-    if (isDiscordId) {
-        overlay.textContent = `Discord: ${username.slice(-4)}`;
-    } else {
-        overlay.textContent = `@${username}`;
+    if (type !== 'error') {
+        setTimeout(() => {
+            connectionStatus.textContent = '⚡ System Ready';
+            connectionStatus.className = 'mt-4 text-center status-text text-green-300';
+        }, 5000);
     }
-    
-    card.appendChild(img);
-    card.appendChild(overlay);
-    
-    // Avatar sources with Discord support
-    let avatarSources = [];
-    
-    if (isDiscordId) {
-        // Discord avatar sources
-        avatarSources = [
-            `https://cdn.discordapp.com/avatars/${username}/a_1.gif`,
-            `https://cdn.discordapp.com/avatars/${username}/1.png`,
-            `https://unavatar.io/discord/${username}`,
-            `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&backgroundColor=5865F2`,
-            `https://api.dicebear.com/7.x/pixel-art/svg?seed=${username}&backgroundColor=5865F2,00ff41`,
-            `https://ui-avatars.com/api/?name=D&background=5865F2&color=ffffff&size=200&bold=true`
-        ];
-    } else {
-        // Twitter/X avatar sources
-        avatarSources = [
-            `https://unavatar.io/twitter/${username}`,
-            `https://unavatar.io/x/${username}`,
-            `https://github.com/${username}.png?size=200`,
-            `https://api.dicebear.com/7.x/pixel-art/svg?seed=${username}&backgroundColor=00ff41,22c55e`,
-            `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&backgroundColor=22c55e`,
-            `https://robohash.org/${username}.png?size=200x200&set=set1`,
-            `https://ui-avatars.com/api/?name=${username}&background=00ff41&color=000000&size=200&bold=true`
-        ];
-    }
-    
-    let currentIndex = 0;
-    let imageLoaded = false;
-    
-    const tryLoadImage = () => {
-        if (currentIndex >= avatarSources.length || imageLoaded) {
-            if (!imageLoaded) {
-                // Final fallback
-                img.style.display = 'none';
-                const fallback = document.createElement('div');
-                fallback.className = 'error-matrix';
-                fallback.style.width = '100%';
-                fallback.style.height = '100%';
-                fallback.textContent = username.charAt(0).toUpperCase();
-                card.insertBefore(fallback, overlay);
-            }
-            return;
-        }
-        
-        const source = avatarSources[currentIndex];
-        const testImg = new Image();
-        testImg.crossOrigin = 'anonymous';
-        
-        const timeout = setTimeout(() => {
-            if (!imageLoaded) {
-                currentIndex++;
-                tryLoadImage();
-            }
-        }, 2000);
-        
-        testImg.onload = function() {
-            if (!imageLoaded && this.naturalWidth > 0) {
-                clearTimeout(timeout);
-                img.src = source;
-                img.classList.remove('loading-matrix');
-                imageLoaded = true;
-                console.log(`✅ Avatar loaded for ${username}`);
-            }
-        };
-        
-        testImg.onerror = function() {
-            clearTimeout(timeout);
-            if (!imageLoaded) {
-                currentIndex++;
-                tryLoadImage();
-            }
-        };
-        
-        testImg.src = source;
-    };
-    
-    tryLoadImage();
-    return card;
 }
 
-// Display plasma wall
-function displayPlasmaWall() {
-    console.log('Displaying', allUsers.length, 'users');
-    
-    movingWall.innerHTML = '';
-    
-    // Create cards
-    allUsers.forEach((username, index) => {
-        const card = createAvatarCard(username);
-        card.style.animationDelay = `${index * 0.1}s`;
-        movingWall.appendChild(card);
-    });
-    
-    // Duplicate for seamless loop
-    allUsers.forEach((username, index) => {
-        const card = createAvatarCard(username);
-        card.style.animationDelay = `${(allUsers.length + index) * 0.1}s`;
-        movingWall.appendChild(card);
-    });
-    
-    // Update counters
-    userCount.textContent = `${allUsers.length} Neural Entities Active`;
-    liveCounter.textContent = `Network: ${allUsers.length} signatures detected`;
-}
-
-// Backend save
+// Backend save with retry logic
 async function saveToBackend(username) {
-    console.log('Saving:', username);
+    console.log('Saving to backend:', username);
     
-    try {
-        // Try direct first
-        const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username }),
-            mode: 'cors'
-        });
-        
-        if (response.ok) {
-            console.log('✅ Saved to server');
-            return true;
-        }
-    } catch (e) {
-        console.log('Direct save failed, trying proxy...');
-        
-        // Try with proxy
-        for (const proxy of CONFIG.PROXY_URLS) {
-            try {
-                const url = `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username })
-                });
-                
-                if (response.ok) {
-                    console.log('✅ Saved via proxy');
-                    return true;
-                }
-            } catch (err) {
-                console.log('Proxy failed:', err.message);
+    for (let attempt = 0; attempt < CONFIG.MAX_RETRIES; attempt++) {
+        try {
+            // Try direct connection
+            const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username }),
+                mode: 'cors',
+                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+            });
+            
+            if (response.ok) {
+                console.log('✅ Saved to server');
+                return true;
             }
+        } catch (e) {
+            console.log(`Attempt ${attempt + 1} failed:`, e.message);
+            
+            // Try with proxy
+            for (const proxy of CONFIG.PROXY_URLS) {
+                try {
+                    const url = `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username }),
+                        signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+                    });
+                    
+                    if (response.ok) {
+                        console.log('✅ Saved via proxy');
+                        return true;
+                    }
+                } catch (err) {
+                    console.log('Proxy failed:', err.message);
+                }
+            }
+        }
+        
+        if (attempt < CONFIG.MAX_RETRIES - 1) {
+            await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
         }
     }
     
@@ -908,49 +905,58 @@ async function saveToBackend(username) {
     return false;
 }
 
-// Backend load
+// Backend load with retry logic
 async function loadFromBackend(forceSync = false) {
     console.log('Loading from backend...');
     
-    try {
-        // Try direct first
-        const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
-            method: 'GET',
-            mode: 'cors'
-        });
-        
-        if (response.ok) {
-            const serverUsers = await response.json();
-            console.log('✅ Loaded', serverUsers.length, 'users from server');
+    for (let attempt = 0; attempt < CONFIG.MAX_RETRIES; attempt++) {
+        try {
+            // Try direct connection
+            const response = await fetch(`${CONFIG.SERVER_URL}/users`, {
+                method: 'GET',
+                mode: 'cors',
+                signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+            });
             
-            const localUsers = loadUsersFromStorage();
-            allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...localUsers])];
-            
-            saveUsersToStorage();
-            return true;
-        }
-    } catch (e) {
-        console.log('Direct load failed, trying proxy...');
-        
-        // Try with proxy
-        for (const proxy of CONFIG.PROXY_URLS) {
-            try {
-                const url = `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
-                const response = await fetch(url);
+            if (response.ok) {
+                const serverUsers = await response.json();
+                console.log('✅ Loaded', serverUsers.length, 'users from server');
                 
-                if (response.ok) {
-                    const serverUsers = await response.json();
-                    console.log('✅ Loaded via proxy');
-                    
-                    const localUsers = loadUsersFromStorage();
-                    allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...localUsers])];
-                    
-                    saveUsersToStorage();
-                    return true;
-                }
-            } catch (err) {
-                console.log('Proxy failed:', err.message);
+                const localUsers = loadUsersFromStorage();
+                allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...localUsers])];
+                
+                saveUsersToStorage();
+                return true;
             }
+        } catch (e) {
+            console.log(`Load attempt ${attempt + 1} failed:`, e.message);
+            
+            // Try with proxy
+            for (const proxy of CONFIG.PROXY_URLS) {
+                try {
+                    const url = `${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')}`;
+                    const response = await fetch(url, {
+                        signal: AbortSignal.timeout(CONFIG.TIMEOUT)
+                    });
+                    
+                    if (response.ok) {
+                        const serverUsers = await response.json();
+                        console.log('✅ Loaded via proxy');
+                        
+                        const localUsers = loadUsersFromStorage();
+                        allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...localUsers])];
+                        
+                        saveUsersToStorage();
+                        return true;
+                    }
+                } catch (err) {
+                    console.log('Proxy failed:', err.message);
+                }
+            }
+        }
+        
+        if (attempt < CONFIG.MAX_RETRIES - 1) {
+            await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
         }
     }
     
@@ -959,12 +965,13 @@ async function loadFromBackend(forceSync = false) {
     return false;
 }
 
-// Submit user - FIXED input handling
+// Submit user with validation
 function submitUser() {
     const username = usernameInput.value.trim();
     
     if (!username) {
-        alert('Please enter a username or Discord ID');
+        updateStatus('❌ Please enter a username', 'error');
+        usernameInput.focus();
         return;
     }
     
@@ -972,17 +979,17 @@ function submitUser() {
     const cleanUsername = username.replace('@', '').replace(/[^a-zA-Z0-9_]/g, '');
     
     if (cleanUsername.length < 2) {
-        alert('Username must be at least 2 characters');
+        updateStatus('❌ Username too short (min 2 chars)', 'error');
         return;
     }
     
     if (cleanUsername.length > 30) {
-        alert('Username too long (max 30 characters)');
+        updateStatus('❌ Username too long (max 30 chars)', 'error');
         return;
     }
     
     if (allUsers.includes(cleanUsername)) {
-        alert('User already exists!');
+        updateStatus('❌ User already exists!', 'error');
         return;
     }
     
@@ -996,7 +1003,7 @@ function submitUser() {
     // Add to array
     allUsers.push(cleanUsername);
     
-    // Save locally
+    // Save locally first
     if (!saveUsersToStorage()) {
         allUsers.pop();
         updateStatus('❌ Storage failed', 'error');
@@ -1004,7 +1011,7 @@ function submitUser() {
         return;
     }
     
-    // Update display immediately
+    // Update display immediately for better UX
     displayPlasmaWall();
     
     // Clear input
@@ -1013,9 +1020,9 @@ function submitUser() {
     // Try to save to backend (async)
     saveToBackend(cleanUsername).then(success => {
         if (success) {
-            updateStatus('✅ User added and synced!', 'success');
+            updateStatus('✅ User injected into the matrix!', 'success');
         } else {
-            updateStatus('✅ User added locally', 'warning');
+            updateStatus('✅ User added (offline mode)', 'warning');
         }
     });
     
@@ -1028,7 +1035,7 @@ function resetSubmitButton() {
     submitBtn.innerHTML = '<span class="relative z-10">INJECT</span>';
 }
 
-// Event listeners - FIXED
+// Event listeners
 submitBtn.addEventListener('click', function(e) {
     e.preventDefault();
     submitUser();
@@ -1041,49 +1048,65 @@ usernameInput.addEventListener('keypress', function(e) {
     }
 });
 
-// Test input on type
-usernameInput.addEventListener('input', function(e) {
-    console.log('Input value:', e.target.value);
-});
-
-// Counter update
-setInterval(() => {
+// Live counter update
+let counterInterval = setInterval(() => {
     const time = new Date().toLocaleTimeString();
     liveCounter.textContent = `Network: ${allUsers.length} signatures [${time}]`;
-}, 10000);
+    
+    // Add random glitch effect occasionally
+    if (Math.random() > 0.8) {
+        liveCounter.style.opacity = '0.5';
+        setTimeout(() => {
+            liveCounter.style.opacity = '1';
+        }, 100);
+    }
+}, 5000);
 
-// Initialize
-async function initialize() {
-    console.log('🌌 INITIALIZING...');
-    
-    // Make sure input is enabled
-    usernameInput.disabled = false;
-    usernameInput.readOnly = false;
-    
-    updateStatus('🌌 Initializing...', 'info');
-    
-    // Load data
-    await loadFromBackend();
-    
-    // Display
-    displayPlasmaWall();
-    
-    console.log('✨ READY');
-    updateStatus('⚡ Ready for injection', 'success');
-}
-
-// Auto-sync
-setInterval(async () => {
+// Auto-sync every 5 minutes
+let syncInterval = setInterval(async () => {
     if (!syncInProgress) {
+        console.log('Auto-sync triggered');
         await loadFromBackend();
+        displayPlasmaWall();
     }
 }, 300000);
 
-// Start
+// Initialize application
+async function initialize() {
+    console.log('🌌 PLASMA WALL INITIALIZING...');
+    
+    // Enable input
+    usernameInput.disabled = false;
+    usernameInput.readOnly = false;
+    
+    updateStatus('🌌 Quantum matrix initializing...', 'info');
+    
+    // Load saved users
+    loadUsersFromStorage();
+    
+    // Try to sync with backend
+    const backendAvailable = await loadFromBackend();
+    
+    // Display the wall
+    displayPlasmaWall();
+    
+    // Set final status
+    if (backendAvailable) {
+        updateStatus('⚡ Connected to neural network', 'success');
+    } else {
+        updateStatus('⚡ Running in local mode', 'warning');
+    }
+    
+    console.log('✨ PLASMA WALL READY');
+}
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    clearInterval(counterInterval);
+    clearInterval(syncInterval);
+});
+
+// Start the application
 initialize();
 
 }); // End DOMContentLoaded
-</script>
-
-</body>
-</html>
