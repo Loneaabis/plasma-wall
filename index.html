@@ -429,6 +429,7 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    background: linear-gradient(135deg, var(--deep-green), var(--matrix-green));
 }
 
 .avatar-loading {
@@ -568,93 +569,29 @@ const DEFAULT_USERS = [
 
 let allUsers = [...DEFAULT_USERS];
 
-// Enhanced Avatar System with better fallbacks
-class AvatarLoader {
-    constructor(username) {
-        this.username = username;
-        this.isDiscordId = /^\d+$/.test(username);
-        this.loadAttempts = 0;
-        this.maxAttempts = 5;
-    }
+// Simplified Avatar System with working sources
+function getWorkingAvatarUrl(username) {
+    const isDiscordId = /^\d+$/.test(username);
     
-    getAvatarSources() {
-        const sources = [];
-        
-        if (this.isDiscordId) {
-            // Discord sources
-            sources.push(
-                `https://cdn.discordapp.com/avatars/${this.username}/a_1.gif`,
-                `https://cdn.discordapp.com/avatars/${this.username}/1.png`,
-                `https://unavatar.io/discord/${this.username}`,
-                `https://api.dicebear.com/7.x/bottts/svg?seed=${this.username}&backgroundColor=00ff41,22c55e`,
-                `https://api.dicebear.com/7.x/pixel-art/svg?seed=${this.username}&backgroundColor=5865F2,00ff41`
-            );
-        } else {
-            // Twitter/X sources with multiple fallbacks
-            sources.push(
-                `https://unavatar.io/twitter/${this.username}`,
-                `https://unavatar.io/x/${this.username}`,
-                `https://github.com/${this.username}.png?size=200`
-            );
-        }
-        
-        // Universal fallbacks - these should always work
-        sources.push(
-            `https://api.dicebear.com/7.x/identicon/svg?seed=${this.username}&backgroundColor=00ff41,22c55e`,
-            `https://api.dicebear.com/7.x/shapes/svg?seed=${this.username}&backgroundColor=00ff41,22c55e`,
-            `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${this.username}&backgroundColor=00ff41`,
-            `https://robohash.org/${this.username}.png?size=200x200&set=set4&bgset=bg2`,
-            `https://avatars.dicebear.com/api/jdenticon/${this.username}.svg?background=%2300ff41`
-        );
-        
-        return sources;
-    }
+    // Use UI Avatars as primary source - it always works
+    const initial = username.charAt(0).toUpperCase();
+    const bgColor = isDiscordId ? '5865F2' : '00ff41';
+    const textColor = 'ffffff';
     
-    async loadImage(src) {
-        return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.crossOrigin = 'anonymous';
-            
-            const timeout = setTimeout(() => {
-                reject(new Error('Timeout'));
-            }, 3000);
-            
-            img.onload = function() {
-                clearTimeout(timeout);
-                if (this.naturalWidth > 0) {
-                    resolve(src);
-                } else {
-                    reject(new Error('Invalid image'));
-                }
-            };
-            
-            img.onerror = function() {
-                clearTimeout(timeout);
-                reject(new Error('Load failed'));
-            };
-            
-            img.src = src;
-        });
-    }
+    // Primary avatar that always works
+    const uiAvatarUrl = `https://ui-avatars.com/api/?name=${initial}&background=${bgColor}&color=${textColor}&size=200&bold=true&format=svg`;
     
-    async findWorkingAvatar() {
-        const sources = this.getAvatarSources();
-        
-        for (const source of sources) {
-            try {
-                await this.loadImage(source);
-                console.log(`✅ Avatar loaded for ${this.username}`);
-                return source;
-            } catch (e) {
-                continue;
-            }
-        }
-        
-        return null;
-    }
+    // Try DiceBear as secondary option (very reliable)
+    const dicebearUrl = `https://api.dicebear.com/7.x/bottts/svg?seed=${username}&backgroundColor=${bgColor}`;
+    
+    // Return array of sources to try
+    return [
+        dicebearUrl,
+        uiAvatarUrl // This will always work as fallback
+    ];
 }
 
-// Create enhanced avatar card
+// Create enhanced avatar card with immediate display
 function createAvatarCard(username) {
     const card = document.createElement('div');
     card.className = 'avatar-card';
@@ -662,15 +599,22 @@ function createAvatarCard(username) {
     const container = document.createElement('div');
     container.className = 'avatar-container';
     
-    // Loading state
-    const loading = document.createElement('div');
-    loading.className = 'avatar-loading';
-    container.appendChild(loading);
-    
     const img = document.createElement('img');
     img.className = 'avatar-img';
     img.alt = username;
-    img.style.display = 'none';
+    
+    // Get avatar URLs
+    const avatarUrls = getWorkingAvatarUrl(username);
+    
+    // Set the first URL directly (DiceBear usually works)
+    img.src = avatarUrls[0];
+    
+    // If first fails, use fallback
+    img.onerror = function() {
+        this.onerror = null; // Prevent infinite loop
+        this.src = avatarUrls[1]; // UI Avatars always works
+    };
+    
     container.appendChild(img);
     
     const overlay = document.createElement('div');
@@ -682,78 +626,84 @@ function createAvatarCard(username) {
     card.appendChild(container);
     card.appendChild(overlay);
     
-    // Load avatar
-    const loader = new AvatarLoader(username);
-    loader.findWorkingAvatar().then(src => {
-        if (src) {
-            img.src = src;
-            img.style.display = 'block';
-            loading.style.display = 'none';
-        } else {
-            // Fallback to initial letter
-            loading.style.display = 'none';
-            const fallback = document.createElement('div');
-            fallback.className = 'avatar-fallback';
-            fallback.textContent = username.charAt(0).toUpperCase();
-            container.appendChild(fallback);
-        }
-    }).catch(() => {
-        // Final fallback
-        loading.style.display = 'none';
-        const fallback = document.createElement('div');
-        fallback.className = 'avatar-fallback';
-        fallback.textContent = username.charAt(0).toUpperCase();
-        container.appendChild(fallback);
+    // Add hover effect
+    card.addEventListener('mouseenter', () => {
+        card.style.transform = 'scale(1.1) translateY(-5px)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'scale(1) translateY(0)';
     });
     
     return card;
 }
 
-// Display plasma wall with multiple rows
+// Display plasma wall with multiple rows - SIMPLIFIED
 function displayPlasmaWall() {
     console.log('Displaying', allUsers.length, 'users');
     
-    // Clear existing walls
-    for (let i = 1; i <= 3; i++) {
-        const wall = document.getElementById(`movingWall${i}`);
-        if (wall) {
-            wall.innerHTML = '';
+    // Get or create wall containers
+    let wall1 = document.getElementById('movingWall1');
+    let wall2 = document.getElementById('movingWall2');
+    let wall3 = document.getElementById('movingWall3');
+    
+    // If walls don't exist, create them
+    if (!wall1 || !wall2 || !wall3) {
+        const container = document.querySelector('.plasma-wall-container');
+        if (container) {
+            container.innerHTML = `
+                <div class="wall-row row-1">
+                    <div id="movingWall1" class="plasma-wall"></div>
+                </div>
+                <div class="wall-row row-2">
+                    <div id="movingWall2" class="plasma-wall reverse"></div>
+                </div>
+                <div class="wall-row row-3">
+                    <div id="movingWall3" class="plasma-wall"></div>
+                </div>
+                <div class="wall-overlay absolute inset-0 pointer-events-none">
+                    <div class="scan-line absolute w-full h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent opacity-60"></div>
+                </div>
+            `;
+            
+            wall1 = document.getElementById('movingWall1');
+            wall2 = document.getElementById('movingWall2');
+            wall3 = document.getElementById('movingWall3');
         }
     }
+    
+    // Clear existing content
+    if (wall1) wall1.innerHTML = '';
+    if (wall2) wall2.innerHTML = '';
+    if (wall3) wall3.innerHTML = '';
     
     // Shuffle users for variety
     const shuffled = [...allUsers].sort(() => Math.random() - 0.5);
     
-    // Distribute users across rows
-    const usersPerRow = Math.ceil(allUsers.length / 3);
-    const rows = [
-        shuffled.slice(0, usersPerRow),
-        shuffled.slice(usersPerRow, usersPerRow * 2),
-        shuffled.slice(usersPerRow * 2)
-    ];
+    // Split users into 3 groups
+    const groupSize = Math.ceil(allUsers.length / 3);
+    const group1 = shuffled.slice(0, groupSize);
+    const group2 = shuffled.slice(groupSize, groupSize * 2);
+    const group3 = shuffled.slice(groupSize * 2);
     
-    // Populate each row
-    rows.forEach((rowUsers, rowIndex) => {
-        const wall = document.getElementById(`movingWall${rowIndex + 1}`);
-        if (!wall) return;
-        
-        // Create cards for this row
-        const createRow = () => {
-            rowUsers.forEach((username, index) => {
-                const card = createAvatarCard(username);
-                card.style.animationDelay = `${index * 0.05}s`;
-                wall.appendChild(card);
-            });
-        };
+    // Helper function to populate a wall
+    const populateWall = (wall, users) => {
+        if (!wall || !users.length) return;
         
         // Create two sets for seamless loop
-        createRow();
-        createRow();
-        
-        // Adjust animation speed based on row
-        const baseSpeed = 40 + (rowIndex * 5);
-        wall.style.animationDuration = `${baseSpeed}s`;
-    });
+        for (let set = 0; set < 2; set++) {
+            users.forEach((username, index) => {
+                const card = createAvatarCard(username);
+                card.style.animationDelay = `${(set * users.length + index) * 0.05}s`;
+                wall.appendChild(card);
+            });
+        }
+    };
+    
+    // Populate each wall
+    populateWall(wall1, group1.length ? group1 : allUsers);
+    populateWall(wall2, group2.length ? group2 : allUsers);
+    populateWall(wall3, group3.length ? group3 : allUsers);
     
     // Update counters
     userCount.textContent = `${allUsers.length} Neural Entities Active`;
