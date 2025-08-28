@@ -607,13 +607,19 @@
 // Wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', function() {
     
-// Configuration - Use your backend API endpoint
+// Configuration - Multiple API endpoints to try
 const CONFIG = {
-    API_BASE: 'https://seismicwall.duckdns.org/api', // Change this to your plasma wall backend
+    API_ENDPOINTS: [
+        'https://seismicwall.duckdns.org/api',  // Primary endpoint
+        'https://your-seismic-backend.herokuapp.com/api', // Backup endpoint
+        'https://your-github-username.github.io/seismic-backend/api' // GitHub Pages endpoint
+    ],
     TIMEOUT: 10000,
     MAX_RETRIES: 3,
     RETRY_DELAY: 1000
 };
+
+let API_BASE = null; // Will be set when we find working endpoint
 
 // Get DOM elements
 const usernameInput = document.getElementById('usernameInput');
@@ -633,31 +639,47 @@ let syncInProgress = false;
 let isConnected = false;
 let allUsers = [];
 
-// Check backend connection
+// Check backend connection - try multiple endpoints
 async function checkConnection() {
-    try {
-        const response = await fetch(`${CONFIG.API_BASE}/members`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
+    console.log('🔍 Testing API endpoints...');
+    
+    for (const endpoint of CONFIG.API_ENDPOINTS) {
+        try {
+            console.log(`Testing: ${endpoint}`);
+            const response = await fetch(`${endpoint}/members`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                API_BASE = endpoint;
+                isConnected = true;
+                console.log(`✅ Connected to: ${endpoint}`);
+                updateConnectionStatus();
+                return true;
+            } else {
+                console.log(`❌ ${endpoint} returned ${response.status}`);
             }
-        });
-        isConnected = response.ok;
-    } catch (error) {
-        console.error('Connection check failed:', error);
-        isConnected = false;
+        } catch (error) {
+            console.log(`❌ ${endpoint} failed:`, error.message);
+        }
     }
     
+    console.log('❌ All endpoints failed');
+    isConnected = false;
     updateConnectionStatus();
+    return false;
 }
 
 function updateConnectionStatus() {
-    if (isConnected) {
+    if (isConnected && API_BASE) {
         statusDot.className = 'inline-block w-3 h-3 rounded-full bg-green-500 mr-2';
-        statusText.textContent = 'Connected to Backend';
+        statusText.textContent = `Connected to ${API_BASE.split('//')[1]}`;
     } else {
         statusDot.className = 'inline-block w-3 h-3 rounded-full bg-red-500 mr-2';
-        statusText.textContent = 'Connection Failed';
+        statusText.textContent = 'Searching for backend...';
     }
 }
 
@@ -854,7 +876,7 @@ async function submitUser() {
     updateStatus('🧬 Injecting consciousness into quantum network...');
     
     try {
-        const response = await fetch(`${CONFIG.API_BASE}/members`, {
+        const response = await fetch(`${API_BASE}/members`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
