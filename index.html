@@ -44,12 +44,6 @@
     <source src="./music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Connection Status -->
-<div id="connectionStatus" class="fixed top-6 left-6 px-4 py-2 bg-black/80 border-2 border-green-500/30 rounded-xl backdrop-blur-lg z-50">
-    <span id="statusDot" class="inline-block w-3 h-3 rounded-full bg-red-500 mr-2"></span>
-    <span id="statusText">Connecting...</span>
-</div>
-
 <!-- Futuristic Header -->
 <header class="relative z-10 text-center py-8">
     <h1 class="text-5xl font-bold text-white mb-2 cyber-glow animate-cyber-pulse">
@@ -98,8 +92,8 @@
         </button>
     </div>
     
-    <div id="submitStatus" class="mt-4 text-center text-green-300 status-text">
-        Ready for injection...TRILLIONS🕊
+    <div id="connectionStatus" class="mt-4 text-center text-green-300 status-text">
+        Initializing quantum connection...TRILLIONS🕊
     </div>
 </div>
 
@@ -602,24 +596,24 @@
 }
 </style>
 
-<!-- Complete JavaScript with Backend Integration -->
+<!-- Complete JavaScript -->
 <script>
 // Wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', function() {
     
-// Configuration - Multiple API endpoints to try
+// Configuration
 const CONFIG = {
-    API_ENDPOINTS: [
-        'https://seismicwall.duckdns.org/api',  // Primary endpoint
-        'https://your-seismic-backend.herokuapp.com/api', // Backup endpoint
-        'https://your-github-username.github.io/seismic-backend/api' // GitHub Pages endpoint
+    SERVER_URL: 'http://162.250.191.81:4000',
+    PROXY_URLS: [
+        'https://api.allorigins.win/raw?url=',
+        'https://cors-anywhere.herokuapp.com/'
     ],
-    TIMEOUT: 10000,
-    MAX_RETRIES: 3,
+    TIMEOUT: 5000,
+    MAX_RETRIES: 2,
     RETRY_DELAY: 1000
 };
 
-let API_BASE = null; // Will be set when we find working endpoint
+const STORAGE_KEY = 'plasma_wall_quantum_users';
 
 // Get DOM elements
 const usernameInput = document.getElementById('usernameInput');
@@ -628,59 +622,56 @@ const syncBtn = document.getElementById('syncBtn');
 const movingWall = document.getElementById('movingWall');
 const bgMusic = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
-const submitStatus = document.getElementById('submitStatus');
+const connectionStatus = document.getElementById('connectionStatus');
 const userCount = document.getElementById('userCount');
 const liveCounter = document.getElementById('liveCounter');
-const statusDot = document.getElementById('statusDot');
-const statusText = document.getElementById('statusText');
 
 let musicPlaying = false;
 let syncInProgress = false;
-let isConnected = false;
-let allUsers = [];
 
-// Check backend connection - try multiple endpoints
-async function checkConnection() {
-    console.log('🔍 Testing API endpoints...');
-    
-    for (const endpoint of CONFIG.API_ENDPOINTS) {
-        try {
-            console.log(`Testing: ${endpoint}`);
-            const response = await fetch(`${endpoint}/members`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            
-            if (response.ok) {
-                API_BASE = endpoint;
-                isConnected = true;
-                console.log(`✅ Connected to: ${endpoint}`);
-                updateConnectionStatus();
-                return true;
-            } else {
-                console.log(`❌ ${endpoint} returned ${response.status}`);
-            }
-        } catch (error) {
-            console.log(`❌ ${endpoint} failed:`, error.message);
-        }
+// Default users
+const DEFAULT_USERS = [
+    'proofofnathan', 'scene999', 'MaxApoz', 'shadowofthefax',
+    'primay_eth', 'kolyposts', 'CATTtwit', 
+    'The9bo', 'happysubstack', 'techaddictif'
+];
+
+let allUsers = [...DEFAULT_USERS];
+
+// Make sure input is working
+usernameInput.removeAttribute('readonly');
+usernameInput.removeAttribute('disabled');
+
+// Storage functions
+function saveUsersToStorage() {
+    try {
+        const userData = {
+            users: allUsers.filter(user => !DEFAULT_USERS.includes(user)),
+            timestamp: Date.now()
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+        console.log('💾 Saved', userData.users.length, 'users');
+        return true;
+    } catch (e) {
+        console.error('Storage error:', e);
+        return false;
     }
-    
-    console.log('❌ All endpoints failed');
-    isConnected = false;
-    updateConnectionStatus();
-    return false;
 }
 
-function updateConnectionStatus() {
-    if (isConnected && API_BASE) {
-        statusDot.className = 'inline-block w-3 h-3 rounded-full bg-green-500 mr-2';
-        statusText.textContent = `Connected to ${API_BASE.split('//')[1]}`;
-    } else {
-        statusDot.className = 'inline-block w-3 h-3 rounded-full bg-red-500 mr-2';
-        statusText.textContent = 'Searching for backend...';
+function loadUsersFromStorage() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            const userData = JSON.parse(saved);
+            const savedUsers = userData.users || userData;
+            console.log('📦 Loaded', savedUsers.length, 'users');
+            allUsers = [...new Set([...DEFAULT_USERS, ...savedUsers])];
+            return savedUsers;
+        }
+    } catch (e) {
+        console.error('Load error:', e);
     }
+    return [];
 }
 
 // Music control
@@ -688,7 +679,7 @@ musicToggle.addEventListener('click', async () => {
     try {
         if (musicPlaying) { 
             bgMusic.pause(); 
-            musicToggle.textContent = '🎵 On music'; 
+            musicToggle.textContent = '🎵 Activate Audio Matrix'; 
             musicPlaying = false; 
         } else { 
             bgMusic.volume = 0.3;
@@ -696,12 +687,12 @@ musicToggle.addEventListener('click', async () => {
             if (playPromise !== undefined) {
                 playPromise.catch(e => console.log('Audio play failed:', e));
             }
-            musicToggle.textContent = '🔇 Off music'; 
+            musicToggle.textContent = '🔇 Deactivate Audio Matrix'; 
             musicPlaying = true; 
         }
     } catch(e) { 
         console.error('Audio error:', e);
-        updateStatus('⚠️ Audio offline');
+        updateStatus('⚠ Audio offline', 'warning');
     }
 });
 
@@ -713,90 +704,138 @@ syncBtn.addEventListener('click', async () => {
     syncBtn.disabled = true;
     syncBtn.textContent = '🔄 Syncing...';
     
-    updateStatus('🔄 Synchronizing quantum network...');
+    updateStatus('🔄 Synchronizing...', 'info');
     
-    await fetchMembers();
+    await loadFromBackend(true);
     displayPlasmaWall();
     
     setTimeout(() => {
         syncBtn.disabled = false;
-        syncBtn.textContent = '🕊 Force Sync';
+        syncBtn.textContent = '🔄 Force Sync';
         syncInProgress = false;
-        updateStatus('✅ Sync complete - Network updated');
+        updateStatus('✅ Sync complete', 'success');
     }, 2000);
 });
 
 // Status update
-function updateStatus(message) {
-    submitStatus.textContent = message;
+function updateStatus(message, type = 'info') {
+    connectionStatus.textContent = message;
+    connectionStatus.className = `mt-4 text-center status-text ${
+        type === 'success' ? 'text-green-300' :
+        type === 'warning' ? 'text-yellow-400' :
+        type === 'error' ? 'text-red-400' :
+        'text-green-300'
+    }`;
     
     setTimeout(() => {
-        submitStatus.textContent = 'Ready for injection...TRILLIONS🕊';
+        connectionStatus.textContent = 'Ready';
+        connectionStatus.className = 'mt-4 text-center status-text text-green-300';
     }, 5000);
 }
 
-// Fetch members from backend
-async function fetchMembers() {
-    try {
-        if (!isConnected) {
-            await checkConnection();
-            if (!isConnected) {
-                allUsers = [];
-    }
-}
-
-// Create avatar card with profile image support
-function createAvatarCard(member) {
-    console.log(`Creating avatar for: ${member.username}`);
+// ENHANCED Avatar creation with Discord support
+function createAvatarCard(username) {
+    console.log(Creating avatar for: ${username});
     
     const card = document.createElement('div');
     card.className = 'avatar-card';
     
     const img = document.createElement('img');
     img.className = 'avatar-img loading-matrix';
-    img.alt = member.displayName || member.username;
+    img.alt = username;
     
     const overlay = document.createElement('div');
     overlay.className = 'handle-display';
-    overlay.textContent = member.username.startsWith('@') ? member.username : `@${member.username}`;
+    
+    // Check if it's a Discord ID (all numbers)
+    const isDiscordId = /^\d+$/.test(username);
+    
+    if (isDiscordId) {
+        overlay.textContent = Discord: ${username.slice(-4)};
+    } else {
+        overlay.textContent = @${username};
+    }
     
     card.appendChild(img);
     card.appendChild(overlay);
     
-    // Load profile image
-    if (member.profileImage) {
+    // Avatar sources with Discord support
+    let avatarSources = [];
+    
+    if (isDiscordId) {
+        // Discord avatar sources
+        avatarSources = [
+            https://cdn.discordapp.com/avatars/${username}/a_1.gif,
+            https://cdn.discordapp.com/avatars/${username}/1.png,
+            https://unavatar.io/discord/${username},
+            https://api.dicebear.com/7.x/bottts/svg?seed=${username}&backgroundColor=5865F2,
+            https://api.dicebear.com/7.x/pixel-art/svg?seed=${username}&backgroundColor=5865F2,00ff41,
+            https://ui-avatars.com/api/?name=D&background=5865F2&color=ffffff&size=200&bold=true
+        ];
+    } else {
+        // Twitter/X avatar sources
+        avatarSources = [
+            https://unavatar.io/twitter/${username},
+            https://unavatar.io/x/${username},
+            https://github.com/${username}.png?size=200,
+            https://api.dicebear.com/7.x/pixel-art/svg?seed=${username}&backgroundColor=00ff41,22c55e,
+            https://api.dicebear.com/7.x/bottts/svg?seed=${username}&backgroundColor=22c55e,
+            https://robohash.org/${username}.png?size=200x200&set=set1,
+            https://ui-avatars.com/api/?name=${username}&background=00ff41&color=000000&size=200&bold=true
+        ];
+    }
+    
+    let currentIndex = 0;
+    let imageLoaded = false;
+    
+    const tryLoadImage = () => {
+        if (currentIndex >= avatarSources.length || imageLoaded) {
+            if (!imageLoaded) {
+                // Final fallback
+                img.style.display = 'none';
+                const fallback = document.createElement('div');
+                fallback.className = 'error-matrix';
+                fallback.style.width = '100%';
+                fallback.style.height = '100%';
+                fallback.textContent = username.charAt(0).toUpperCase();
+                card.insertBefore(fallback, overlay);
+            }
+            return;
+        }
+        
+        const source = avatarSources[currentIndex];
         const testImg = new Image();
         testImg.crossOrigin = 'anonymous';
         
+        const timeout = setTimeout(() => {
+            if (!imageLoaded) {
+                currentIndex++;
+                tryLoadImage();
+            }
+        }, 2000);
+        
         testImg.onload = function() {
-            img.src = member.profileImage;
-            img.classList.remove('loading-matrix');
-            console.log(`✅ Avatar loaded for ${member.username}`);
+            if (!imageLoaded && this.naturalWidth > 0) {
+                clearTimeout(timeout);
+                img.src = source;
+                img.classList.remove('loading-matrix');
+                imageLoaded = true;
+                console.log(✅ Avatar loaded for ${username});
+            }
         };
         
         testImg.onerror = function() {
-            // Fallback to initials
-            img.style.display = 'none';
-            const fallback = document.createElement('div');
-            fallback.className = 'error-matrix';
-            fallback.style.width = '100%';
-            fallback.style.height = '100%';
-            fallback.textContent = (member.displayName || member.username).charAt(0).toUpperCase();
-            card.insertBefore(fallback, overlay);
+            clearTimeout(timeout);
+            if (!imageLoaded) {
+                currentIndex++;
+                tryLoadImage();
+            }
         };
         
-        testImg.src = member.profileImage;
-    } else {
-        // No profile image - show initials
-        img.style.display = 'none';
-        const fallback = document.createElement('div');
-        fallback.className = 'error-matrix';
-        fallback.style.width = '100%';
-        fallback.style.height = '100%';
-        fallback.textContent = (member.displayName || member.username).charAt(0).toUpperCase();
-        card.insertBefore(fallback, overlay);
-    }
+        testImg.src = source;
+    };
     
+    tryLoadImage();
     return card;
 }
 
@@ -806,37 +845,126 @@ function displayPlasmaWall() {
     
     movingWall.innerHTML = '';
     
-    if (allUsers.length === 0) {
-        userCount.textContent = 'No Neural Entities Detected';
-        liveCounter.textContent = 'Network: Empty quantum space';
-        return;
-    }
-    
     // Create cards
-    allUsers.forEach((member, index) => {
-        const card = createAvatarCard(member);
-        card.style.animationDelay = `${index * 0.1}s`;
+    allUsers.forEach((username, index) => {
+        const card = createAvatarCard(username);
+        card.style.animationDelay = ${index * 0.1}s;
         movingWall.appendChild(card);
     });
     
     // Duplicate for seamless loop
-    allUsers.forEach((member, index) => {
-        const card = createAvatarCard(member);
-        card.style.animationDelay = `${(allUsers.length + index) * 0.1}s`;
+    allUsers.forEach((username, index) => {
+        const card = createAvatarCard(username);
+        card.style.animationDelay = ${(allUsers.length + index) * 0.1}s;
         movingWall.appendChild(card);
     });
     
     // Update counters
-    userCount.textContent = `${allUsers.length} Neural Entities Active`;
-    liveCounter.textContent = `Network: ${allUsers.length} signatures detected`;
+    userCount.textContent = ${allUsers.length} Neural Entities Active;
+    liveCounter.textContent = Network: ${allUsers.length} signatures detected;
 }
 
-// Submit user to backend
-async function submitUser() {
+// Backend save
+async function saveToBackend(username) {
+    console.log('Saving:', username);
+    
+    try {
+        // Try direct first
+        const response = await fetch(${CONFIG.SERVER_URL}/users, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username }),
+            mode: 'cors'
+        });
+        
+        if (response.ok) {
+            console.log('✅ Saved to server');
+            return true;
+        }
+    } catch (e) {
+        console.log('Direct save failed, trying proxy...');
+        
+        // Try with proxy
+        for (const proxy of CONFIG.PROXY_URLS) {
+            try {
+                const url = ${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')};
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username })
+                });
+                
+                if (response.ok) {
+                    console.log('✅ Saved via proxy');
+                    return true;
+                }
+            } catch (err) {
+                console.log('Proxy failed:', err.message);
+            }
+        }
+    }
+    
+    console.log('⚠ Backend save failed, saved locally only');
+    return false;
+}
+
+// Backend load
+async function loadFromBackend(forceSync = false) {
+    console.log('Loading from backend...');
+    
+    try {
+        // Try direct first
+        const response = await fetch(${CONFIG.SERVER_URL}/users, {
+            method: 'GET',
+            mode: 'cors'
+        });
+        
+        if (response.ok) {
+            const serverUsers = await response.json();
+            console.log('✅ Loaded', serverUsers.length, 'users from server');
+            
+            const localUsers = loadUsersFromStorage();
+            allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...localUsers])];
+            
+            saveUsersToStorage();
+            return true;
+        }
+    } catch (e) {
+        console.log('Direct load failed, trying proxy...');
+        
+        // Try with proxy
+        for (const proxy of CONFIG.PROXY_URLS) {
+            try {
+                const url = ${proxy}${encodeURIComponent(CONFIG.SERVER_URL + '/users')};
+                const response = await fetch(url);
+                
+                if (response.ok) {
+                    const serverUsers = await response.json();
+                    console.log('✅ Loaded via proxy');
+                    
+                    const localUsers = loadUsersFromStorage();
+                    allUsers = [...new Set([...DEFAULT_USERS, ...serverUsers, ...localUsers])];
+                    
+                    saveUsersToStorage();
+                    return true;
+                }
+            } catch (err) {
+                console.log('Proxy failed:', err.message);
+            }
+        }
+    }
+    
+    console.log('⚠ Using local storage only');
+    loadUsersFromStorage();
+    return false;
+}
+
+// Submit user - FIXED input handling
+function submitUser() {
     const username = usernameInput.value.trim();
     
     if (!username) {
-        alert('Please enter a username');
+        alert('Please enter a username or Discord ID');
         return;
     }
     
@@ -853,99 +981,54 @@ async function submitUser() {
         return;
     }
     
-    // Check if already exists
-    if (allUsers.some(user => user.username.toLowerCase().includes(cleanUsername.toLowerCase()))) {
-        alert('User already exists in the network!');
+    if (allUsers.includes(cleanUsername)) {
+        alert('User already exists!');
         return;
-    }
-    
-    // Check connection
-    if (!isConnected) {
-        await checkConnection();
-        if (!isConnected) {
-            alert('Backend connection failed. Please try again.');
-            return;
-        }
     }
     
     console.log('Adding user:', cleanUsername);
     
-    // Disable button and show loading
+    // Disable button
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="relative z-10">⟡ INJECTING...</span>';
-    updateStatus('🧬 Injecting consciousness into quantum network...');
+    updateStatus('🧬 Injecting consciousness...', 'info');
     
-    try {
-        const response = await fetch(`${API_BASE}/members`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ username: cleanUsername })
-        });
-        
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
-        }
-        
-        const result = await response.json();
-        console.log('✅ User added successfully:', result);
-        
-        // Clear input
-        usernameInput.value = '';
-        
-        // Refresh members list
-        await fetchMembers();
-        displayPlasmaWall();
-        
-        // Show success
-        showCosmicSuccess();
-        updateStatus('✅ Consciousness successfully injected!');
-        
-    } catch (error) {
-        console.error('Error adding user:', error);
-        updateStatus('❌ Injection failed: ' + error.message);
-        alert('Failed to add user: ' + error.message);
-    } finally {
-        // Reset button
-        setTimeout(() => {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<span class="relative z-10">INJECT</span>';
-        }, 2000);
+    // Add to array
+    allUsers.push(cleanUsername);
+    
+    // Save locally
+    if (!saveUsersToStorage()) {
+        allUsers.pop();
+        updateStatus('❌ Storage failed', 'error');
+        resetSubmitButton();
+        return;
     }
+    
+    // Update display immediately
+    displayPlasmaWall();
+    
+    // Clear input
+    usernameInput.value = '';
+    
+    // Try to save to backend (async)
+    saveToBackend(cleanUsername).then(success => {
+        if (success) {
+            updateStatus('✅ User added and synced!', 'success');
+        } else {
+            updateStatus('✅ User added locally', 'warning');
+        }
+    });
+    
+    // Reset button
+    setTimeout(resetSubmitButton, 2000);
 }
 
-// Show cosmic success effect
-function showCosmicSuccess() {
-    const successEffect = document.createElement('div');
-    successEffect.innerHTML = '✨ Consciousness Injected Successfully! ✨';
-    successEffect.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 255, 65, 0.9);
-        color: #000;
-        padding: 1rem 2rem;
-        border-radius: 50px;
-        font-weight: bold;
-        font-size: 1.2rem;
-        z-index: 10000;
-        animation: successPulse 3s ease-out forwards;
-        box-shadow: 0 0 50px rgba(0, 255, 65, 0.8);
-        font-family: 'Courier New', monospace;
-    `;
-    
-    document.body.appendChild(successEffect);
-    
-    setTimeout(() => {
-        successEffect.remove();
-    }, 3000);
+function resetSubmitButton() {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<span class="relative z-10">INJECT</span>';
 }
 
-// Event listeners
+// Event listeners - FIXED
 submitBtn.addEventListener('click', function(e) {
     e.preventDefault();
     submitUser();
@@ -958,99 +1041,49 @@ usernameInput.addEventListener('keypress', function(e) {
     }
 });
 
+// Test input on type
+usernameInput.addEventListener('input', function(e) {
+    console.log('Input value:', e.target.value);
+});
+
 // Counter update
 setInterval(() => {
     const time = new Date().toLocaleTimeString();
-    liveCounter.textContent = `Network: ${allUsers.length} signatures [${time}]`;
-}, 30000);
-
-// Auto-sync every 2 minutes
-setInterval(async () => {
-    if (!syncInProgress && isConnected) {
-        await fetchMembers();
-        displayPlasmaWall();
-    }
-}, 120000);
+    liveCounter.textContent = Network: ${allUsers.length} signatures [${time}];
+}, 10000);
 
 // Initialize
 async function initialize() {
-    console.log('🌌 INITIALIZING PLASMA WALL...');
+    console.log('🌌 INITIALIZING...');
     
-    // Enable input
+    // Make sure input is enabled
     usernameInput.disabled = false;
     usernameInput.readOnly = false;
     
-    updateStatus('🌌 Initializing quantum network...');
+    updateStatus('🌌 Initializing...', 'info');
     
-    // Check connection and load data
-    await checkConnection();
-    await fetchMembers();
+    // Load data
+    await loadFromBackend();
     
     // Display
     displayPlasmaWall();
     
-    console.log('✨ PLASMA WALL READY');
-    updateStatus('⚡ Ready for consciousness injection');
+    console.log('✨ READY');
+    updateStatus('⚡ Ready for injection', 'success');
 }
 
-// Start initialization
+// Auto-sync
+setInterval(async () => {
+    if (!syncInProgress) {
+        await loadFromBackend();
+    }
+}, 300000);
+
+// Start
 initialize();
 
 }); // End DOMContentLoaded
+</script>
 
-// Add success animation CSS
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes successPulse {
-        0% { 
-            opacity: 0; 
-            transform: translate(-50%, -50%) scale(0.5); 
-        }
-        20% { 
-            opacity: 1; 
-            transform: translate(-50%, -50%) scale(1.2); 
-        }
-        80% { 
-            opacity: 1; 
-            transform: translate(-50%, -50%) scale(1); 
-        }
-        100% { 
-            opacity: 0; 
-            transform: translate(-50%, -50%) scale(0.8); 
-        }
-    }
-`;
-document.head.appendChild(style);
-                displayPlasmaWall();
-                return;
-            }
-        }
-        
-        const response = await fetch(`${CONFIG.API_BASE}/members`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        
-        const members = await response.json();
-        console.log('Fetched members:', members.length);
-        
-        // Transform member data to match our format
-        allUsers = members.map(member => ({
-            username: member.username,
-            displayName: member.displayName || member.username,
-            profileImage: member.profileImage,
-            followers: member.followers || 0,
-            verified: member.verified || false,
-            createdAt: member.createdAt || new Date().toISOString()
-        }));
-        
-    } catch (error) {
-        console.error('Error fetching members:', error);
-        updateStatus('⚠️ Failed to sync with backend');
-        allUsers = [];
+</body>
+</html>
